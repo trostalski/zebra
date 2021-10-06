@@ -1,24 +1,15 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BaseEntity } from "typeorm";
 
-@Entity("user")
-export class User extends BaseEntity {
+@Entity("procedure")
+export class Procedure extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  firstName: string;
+  name: string;
 
   @Column()
-  lastName: string;
-
-  @Column()
-  password: string;
-
-  @Column()
-  department: string;
-
-  @Column()
-  position: string;
+  explanation: string;
 
   @CreateDateColumn()
   createdAt: Date;
