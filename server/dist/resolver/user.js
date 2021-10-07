@@ -24,75 +24,62 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserResolver = void 0;
 const User_1 = require("../entities/User");
 const type_graphql_1 = require("type-graphql");
-let RegisterInput = class RegisterInput {
+const RegisterInput_1 = require("./RegisterInput");
+let UserOutput = class UserOutput {
 };
 __decorate([
-    (0, type_graphql_1.Field)(() => String),
+    (0, type_graphql_1.Field)(() => String, { nullable: true }),
     __metadata("design:type", String)
-], RegisterInput.prototype, "username", void 0);
+], UserOutput.prototype, "message", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => String),
-    __metadata("design:type", String)
-], RegisterInput.prototype, "firstname", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => String),
-    __metadata("design:type", String)
-], RegisterInput.prototype, "lastname", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => String),
-    __metadata("design:type", String)
-], RegisterInput.prototype, "email", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => String),
-    __metadata("design:type", String)
-], RegisterInput.prototype, "password", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => String),
-    __metadata("design:type", String)
-], RegisterInput.prototype, "department", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => String),
-    __metadata("design:type", String)
-], RegisterInput.prototype, "position", void 0);
-RegisterInput = __decorate([
-    (0, type_graphql_1.InputType)()
-], RegisterInput);
+    (0, type_graphql_1.Field)(() => User_1.User, { nullable: true }),
+    __metadata("design:type", User_1.User)
+], UserOutput.prototype, "user", void 0);
+UserOutput = __decorate([
+    (0, type_graphql_1.ObjectType)()
+], UserOutput);
 let UserResolver = class UserResolver {
     listUsers() {
         return __awaiter(this, void 0, void 0, function* () {
             return yield User_1.User.find({});
         });
     }
-    register(credentials) {
+    register(input) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const user = User_1.User.create({
-                    username: credentials.username,
-                    firstname: credentials.firstname,
-                    lastname: credentials.lastname,
-                    email: credentials.email,
-                    department: credentials.department,
-                    position: credentials.position,
-                    password: credentials.password,
-                }).save();
-                return yield user;
+                const user = yield User_1.User.create(input).save();
+                return { user };
             }
             catch (err) {
-                if (err.detail.includes("already exists.")) {
-                    return yield "email already taken.";
+                if (err.detail.includes("@")) {
+                    return { message: "email already taken." };
                 }
-                else
-                    return "registration failed.";
+                else {
+                    return { message: "username already taken" };
+                }
             }
         });
     }
     login(usernameOrEmail, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = User_1.User.find(usernameOrEmail.includes("@")
-                ? { where: { email: usernameOrEmail } }
-                : { where: { username: usernameOrEmail } });
-            console.log("das ist der BRE: ", user);
-            return user;
+            try {
+                const user = yield User_1.User.findOne(usernameOrEmail.includes("@")
+                    ? { where: { email: usernameOrEmail } }
+                    : { where: { username: usernameOrEmail } });
+                if (!user)
+                    return { message: "user does not exist" };
+                if (user.password !== password) {
+                    return { message: "wrong password" };
+                }
+                else
+                    return { user };
+            }
+            catch (err) {
+                if (err.message.includes("password"))
+                    return { message: "provide a password" };
+                else
+                    return { message: "unknown login error" };
+            }
         });
     }
 };
@@ -103,16 +90,16 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "listUsers", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => User_1.User),
+    (0, type_graphql_1.Mutation)(() => UserOutput),
     __param(0, (0, type_graphql_1.Arg)("data")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [RegisterInput]),
+    __metadata("design:paramtypes", [RegisterInput_1.RegisterInput]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "register", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => User_1.User),
+    (0, type_graphql_1.Mutation)(() => UserOutput),
     __param(0, (0, type_graphql_1.Arg)("usernameOrEmail")),
-    __param(1, (0, type_graphql_1.Arg)("password", { nullable: true })),
+    __param(1, (0, type_graphql_1.Arg)("password")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)

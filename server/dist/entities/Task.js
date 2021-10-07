@@ -37,4 +37,4 @@ Task = __decorate([
     (0, typeorm_1.Entity)("procedure")
 ], Task);
 exports.Task = Task;
-//# sourceMappingURL=Procedure.js.map
+//# sourceMappingURL=Task.js.map

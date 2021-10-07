@@ -31,7 +31,6 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         logging: true,
         entities: [User_1.User],
     });
-    User_1.User.delete({});
     const app = (0, express_1.default)();
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: yield (0, type_graphql_1.buildSchema)({ resolvers: [user_1.UserResolver] }),

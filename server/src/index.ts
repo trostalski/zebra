@@ -20,7 +20,7 @@ const main = async () => {
     entities: [User],
   });
 
-  User.delete({});
+  // User.delete({});
 
   const app = express();
 

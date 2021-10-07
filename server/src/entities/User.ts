@@ -21,33 +21,32 @@ export class User extends BaseEntity {
 
   @Field()
   @Column({ unique: true })
-  email: string;
+  email!: string;
 
   @Field()
   @Column()
-  firstname: string;
+  firstname!: string;
 
   @Field()
   @Column()
-  lastname: string;
+  lastname!: string;
+
+  @Column()
+  password!: string;
 
   @Field()
   @Column()
-  password: string;
+  department!: string;
 
   @Field()
   @Column()
-  department: string;
-
-  @Field()
-  @Column()
-  position: string;
+  position!: string;
 
   @Field()
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @Field()
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

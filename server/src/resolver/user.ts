@@ -2,37 +2,23 @@ import { User } from "../entities/User";
 import {
   Arg,
   Field,
-  InputType,
   Mutation,
+  ObjectType,
   Query,
   Resolver,
 } from "type-graphql";
+import { RegisterInput } from "./RegisterInput";
 
-@InputType()
-class RegisterInput {
+@ObjectType()
+class UserOutput {
+  @Field(() => String, { nullable: true })
+  message?: string;
 
-  @Field(() => String)
-  username: string;
-
-  @Field(() => String)
-  firstname: string;
-
-  @Field(() => String)
-  lastname: string;
-
-  @Field(() => String)
-  email: string;
-
-  @Field(() => String)
-  password: string;
-
-  @Field(() => String)
-  department: string;
-
-  @Field(() => String)
-  position: string;
+  @Field(() => User, { nullable: true })
+  user?: User;
 }
 
+// list all users in DB
 @Resolver(User)
 export class UserResolver {
   @Query(() => [User], { nullable: true })
@@ -40,40 +26,42 @@ export class UserResolver {
     return await User.find({});
   }
 
-  @Mutation(() => User)
-  async register(
-    @Arg("data") credentials: RegisterInput
-  ): Promise<User | String> {
+  //Registration
+  @Mutation(() => UserOutput)
+  async register(@Arg("data") input: RegisterInput): Promise<UserOutput> {
     try {
-      const user = User.create({
-        username: credentials.username,
-        firstname: credentials.firstname,
-        lastname: credentials.lastname,
-        email: credentials.email,
-        department: credentials.department,
-        position: credentials.position,
-        password: credentials.password,
-      }).save();
-      return await user;
+      const user = await User.create(input).save();
+      return { user };
     } catch (err) {
-      if (err.detail.includes("already exists.")) {
-        return await "email already taken.";
-      } else return "registration failed.";
+      if (err.detail.includes("@")) {
+        return { message: "email already taken." };
+      } else {
+        return { message: "username already taken" };
+      }
     }
   }
 
-  @Mutation(() => User)
+  //Login
+  @Mutation(() => UserOutput)
   async login(
     @Arg("usernameOrEmail") usernameOrEmail: string,
-    @Arg("password", { nullable: true }) password: string
-  ): Promise<User[] | undefined> {
-    const user = User.find(
-      usernameOrEmail.includes("@")
-        ? { where: { email: usernameOrEmail } }
-        : { where: { username: usernameOrEmail } }
-    );
+    @Arg("password") password: string
+  ): Promise<UserOutput> {
+    try {
+      const user = await User.findOne(
+        usernameOrEmail.includes("@")
+          ? { where: { email: usernameOrEmail } }
+          : { where: { username: usernameOrEmail } }
+      );
+      if (!user) return { message: "user does not exist" };
 
-    console.log("das ist der BRE: ", user);
-    return user;
+      if (user.password !== password) {
+        return { message: "wrong password" };
+      } else return { user };
+    } catch (err) {
+      if (err.message.includes("password"))
+        return { message: "provide a password" };
+      else return { message: "unknown login error" };
+    }
   }
 }
