@@ -5,9 +5,12 @@ import { ApolloServer } from "apollo-server-express";
 import { UserResolver } from "./resolver/user";
 import { buildSchema } from "type-graphql";
 import { User } from "./entities/User";
+import { Task } from "./entities/Task";
+import { TaskResolver } from "./resolver/task";
+import { Patient } from "./entities/Patient";
+import { PatientResolver } from "./resolver/patient";
 
 const main = async () => {
-
   const connection = await createConnection({
     type: "postgres",
     host: "localhost",
@@ -17,7 +20,7 @@ const main = async () => {
     database: "zebra",
     synchronize: true,
     logging: true,
-    entities: [User],
+    entities: [User, Task, Patient],
   });
 
   // User.delete({});
@@ -25,7 +28,9 @@ const main = async () => {
   const app = express();
 
   const apolloServer = new ApolloServer({
-    schema: await buildSchema({ resolvers: [UserResolver] }),
+    schema: await buildSchema({
+      resolvers: [UserResolver, TaskResolver, PatientResolver],
+    }),
   });
 
   app.listen(4000, () => {

@@ -21,10 +21,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserResolver = void 0;
+exports.UserResolver = exports.UserOutput = void 0;
 const User_1 = require("../entities/User");
 const type_graphql_1 = require("type-graphql");
-const RegisterInput_1 = require("./RegisterInput");
+const utils_1 = require("./utils");
 let UserOutput = class UserOutput {
 };
 __decorate([
@@ -38,6 +38,7 @@ __decorate([
 UserOutput = __decorate([
     (0, type_graphql_1.ObjectType)()
 ], UserOutput);
+exports.UserOutput = UserOutput;
 let UserResolver = class UserResolver {
     listUsers() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -91,9 +92,9 @@ __decorate([
 ], UserResolver.prototype, "listUsers", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => UserOutput),
-    __param(0, (0, type_graphql_1.Arg)("data")),
+    __param(0, (0, type_graphql_1.Arg)("Userdata")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [RegisterInput_1.RegisterInput]),
+    __metadata("design:paramtypes", [utils_1.RegisterInput]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "register", null);
 __decorate([

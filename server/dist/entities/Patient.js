@@ -10,38 +10,47 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Patient = void 0;
+const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 let Patient = class Patient extends typeorm_1.BaseEntity {
 };
 __decorate([
+    (0, type_graphql_1.Field)(),
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
 ], Patient.prototype, "id", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Patient.prototype, "firstName", void 0);
+], Patient.prototype, "firstname", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Patient.prototype, "lastName", void 0);
+], Patient.prototype, "lastname", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Patient.prototype, "age", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Patient.prototype, "diagnosis", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(),
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], Patient.prototype, "createdAt", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(),
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
 ], Patient.prototype, "updatedAt", void 0);
 Patient = __decorate([
+    (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)("patient")
 ], Patient);
 exports.Patient = Patient;

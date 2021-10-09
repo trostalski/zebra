@@ -7,10 +7,10 @@ import {
   Query,
   Resolver,
 } from "type-graphql";
-import { RegisterInput } from "./RegisterInput";
+import { RegisterInput } from "./utils";
 
 @ObjectType()
-class UserOutput {
+export class UserOutput {
   @Field(() => String, { nullable: true })
   message?: string;
 
@@ -28,7 +28,7 @@ export class UserResolver {
 
   //Registration
   @Mutation(() => UserOutput)
-  async register(@Arg("data") input: RegisterInput): Promise<UserOutput> {
+  async register(@Arg("Userdata") input: RegisterInput): Promise<UserOutput> {
     try {
       const user = await User.create(input).save();
       return { user };

@@ -19,6 +19,10 @@ const apollo_server_express_1 = require("apollo-server-express");
 const user_1 = require("./resolver/user");
 const type_graphql_1 = require("type-graphql");
 const User_1 = require("./entities/User");
+const Task_1 = require("./entities/Task");
+const task_1 = require("./resolver/task");
+const Patient_1 = require("./entities/Patient");
+const patient_1 = require("./resolver/patient");
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const connection = yield (0, typeorm_1.createConnection)({
         type: "postgres",
@@ -29,11 +33,13 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         database: "zebra",
         synchronize: true,
         logging: true,
-        entities: [User_1.User],
+        entities: [User_1.User, Task_1.Task, Patient_1.Patient],
     });
     const app = (0, express_1.default)();
     const apolloServer = new apollo_server_express_1.ApolloServer({
-        schema: yield (0, type_graphql_1.buildSchema)({ resolvers: [user_1.UserResolver] }),
+        schema: yield (0, type_graphql_1.buildSchema)({
+            resolvers: [user_1.UserResolver, task_1.TaskResolver, patient_1.PatientResolver],
+        }),
     });
     app.listen(4000, () => {
         console.log("listening on port 4000!");
