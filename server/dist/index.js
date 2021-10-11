@@ -24,14 +24,14 @@ const task_1 = require("./resolver/task");
 const Patient_1 = require("./entities/Patient");
 const patient_1 = require("./resolver/patient");
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = yield (0, typeorm_1.createConnection)({
+    yield (0, typeorm_1.createConnection)({
         type: "postgres",
         host: "localhost",
         port: 5432,
         username: "postgres",
         password: "postgres",
         database: "zebra",
-        synchronize: true,
+        synchronize: false,
         logging: true,
         entities: [User_1.User, Task_1.Task, Patient_1.Patient],
     });

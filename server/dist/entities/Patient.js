@@ -33,6 +33,11 @@ __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
+], Patient.prototype, "room", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
 ], Patient.prototype, "age", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
@@ -51,7 +56,7 @@ __decorate([
 ], Patient.prototype, "updatedAt", void 0);
 Patient = __decorate([
     (0, type_graphql_1.ObjectType)(),
-    (0, typeorm_1.Entity)("patient")
+    (0, typeorm_1.Entity)()
 ], Patient);
 exports.Patient = Patient;
 //# sourceMappingURL=Patient.js.map

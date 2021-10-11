@@ -1,58 +1,85 @@
-import { Flex, Heading, Icon, Text as Link } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Stack,
+  Box,
+  Heading,
+  Button,
+  SimpleGrid,
+} from "@chakra-ui/react";
 import React from "react";
-import { BsFillFilePersonFill } from "react-icons/bs";
-import { AiFillSetting, AiFillNotification } from "react-icons/ai";
-import { FaProcedures } from "react-icons/fa";
+import { NavBar } from "../components/NavBar";
+import {
+  useListPatientsQuery,
+  usePatientRoomsQuery,
+} from "../generated/graphql";
 
-const Index = () => (
-  <Flex h="100vh" maxW="2000px" flexDir="column" overflow="hidden" bg="gray.50">
-    {/* far left column */}
-    <Flex
-      w="20vw"
-      flexDirection="column"
-      alignItems="center"
-      overflow="hidden"
-      bg="black"
-      h="100vh"
-      color="white"
-    >
-      <Flex flexDir="column" as="nav">
-        <Heading mt={50} letterSpacing="thight" alignSelf="center">
-          Zebra.
-        </Heading>
+const Index = () => {
+  const [{ data: roomsData, fetching: roomFetching }] = usePatientRoomsQuery();
+  const [{ data: patientsData, fetching: patientFetching }] =
+    useListPatientsQuery();
+
+  if ((!patientsData && !patientFetching) || (!roomsData && !roomFetching)) {
+    return <div>not loading</div>;
+  }
+
+  const loading: boolean =
+    (!patientsData && patientFetching) || (!roomsData && roomFetching);
+
+  return (
+    <Flex h="100%" maxW="2000px" flexDir="row" overflow="scroll" bg="gray.50">
+      {/* first left column */}
+      <NavBar />
+      {/* second column */}
+      {loading ? (
+        <div>loading...</div>
+      ) : (
         <Flex
-          h="40vh"
-          mt={20}
-          ml={8}
+          left="20%"
+          position="absolute"
           flexDirection="column"
-          justifyContent="space-between"
+          padding={4}
+          alignContent="center"
         >
-          <Flex flexDirection="row" alignItems="center">
-            <Icon as={BsFillFilePersonFill} fontSize="2xl" mr={6} />
-            <Link>Patienten</Link>
-          </Flex>
-          <Flex flexDirection="row" alignItems="center">
-            <Icon as={FaProcedures} fontSize="2xl" mr={6} />
-            <Link>Untersuchungen</Link>
-          </Flex>
-          <Flex flexDirection="row" alignItems="center">
-            <Icon as={AiFillNotification} fontSize="2xl" mr={6} />
-            <Link>Benachrichtigungen</Link>
-          </Flex>
-          <Flex flexDirection="row" alignItems="center">
-            <Icon as={AiFillSetting} fontSize="2xl" mr={6} />
-            <Link>Einstellungen</Link>
-          </Flex>
+          {/* sort patients by their room and display*/}
+          <SimpleGrid columns={2} spacing={8}>
+              {roomsData!.patientRooms.map((r) =>
+                !r ? null : (
+                  <Box
+                    rounded="lg"
+                    bg="white"
+                    p={4}
+                    w={"30vw"}
+                    borderWidth={1}
+                    shadow={"md"}
+                  >
+                    <Heading fontSize="xl" mb={4}>
+                      Zimmer: {r}
+                    </Heading>
+                    {patientsData!.listPatients.map((p) =>
+                      !p ? null : p.room == r ? (
+                        <Flex
+                          alignContent="center"
+                          flexDirection="column"
+                          p={2}
+                        >
+                          <Button>
+                            <Text mr="auto">
+                              {p.firstname + " " + p.lastname}{" "}
+                            </Text>
+                            <Text mr="left">Alter: {p.age} </Text>
+                          </Button>
+                        </Flex>
+                      ) : null
+                    )}
+                  </Box>
+                )
+              )}
+          </SimpleGrid>
         </Flex>
-      </Flex>
+      )}
     </Flex>
-    <Flex
-      flexDirection="column"
-      alignItems="center"
-      w="80vw"
-      overflow="hidden"
-    ></Flex>
-  </Flex>
-);
+  );
+};
 
 export default Index;

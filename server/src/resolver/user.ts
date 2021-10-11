@@ -8,6 +8,7 @@ import {
   Resolver,
 } from "type-graphql";
 import { RegisterInput } from "./utils";
+import argon2 from "argon2";
 
 @ObjectType()
 export class UserOutput {
@@ -29,6 +30,7 @@ export class UserResolver {
   //Registration
   @Mutation(() => UserOutput)
   async register(@Arg("Userdata") input: RegisterInput): Promise<UserOutput> {
+    input.password = await argon2.hash(input.password);
     try {
       const user = await User.create(input).save();
       return { user };
@@ -55,7 +57,8 @@ export class UserResolver {
       );
       if (!user) return { message: "user does not exist" };
 
-      if (user.password !== password) {
+      const valid = await argon2.verify(user.password, password);
+      if (!valid) {
         return { message: "wrong password" };
       } else return { user };
     } catch (err) {

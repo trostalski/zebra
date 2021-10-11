@@ -1,0 +1,10 @@
+query listPatients {
+  listPatients {
+    id
+    firstname
+    lastname
+    room
+    age
+    diagnosis
+  }
+}

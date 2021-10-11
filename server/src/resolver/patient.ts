@@ -2,12 +2,15 @@ import { Patient } from "../entities/Patient";
 import {
   Arg,
   Field,
+  Int,
   Mutation,
   ObjectType,
   Query,
   Resolver,
 } from "type-graphql";
 import { PatientInput } from "./utils";
+import { createQueryBuilder, getConnection } from "typeorm";
+import { resourceLimits } from "worker_threads";
 
 @ObjectType()
 export class PatientOutput {
@@ -21,9 +24,24 @@ export class PatientOutput {
 // list all users in DB
 @Resolver(Patient)
 export class PatientResolver {
-  @Query(() => [Patient], { nullable: true })
-  async listPatients() {
+  @Query(() => [Patient])
+  async listPatients(): Promise<Patient[]> {
     return await Patient.find({});
+  }
+
+  @Query(() => [Int])
+  async patientRooms(): Promise<number[]> {
+    const result: number[] = [];
+    const rooms = await getConnection().query(
+      `SELECT room
+      FROM "patient"
+      GROUP by room 
+      ORDER by room ASC;`
+    );
+    rooms.forEach((room: { [x: string]: number }) => {
+      result.push(room["room"]);
+    });
+    return result;
   }
 
   //Registration

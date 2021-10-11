@@ -1,4 +1,4 @@
-import { Field, ObjectType } from "type-graphql";
+import { Field, Int, ObjectType } from "type-graphql";
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -9,27 +9,31 @@ import {
 } from "typeorm";
 
 @ObjectType()
-@Entity("patient")
+@Entity()
 export class Patient extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Field()
   @Column()
-  firstname: string;
+  firstname!: string;
 
   @Field()
   @Column()
-  lastname: string;
+  lastname!: string;
 
   @Field()
   @Column()
-  age: number;
+  room!: number;
+
+  @Field(() => Int)
+  @Column()
+  age!: number;
 
   @Field()
   @Column()
-  diagnosis: string;
+  diagnosis!: string;
 
   @Field()
   @CreateDateColumn()

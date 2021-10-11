@@ -63,6 +63,10 @@ __decorate([
     (0, type_graphql_1.Field)(() => String),
     __metadata("design:type", String)
 ], PatientInput.prototype, "diagnosis", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
+    __metadata("design:type", Number)
+], PatientInput.prototype, "room", void 0);
 PatientInput = __decorate([
     (0, type_graphql_1.InputType)()
 ], PatientInput);

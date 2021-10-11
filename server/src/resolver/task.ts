@@ -2,7 +2,6 @@ import { Task } from "../entities/Task";
 import {
   Arg,
   Field,
-  InputType,
   Mutation,
   ObjectType,
   Query,

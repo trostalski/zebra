@@ -9,16 +9,31 @@ import { Task } from "./entities/Task";
 import { TaskResolver } from "./resolver/task";
 import { Patient } from "./entities/Patient";
 import { PatientResolver } from "./resolver/patient";
+// import redis from "redis";
+// import session from "express-session";
+// import connectRedis from "connect-redis"
+
+// const RedisStore = connectRedis(session)
+// let redisClient = redis.createClient();
+
+// app.use(
+//   session({
+//     store: new RedisStore({ client: redisClient }),
+//     saveUninitialized: false,
+//     secret: "keyboard cat",
+//     resave: false,
+//   })
+// );
 
 const main = async () => {
-  const connection = await createConnection({
+  /*   const connection = */ await createConnection({
     type: "postgres",
     host: "localhost",
     port: 5432,
     username: "postgres",
     password: "postgres",
     database: "zebra",
-    synchronize: true,
+    synchronize: false,
     logging: true,
     entities: [User, Task, Patient],
   });

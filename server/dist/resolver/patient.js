@@ -25,6 +25,7 @@ exports.PatientResolver = exports.PatientOutput = void 0;
 const Patient_1 = require("../entities/Patient");
 const type_graphql_1 = require("type-graphql");
 const utils_1 = require("./utils");
+const typeorm_1 = require("typeorm");
 let PatientOutput = class PatientOutput {
 };
 __decorate([
@@ -45,6 +46,19 @@ let PatientResolver = class PatientResolver {
             return yield Patient_1.Patient.find({});
         });
     }
+    patientRooms() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = [];
+            const rooms = yield (0, typeorm_1.getConnection)().query(`SELECT room
+      FROM "patient"
+      GROUP by room 
+      ORDER by room ASC;`);
+            rooms.forEach((room) => {
+                result.push(room["room"]);
+            });
+            return result;
+        });
+    }
     createPatient(input) {
         return __awaiter(this, void 0, void 0, function* () {
             const patient = yield Patient_1.Patient.create(input).save();
@@ -59,11 +73,17 @@ let PatientResolver = class PatientResolver {
     }
 };
 __decorate([
-    (0, type_graphql_1.Query)(() => [Patient_1.Patient], { nullable: true }),
+    (0, type_graphql_1.Query)(() => [Patient_1.Patient]),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], PatientResolver.prototype, "listPatients", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => [type_graphql_1.Int]),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], PatientResolver.prototype, "patientRooms", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => PatientOutput),
     __param(0, (0, type_graphql_1.Arg)("Patientdata")),
