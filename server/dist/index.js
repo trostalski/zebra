@@ -24,6 +24,9 @@ const task_1 = require("./resolver/task");
 const Patient_1 = require("./entities/Patient");
 const patient_1 = require("./resolver/patient");
 const cors_1 = __importDefault(require("cors"));
+const redis_1 = __importDefault(require("redis"));
+const express_session_1 = __importDefault(require("express-session"));
+const connect_redis_1 = __importDefault(require("connect-redis"));
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, typeorm_1.createConnection)({
         type: "postgres",
@@ -37,21 +40,34 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         entities: [User_1.User, Task_1.Task, Patient_1.Patient],
     });
     const app = (0, express_1.default)();
+    const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
+    let redisClient = redis_1.default.createClient();
     app.use((0, cors_1.default)({
         origin: ["http://localhost:3000", "https://studio.apollographql.com"],
         credentials: true,
+    }));
+    app.use((0, express_session_1.default)({
+        name: "qid",
+        store: new RedisStore({ client: redisClient, disableTouch: true }),
+        saveUninitialized: false,
+        secret: "jru209ofwopenkl",
+        resave: false,
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
+            httpOnly: true,
+            sameSite: "lax",
+        },
     }));
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: yield (0, type_graphql_1.buildSchema)({
             resolvers: [user_1.UserResolver, task_1.TaskResolver, patient_1.PatientResolver],
         }),
+        context: ({ req, res }) => ({ req, res }),
     });
     app.listen(4000, () => {
         console.log("listening on port 4000!");
     });
-    app.get("/", (_, res) => {
-        res.send("hello there");
-    });
+    app.get("/", (req, res) => { });
     yield apolloServer.start();
     apolloServer.applyMiddleware({ app, cors: false });
 });

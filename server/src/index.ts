@@ -10,21 +10,15 @@ import { TaskResolver } from "./resolver/task";
 import { Patient } from "./entities/Patient";
 import { PatientResolver } from "./resolver/patient";
 import cors from "cors";
-// import redis from "redis";
-// import session from "express-session";
-// import connectRedis from "connect-redis"
+import redis from "redis";
+import session from "express-session";
+import connectRedis from "connect-redis";
 
-// const RedisStore = connectRedis(session)
-// let redisClient = redis.createClient();
-
-// app.use(
-//   session({
-//     store: new RedisStore({ client: redisClient }),
-//     saveUninitialized: false,
-//     secret: "keyboard cat",
-//     resave: false,
-//   })
-// );
+declare module "express-session" {
+  export interface SessionData {
+    userId: number;
+  }
+}
 
 const main = async () => {
   /*   const connection = */ await createConnection({
@@ -40,8 +34,13 @@ const main = async () => {
   });
 
   // User.delete({});
+  // Patient.delete({});
+  // Task.delete({});
 
   const app = express();
+
+  const RedisStore = connectRedis(session);
+  let redisClient = redis.createClient();
 
   app.use(
     cors({
@@ -50,19 +49,32 @@ const main = async () => {
     })
   );
 
+  app.use(
+    session({
+      name: "qid",
+      store: new RedisStore({ client: redisClient, disableTouch: true }),
+      saveUninitialized: false,
+      secret: "jru209ofwopenkl",
+      resave: false,
+      cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
+        httpOnly: true,
+        sameSite: "lax", // csrf
+      },
+    })
+  );
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [UserResolver, TaskResolver, PatientResolver],
     }),
+    context: ({ req, res }) => ({ req, res }),
   });
 
   app.listen(4000, () => {
     console.log("listening on port 4000!");
   });
 
-  app.get("/", (_, res) => {
-    res.send("hello there");
-  });
+  app.get("/", (req, res) => {});
 
   await apolloServer.start();
 

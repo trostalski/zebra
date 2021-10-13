@@ -66,7 +66,7 @@ let UserResolver = class UserResolver {
             }
         });
     }
-    login(usernameOrEmail, password) {
+    login({ req }, usernameOrEmail, password) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const user = yield User_1.User.findOne(usernameOrEmail.includes("@")
@@ -75,11 +75,13 @@ let UserResolver = class UserResolver {
                 if (!user)
                     return { message: "user does not exist" };
                 const valid = yield argon2_1.default.verify(user.password, password);
+                req.session.userId = user.id;
                 if (!valid) {
                     return { message: "wrong password" };
                 }
-                else
+                else {
                     return { user };
+                }
             }
             catch (err) {
                 if (err.message.includes("password"))
@@ -105,10 +107,11 @@ __decorate([
 ], UserResolver.prototype, "register", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => UserOutput),
-    __param(0, (0, type_graphql_1.Arg)("usernameOrEmail")),
-    __param(1, (0, type_graphql_1.Arg)("password")),
+    __param(0, (0, type_graphql_1.Ctx)()),
+    __param(1, (0, type_graphql_1.Arg)("usernameOrEmail")),
+    __param(2, (0, type_graphql_1.Arg)("password")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [Object, String, String]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "login", null);
 UserResolver = __decorate([

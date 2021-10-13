@@ -1,6 +1,7 @@
 import { User } from "../entities/User";
 import {
   Arg,
+  Ctx,
   Field,
   Mutation,
   ObjectType,
@@ -9,6 +10,7 @@ import {
 } from "type-graphql";
 import { RegisterInput } from "./utils";
 import argon2 from "argon2";
+import { MyContext } from "src/types";
 
 @ObjectType()
 export class UserOutput {
@@ -46,6 +48,7 @@ export class UserResolver {
   //Login
   @Mutation(() => UserOutput)
   async login(
+    @Ctx() {req}: MyContext,
     @Arg("usernameOrEmail") usernameOrEmail: string,
     @Arg("password") password: string
   ): Promise<UserOutput> {
@@ -58,9 +61,13 @@ export class UserResolver {
       if (!user) return { message: "user does not exist" };
 
       const valid = await argon2.verify(user.password, password);
+      req.session.userId = user.id
+
       if (!valid) {
         return { message: "wrong password" };
-      } else return { user };
+      } else {
+        return { user };
+      }
     } catch (err) {
       if (err.message.includes("password"))
         return { message: "provide a password" };
