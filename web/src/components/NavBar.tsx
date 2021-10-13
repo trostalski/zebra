@@ -1,4 +1,4 @@
-import { Flex, Heading, Icon, Link } from "@chakra-ui/react";
+import { Box, Flex, Heading, Icon, Link } from "@chakra-ui/react";
 import React from "react";
 import { AiFillNotification, AiFillSetting } from "react-icons/ai";
 import { BsFillFilePersonFill } from "react-icons/bs";
@@ -45,6 +45,14 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
             <Icon as={AiFillSetting} fontSize="2xl" mr={6} />
             <Link>Einstellungen</Link>
           </Flex>
+        </Flex>
+        <Flex alignSelf="center" position="absolute" bottom={10}  p={2}>
+          <Box textAlign="center" w={20} h={5}>
+            <Link>User</Link>
+          </Box>
+          <Box textAlign="center" w={20} h={5}>
+            <Link>Logout</Link>
+          </Box>
         </Flex>
       </Flex>
     </Flex>

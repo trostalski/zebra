@@ -9,6 +9,7 @@ import { Task } from "./entities/Task";
 import { TaskResolver } from "./resolver/task";
 import { Patient } from "./entities/Patient";
 import { PatientResolver } from "./resolver/patient";
+import cors from "cors";
 // import redis from "redis";
 // import session from "express-session";
 // import connectRedis from "connect-redis"
@@ -33,7 +34,7 @@ const main = async () => {
     username: "postgres",
     password: "postgres",
     database: "zebra",
-    synchronize: false,
+    synchronize: true,
     logging: true,
     entities: [User, Task, Patient],
   });
@@ -41,6 +42,13 @@ const main = async () => {
   // User.delete({});
 
   const app = express();
+
+  app.use(
+    cors({
+      origin: ["http://localhost:3000", "https://studio.apollographql.com"],
+      credentials: true,
+    })
+  );
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
@@ -58,7 +66,7 @@ const main = async () => {
 
   await apolloServer.start();
 
-  apolloServer.applyMiddleware({ app });
+  apolloServer.applyMiddleware({ app, cors: false });
 };
 
 main().catch((err) => {

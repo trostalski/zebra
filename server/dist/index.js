@@ -23,6 +23,7 @@ const Task_1 = require("./entities/Task");
 const task_1 = require("./resolver/task");
 const Patient_1 = require("./entities/Patient");
 const patient_1 = require("./resolver/patient");
+const cors_1 = __importDefault(require("cors"));
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, typeorm_1.createConnection)({
         type: "postgres",
@@ -31,11 +32,15 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         username: "postgres",
         password: "postgres",
         database: "zebra",
-        synchronize: false,
+        synchronize: true,
         logging: true,
         entities: [User_1.User, Task_1.Task, Patient_1.Patient],
     });
     const app = (0, express_1.default)();
+    app.use((0, cors_1.default)({
+        origin: ["http://localhost:3000", "https://studio.apollographql.com"],
+        credentials: true,
+    }));
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: yield (0, type_graphql_1.buildSchema)({
             resolvers: [user_1.UserResolver, task_1.TaskResolver, patient_1.PatientResolver],
@@ -48,7 +53,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         res.send("hello there");
     });
     yield apolloServer.start();
-    apolloServer.applyMiddleware({ app });
+    apolloServer.applyMiddleware({ app, cors: false });
 });
 main().catch((err) => {
     console.error(err);

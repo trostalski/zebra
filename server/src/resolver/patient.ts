@@ -9,8 +9,7 @@ import {
   Resolver,
 } from "type-graphql";
 import { PatientInput } from "./utils";
-import { createQueryBuilder, getConnection } from "typeorm";
-import { resourceLimits } from "worker_threads";
+import {  getConnection } from "typeorm";
 
 @ObjectType()
 export class PatientOutput {

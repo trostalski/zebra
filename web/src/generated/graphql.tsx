@@ -107,6 +107,7 @@ export type Task = {
   explanation: Scalars['String'];
   id: Scalars['Float'];
   name: Scalars['String'];
+  patientId: Scalars['Float'];
   updatedAt: Scalars['DateTime'];
 };
 
@@ -140,6 +141,21 @@ export type UserOutput = {
   user?: Maybe<User>;
 };
 
+export type LoginMutationVariables = Exact<{
+  loginPassword: Scalars['String'];
+  loginUsernameOrEmail: Scalars['String'];
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserOutput', message?: string | null | undefined, user?: { __typename?: 'User', id: number, username: string } | null | undefined } };
+
+export type RegisterMutationVariables = Exact<{
+  registerUserdata: RegisterInput;
+}>;
+
+
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserOutput', message?: string | null | undefined, user?: { __typename?: 'User', id: number, username: string } | null | undefined } };
+
 export type ListPatientsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -151,6 +167,36 @@ export type PatientRoomsQueryVariables = Exact<{ [key: string]: never; }>;
 export type PatientRoomsQuery = { __typename?: 'Query', patientRooms: Array<number> };
 
 
+export const LoginDocument = gql`
+    mutation login($loginPassword: String!, $loginUsernameOrEmail: String!) {
+  login(password: $loginPassword, usernameOrEmail: $loginUsernameOrEmail) {
+    user {
+      id
+      username
+    }
+    message
+  }
+}
+    `;
+
+export function useLoginMutation() {
+  return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
+};
+export const RegisterDocument = gql`
+    mutation register($registerUserdata: RegisterInput!) {
+  register(Userdata: $registerUserdata) {
+    user {
+      id
+      username
+    }
+    message
+  }
+}
+    `;
+
+export function useRegisterMutation() {
+  return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
 export const ListPatientsDocument = gql`
     query listPatients {
   listPatients {
