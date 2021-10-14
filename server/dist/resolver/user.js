@@ -49,6 +49,12 @@ let UserResolver = class UserResolver {
             return yield User_1.User.find({});
         });
     }
+    me({ req }) {
+        if (!req.session.userId) {
+            return null;
+        }
+        return User_1.User.findOne(req.session.userId);
+    }
     register(input) {
         return __awaiter(this, void 0, void 0, function* () {
             input.password = yield argon2_1.default.hash(input.password);
@@ -76,6 +82,7 @@ let UserResolver = class UserResolver {
                     return { message: "user does not exist" };
                 const valid = yield argon2_1.default.verify(user.password, password);
                 req.session.userId = user.id;
+                console.log(req.session.userId);
                 if (!valid) {
                     return { message: "wrong password" };
                 }
@@ -91,6 +98,19 @@ let UserResolver = class UserResolver {
             }
         });
     }
+    logout({ req, res }) {
+        return new Promise((resolve) => {
+            req.session.destroy((err) => {
+                res.clearCookie("qid");
+                if (err) {
+                    console.log(err);
+                    resolve(false);
+                    return;
+                }
+                resolve(true);
+            });
+        });
+    }
 };
 __decorate([
     (0, type_graphql_1.Query)(() => [User_1.User], { nullable: true }),
@@ -98,6 +118,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "listUsers", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => User_1.User, { nullable: true }),
+    __param(0, (0, type_graphql_1.Ctx)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], UserResolver.prototype, "me", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => UserOutput),
     __param(0, (0, type_graphql_1.Arg)("Userdata")),
@@ -114,6 +141,13 @@ __decorate([
     __metadata("design:paramtypes", [Object, String, String]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "login", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => Boolean),
+    __param(0, (0, type_graphql_1.Ctx)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], UserResolver.prototype, "logout", null);
 UserResolver = __decorate([
     (0, type_graphql_1.Resolver)(User_1.User)
 ], UserResolver);

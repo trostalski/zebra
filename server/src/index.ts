@@ -10,18 +10,13 @@ import { TaskResolver } from "./resolver/task";
 import { Patient } from "./entities/Patient";
 import { PatientResolver } from "./resolver/patient";
 import cors from "cors";
-import redis from "redis";
+import Redis from "ioredis";
 import session from "express-session";
 import connectRedis from "connect-redis";
-
-declare module "express-session" {
-  export interface SessionData {
-    userId: number;
-  }
-}
+import path from "path";
 
 const main = async () => {
-  /*   const connection = */ await createConnection({
+  const connection = await createConnection({
     type: "postgres",
     host: "localhost",
     port: 5432,
@@ -31,16 +26,18 @@ const main = async () => {
     synchronize: true,
     logging: true,
     entities: [User, Task, Patient],
+    migrations: [path.join(__dirname, "./migrations/*")],
   });
-
   // User.delete({});
   // Patient.delete({});
   // Task.delete({});
+//er  
+  await connection.runMigrations();
 
   const app = express();
 
   const RedisStore = connectRedis(session);
-  let redisClient = redis.createClient();
+  const redis = new Redis(process.env.REDIS_URL);
 
   app.use(
     cors({
@@ -52,17 +49,21 @@ const main = async () => {
   app.use(
     session({
       name: "qid",
-      store: new RedisStore({ client: redisClient, disableTouch: true }),
-      saveUninitialized: false,
-      secret: "jru209ofwopenkl",
-      resave: false,
+      store: new RedisStore({
+        client: redis,
+        disableTouch: true,
+      }),
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
         httpOnly: true,
         sameSite: "lax", // csrf
       },
+      saveUninitialized: false,
+      secret: "fje1üfpüj134pjo",
+      resave: false,
     })
   );
+
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [UserResolver, TaskResolver, PatientResolver],
@@ -73,8 +74,6 @@ const main = async () => {
   app.listen(4000, () => {
     console.log("listening on port 4000!");
   });
-
-  app.get("/", (req, res) => {});
 
   await apolloServer.start();
 

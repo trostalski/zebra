@@ -24,11 +24,12 @@ const task_1 = require("./resolver/task");
 const Patient_1 = require("./entities/Patient");
 const patient_1 = require("./resolver/patient");
 const cors_1 = __importDefault(require("cors"));
-const redis_1 = __importDefault(require("redis"));
+const ioredis_1 = __importDefault(require("ioredis"));
 const express_session_1 = __importDefault(require("express-session"));
 const connect_redis_1 = __importDefault(require("connect-redis"));
+const path_1 = __importDefault(require("path"));
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, typeorm_1.createConnection)({
+    const connection = yield (0, typeorm_1.createConnection)({
         type: "postgres",
         host: "localhost",
         port: 5432,
@@ -38,25 +39,30 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         synchronize: true,
         logging: true,
         entities: [User_1.User, Task_1.Task, Patient_1.Patient],
+        migrations: [path_1.default.join(__dirname, "./migrations/*")],
     });
+    yield connection.runMigrations();
     const app = (0, express_1.default)();
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
-    let redisClient = redis_1.default.createClient();
+    const redis = new ioredis_1.default(process.env.REDIS_URL);
     app.use((0, cors_1.default)({
         origin: ["http://localhost:3000", "https://studio.apollographql.com"],
         credentials: true,
     }));
     app.use((0, express_session_1.default)({
         name: "qid",
-        store: new RedisStore({ client: redisClient, disableTouch: true }),
-        saveUninitialized: false,
-        secret: "jru209ofwopenkl",
-        resave: false,
+        store: new RedisStore({
+            client: redis,
+            disableTouch: true,
+        }),
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
             httpOnly: true,
             sameSite: "lax",
         },
+        saveUninitialized: false,
+        secret: "fje1üfpüj134pjo",
+        resave: false,
     }));
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: yield (0, type_graphql_1.buildSchema)({
@@ -67,7 +73,6 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     app.listen(4000, () => {
         console.log("listening on port 4000!");
     });
-    app.get("/", (req, res) => { });
     yield apolloServer.start();
     apolloServer.applyMiddleware({ app, cors: false });
 });

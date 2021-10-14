@@ -11,6 +11,7 @@ import {
 import { RegisterInput } from "./utils";
 import argon2 from "argon2";
 import { MyContext } from "src/types";
+import { resourceLimits } from "worker_threads";
 
 @ObjectType()
 export class UserOutput {
@@ -27,6 +28,16 @@ export class UserResolver {
   @Query(() => [User], { nullable: true })
   async listUsers() {
     return await User.find({});
+  }
+
+  @Query(() => User, { nullable: true })
+  me(@Ctx() { req }: MyContext) {
+    // you are not logged in
+    if (!req.session.userId) {
+      return null;
+    }
+
+    return User.findOne(req.session.userId);
   }
 
   //Registration
@@ -48,7 +59,7 @@ export class UserResolver {
   //Login
   @Mutation(() => UserOutput)
   async login(
-    @Ctx() {req}: MyContext,
+    @Ctx() { req }: MyContext,
     @Arg("usernameOrEmail") usernameOrEmail: string,
     @Arg("password") password: string
   ): Promise<UserOutput> {
@@ -61,7 +72,8 @@ export class UserResolver {
       if (!user) return { message: "user does not exist" };
 
       const valid = await argon2.verify(user.password, password);
-      req.session.userId = user.id
+      req.session.userId = user.id;
+      console.log(req.session.userId);
 
       if (!valid) {
         return { message: "wrong password" };
@@ -73,5 +85,20 @@ export class UserResolver {
         return { message: "provide a password" };
       else return { message: "unknown login error" };
     }
+  }
+
+  @Mutation(() => Boolean)
+  logout(@Ctx() { req, res }: MyContext) {
+    return new Promise((resolve) => {
+      req.session.destroy((err) => {
+        res.clearCookie("qid");
+        if (err) {
+          console.log(err);
+          resolve(false);
+          return;
+        }
+        resolve(true);
+      });
+    });
   }
 }
