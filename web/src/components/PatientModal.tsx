@@ -39,7 +39,7 @@ export const PatientModal: React.FC<PatientModalProps> = (props) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       {console.log(props.patient)}
-      <ModalOverlay />
+      <ModalOverlay bg="" backdropFilter="auto"/>
       <ModalContent>
         <ModalHeader>{props.patient!.firstname} {props.patient!.lastname}</ModalHeader>
         <ModalCloseButton />

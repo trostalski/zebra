@@ -31,7 +31,7 @@ const main = async () => {
   // User.delete({});
   // Patient.delete({});
   // Task.delete({});
-//er  
+
   await connection.runMigrations();
 
   const app = express();

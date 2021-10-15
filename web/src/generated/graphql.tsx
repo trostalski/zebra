@@ -23,6 +23,7 @@ export type Mutation = {
   deletePatient: PatientOutput;
   deleteTask: TaskOutput;
   login: UserOutput;
+  logout: Scalars['Boolean'];
   register: UserOutput;
 };
 
@@ -88,6 +89,7 @@ export type Query = {
   listPatients: Array<Patient>;
   listTasks?: Maybe<Array<Task>>;
   listUsers?: Maybe<Array<User>>;
+  me?: Maybe<User>;
   patientRooms: Array<Scalars['Int']>;
 };
 
@@ -149,6 +151,11 @@ export type LoginMutationVariables = Exact<{
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserOutput', message?: string | null | undefined, user?: { __typename?: 'User', id: number, username: string } | null | undefined } };
 
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
+
 export type RegisterMutationVariables = Exact<{
   registerUserdata: RegisterInput;
 }>;
@@ -160,6 +167,11 @@ export type ListPatientsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ListPatientsQuery = { __typename?: 'Query', listPatients: Array<{ __typename?: 'Patient', id: number, firstname: string, lastname: string, room: number, age: number, diagnosis: string }> };
+
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, username: string } | null | undefined };
 
 export type PatientRoomsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -181,6 +193,15 @@ export const LoginDocument = gql`
 
 export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
+};
+export const LogoutDocument = gql`
+    mutation Logout {
+  logout
+}
+    `;
+
+export function useLogoutMutation() {
+  return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
 };
 export const RegisterDocument = gql`
     mutation register($registerUserdata: RegisterInput!) {
@@ -212,6 +233,18 @@ export const ListPatientsDocument = gql`
 
 export function useListPatientsQuery(options: Omit<Urql.UseQueryArgs<ListPatientsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<ListPatientsQuery>({ query: ListPatientsDocument, ...options });
+};
+export const MeDocument = gql`
+    query Me {
+  me {
+    id
+    username
+  }
+}
+    `;
+
+export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
 };
 export const PatientRoomsDocument = gql`
     query patientRooms {

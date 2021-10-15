@@ -3,10 +3,16 @@ import React from "react";
 import { AiFillNotification, AiFillSetting } from "react-icons/ai";
 import { BsFillFilePersonFill } from "react-icons/bs";
 import { FaProcedures } from "react-icons/fa";
+import { useLogoutMutation, useMeQuery } from "../generated/graphql";
+import { useRouter } from "next/router";
+import NextLink from "next/link";
 
 interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
+  const [, logout] = useLogoutMutation();
+  const [{ data: me }] = useMeQuery();
+  const router = useRouter();
   return (
     <Flex
       position="fixed"
@@ -29,13 +35,17 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
           flexDirection="column"
           justifyContent="space-between"
         >
-          <Flex flexDirection="row" alignItems="center">
-            <Icon as={BsFillFilePersonFill} fontSize="2xl" mr={6} />
-            <Link>Patienten</Link>
-          </Flex>
+          <NextLink href="/">
+            <Flex flexDirection="row" alignItems="center">
+              <Icon as={BsFillFilePersonFill} fontSize="2xl" mr={6} />
+              <Link>Patienten</Link>
+            </Flex>
+          </NextLink>
           <Flex flexDirection="row" alignItems="center">
             <Icon as={FaProcedures} fontSize="2xl" mr={6} />
-            <Link>Untersuchungen</Link>
+            <NextLink href="/tasks">
+              <Link>Untersuchungen</Link>
+            </NextLink>
           </Flex>
           <Flex flexDirection="row" alignItems="center">
             <Icon as={AiFillNotification} fontSize="2xl" mr={6} />
@@ -46,12 +56,20 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
             <Link>Einstellungen</Link>
           </Flex>
         </Flex>
-        <Flex alignSelf="center" position="absolute" bottom={10}  p={2}>
+        <Flex alignSelf="center" position="absolute" bottom={10} p={2}>
           <Box textAlign="center" w={20} h={5}>
-            <Link>User</Link>
+            <Link>{me?.me?.username}</Link>
           </Box>
           <Box textAlign="center" w={20} h={5}>
-            <Link>Logout</Link>
+            <NextLink href="/login">
+              <Link
+                onClick={() => {
+                  logout();
+                }}
+              >
+                Logout
+              </Link>
+            </NextLink>
           </Box>
         </Flex>
       </Flex>

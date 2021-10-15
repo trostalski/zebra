@@ -1,13 +1,14 @@
 import React from "react";
 import { Form, Formik } from "formik";
 import { InputField } from "../components/InputField";
-import { useLoginMutation } from "../generated/graphql";
+import { useLoginMutation, useMeQuery } from "../generated/graphql";
 import { Button, Flex } from "@chakra-ui/react";
 
 interface LoginProps {}
 
 const Login: React.FC<LoginProps> = () => {
   const [, login] = useLoginMutation();
+  const [{ data: me }] = useMeQuery();
   return (
     <Flex justifyContent="center">
       <Formik
