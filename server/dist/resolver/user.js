@@ -27,7 +27,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserResolver = exports.UserOutput = void 0;
 const User_1 = require("../entities/User");
 const type_graphql_1 = require("type-graphql");
-const utils_1 = require("./utils");
+const resolverInputs_1 = require("./utils/resolverInputs");
 const argon2_1 = __importDefault(require("argon2"));
 let UserOutput = class UserOutput {
 };
@@ -81,6 +81,7 @@ let UserResolver = class UserResolver {
                 if (!user)
                     return { message: "user does not exist" };
                 const valid = yield argon2_1.default.verify(user.password, password);
+                console.log(user.id);
                 req.session.userId = user.id;
                 console.log(req.session.userId);
                 if (!valid) {
@@ -129,7 +130,7 @@ __decorate([
     (0, type_graphql_1.Mutation)(() => UserOutput),
     __param(0, (0, type_graphql_1.Arg)("Userdata")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [utils_1.RegisterInput]),
+    __metadata("design:paramtypes", [resolverInputs_1.RegisterInput]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "register", null);
 __decorate([

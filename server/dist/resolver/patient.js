@@ -24,7 +24,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PatientResolver = exports.PatientOutput = void 0;
 const Patient_1 = require("../entities/Patient");
 const type_graphql_1 = require("type-graphql");
-const utils_1 = require("./utils");
+const resolverInputs_1 = require("./utils/resolverInputs");
 const typeorm_1 = require("typeorm");
 let PatientOutput = class PatientOutput {
 };
@@ -88,7 +88,7 @@ __decorate([
     (0, type_graphql_1.Mutation)(() => PatientOutput),
     __param(0, (0, type_graphql_1.Arg)("Patientdata")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [utils_1.PatientInput]),
+    __metadata("design:paramtypes", [resolverInputs_1.PatientInput]),
     __metadata("design:returntype", Promise)
 ], PatientResolver.prototype, "createPatient", null);
 __decorate([

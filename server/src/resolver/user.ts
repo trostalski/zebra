@@ -8,10 +8,9 @@ import {
   Query,
   Resolver,
 } from "type-graphql";
-import { RegisterInput } from "./utils";
+import { RegisterInput } from "./utils/resolverInputs";
 import argon2 from "argon2";
 import { MyContext } from "src/types";
-import { resourceLimits } from "worker_threads";
 
 @ObjectType()
 export class UserOutput {
@@ -72,6 +71,7 @@ export class UserResolver {
       if (!user) return { message: "user does not exist" };
 
       const valid = await argon2.verify(user.password, password);
+      console.log(user.id);
       req.session.userId = user.id;
       console.log(req.session.userId);
 

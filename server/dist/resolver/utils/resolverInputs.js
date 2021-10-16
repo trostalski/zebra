@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TaskInput = exports.PatientInput = exports.RegisterInput = void 0;
+exports.TaskInput = exports.PatientInput = exports.AnkleBrachialIndexInput = exports.RegisterInput = void 0;
 const type_graphql_1 = require("type-graphql");
 let RegisterInput = class RegisterInput {
 };
@@ -45,6 +45,32 @@ RegisterInput = __decorate([
     (0, type_graphql_1.InputType)()
 ], RegisterInput);
 exports.RegisterInput = RegisterInput;
+let AnkleBrachialIndexInput = class AnkleBrachialIndexInput {
+};
+__decorate([
+    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
+    __metadata("design:type", Number)
+], AnkleBrachialIndexInput.prototype, "rightArm", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
+    __metadata("design:type", Number)
+], AnkleBrachialIndexInput.prototype, "leftArm", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
+    __metadata("design:type", Number)
+], AnkleBrachialIndexInput.prototype, "rightLeg", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
+    __metadata("design:type", Number)
+], AnkleBrachialIndexInput.prototype, "leftLeg", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
+    __metadata("design:type", Number)
+], AnkleBrachialIndexInput.prototype, "patientId", void 0);
+AnkleBrachialIndexInput = __decorate([
+    (0, type_graphql_1.InputType)()
+], AnkleBrachialIndexInput);
+exports.AnkleBrachialIndexInput = AnkleBrachialIndexInput;
 let PatientInput = class PatientInput {
 };
 __decorate([
@@ -85,4 +111,4 @@ TaskInput = __decorate([
     (0, type_graphql_1.InputType)()
 ], TaskInput);
 exports.TaskInput = TaskInput;
-//# sourceMappingURL=utils.js.map
+//# sourceMappingURL=resolverInputs.js.map

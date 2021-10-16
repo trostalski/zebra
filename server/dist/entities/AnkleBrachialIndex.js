@@ -9,60 +9,45 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Task = void 0;
+exports.AnkleBrachialIndex = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
-const Patient_1 = require("./Patient");
-const User_1 = require("./User");
-let Task = class Task extends typeorm_1.BaseEntity {
+const Task_1 = require("./Task");
+let AnkleBrachialIndex = class AnkleBrachialIndex extends Task_1.Task {
 };
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Task.prototype, "id", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(),
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Task.prototype, "name", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(),
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Task.prototype, "explanation", void 0);
+], AnkleBrachialIndex.prototype, "rightArm", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Task.prototype, "creatorId", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(),
-    (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.tasks),
-    __metadata("design:type", User_1.User)
-], Task.prototype, "creator", void 0);
+], AnkleBrachialIndex.prototype, "leftArm", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Task.prototype, "patientId", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => Patient_1.Patient, (patient) => patient.tasks, { onDelete: "CASCADE" }),
-    __metadata("design:type", Patient_1.Patient)
-], Task.prototype, "patient", void 0);
+], AnkleBrachialIndex.prototype, "rightLeg", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], Task.prototype, "createdAt", void 0);
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], AnkleBrachialIndex.prototype, "leftLeg", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.UpdateDateColumn)(),
-    __metadata("design:type", Date)
-], Task.prototype, "updatedAt", void 0);
-Task = __decorate([
+    (0, typeorm_1.Column)({ type: "real", nullable: true }),
+    __metadata("design:type", Number)
+], AnkleBrachialIndex.prototype, "leftResult", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
+    (0, typeorm_1.Column)({ type: "real", nullable: true }),
+    __metadata("design:type", Number)
+], AnkleBrachialIndex.prototype, "rightResult", void 0);
+AnkleBrachialIndex = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()
-], Task);
-exports.Task = Task;
-//# sourceMappingURL=Task.js.map
+], AnkleBrachialIndex);
+exports.AnkleBrachialIndex = AnkleBrachialIndex;
+//# sourceMappingURL=AnkleBrachialIndex.js.map

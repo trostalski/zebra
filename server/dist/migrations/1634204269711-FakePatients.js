@@ -58,7 +58,7 @@ insert into Patient (firstname, lastname, diagnosis, age, room, "createdAt") val
 `);
         });
     }
-    down(queryRunner) {
+    down(_) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
 }

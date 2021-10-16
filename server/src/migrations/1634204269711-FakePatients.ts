@@ -47,5 +47,5 @@ insert into Patient (firstname, lastname, diagnosis, age, room, "createdAt") val
 `);
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {}
+  public async down(_: QueryRunner): Promise<void> {}
 }

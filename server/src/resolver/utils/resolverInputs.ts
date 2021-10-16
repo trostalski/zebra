@@ -1,7 +1,8 @@
-import { User } from "../entities/User";
+import { User } from "../../entities/User";
 import { Field, InputType, Int } from "type-graphql";
 import { Task } from "src/entities/Task";
 import { Patient } from "src/entities/Patient";
+import { AnkleBrachialIndex } from "src/entities/AnkleBrachialIndex";
 
 @InputType()
 export class RegisterInput implements Partial<User> {
@@ -25,6 +26,24 @@ export class RegisterInput implements Partial<User> {
 
   @Field(() => String)
   position: string;
+}
+
+@InputType()
+export class AnkleBrachialIndexInput implements Partial<AnkleBrachialIndex> {
+  @Field(() => Int)
+  rightArm: number;
+
+  @Field(() => Int)
+  leftArm: number;
+
+  @Field(() => Int)
+  rightLeg: number;
+
+  @Field(() => Int)
+  leftLeg: number;
+
+  @Field(() => Int)
+  patientId: number;
 }
 
 @InputType()

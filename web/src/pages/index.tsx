@@ -29,6 +29,7 @@ const Index = () => {
           <div>loading...</div>
         ) : (
           <Flex
+            ml="5vw"
             left="20%"
             position="absolute"
             flexDirection="column"

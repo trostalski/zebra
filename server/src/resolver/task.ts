@@ -7,7 +7,7 @@ import {
   Query,
   Resolver,
 } from "type-graphql";
-import { TaskInput } from "./utils";
+import { TaskInput } from "./utils/resolverInputs";
 
 
 

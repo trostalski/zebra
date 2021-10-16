@@ -8,7 +8,7 @@ import {
   Query,
   Resolver,
 } from "type-graphql";
-import { PatientInput } from "./utils";
+import { PatientInput } from "./utils/resolverInputs";
 import {  getConnection } from "typeorm";
 
 @ObjectType()

@@ -21,64 +21,41 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TaskResolver = void 0;
+exports.AnkleBrachialIndexResolver = void 0;
+const AnkleBrachialIndex_1 = require("../entities/AnkleBrachialIndex");
 const Task_1 = require("../entities/Task");
+const User_1 = require("../entities/User");
 const type_graphql_1 = require("type-graphql");
 const resolverInputs_1 = require("./utils/resolverInputs");
-let TaskOutput = class TaskOutput {
-};
-__decorate([
-    (0, type_graphql_1.Field)(() => String, { nullable: true }),
-    __metadata("design:type", String)
-], TaskOutput.prototype, "message", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => Task_1.Task, { nullable: true }),
-    __metadata("design:type", Task_1.Task)
-], TaskOutput.prototype, "task", void 0);
-TaskOutput = __decorate([
-    (0, type_graphql_1.ObjectType)()
-], TaskOutput);
-let TaskResolver = class TaskResolver {
-    listTasks() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield Task_1.Task.find({});
-        });
+let AnkleBrachialIndexResolver = class AnkleBrachialIndexResolver {
+    creator(task) {
+        return User_1.User.findOne(task.creatorId);
     }
-    addTask(input) {
+    createAbi(abiInput, { req }) {
         return __awaiter(this, void 0, void 0, function* () {
-            const task = yield Task_1.Task.create(input).save();
-            return { task };
-        });
-    }
-    deleteTask(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            Task_1.Task.delete(id);
-            return { message: "Task deleted" };
+            console.log("current ID", req.session.userId);
+            const result = yield AnkleBrachialIndex_1.AnkleBrachialIndex.create(Object.assign({ name: "Ankle Brachial Index (ABI)", explanation: "Quotient aus Blutdruck am Unterschenkel und Blutdruck am Oberarm", creatorId: req.session.userId, leftResult: Math.round(((abiInput.leftLeg / abiInput.leftArm) * 10) / 10), rightResult: Math.round((abiInput.rightLeg / abiInput.rightArm) * 10) / 10 }, abiInput)).save();
+            return result;
         });
     }
 };
 __decorate([
-    (0, type_graphql_1.Query)(() => [Task_1.Task], { nullable: true }),
+    (0, type_graphql_1.FieldResolver)(() => User_1.User),
+    __param(0, (0, type_graphql_1.Root)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], TaskResolver.prototype, "listTasks", null);
+    __metadata("design:paramtypes", [Task_1.Task]),
+    __metadata("design:returntype", void 0)
+], AnkleBrachialIndexResolver.prototype, "creator", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => TaskOutput),
-    __param(0, (0, type_graphql_1.Arg)("taskData")),
+    (0, type_graphql_1.Mutation)(() => AnkleBrachialIndex_1.AnkleBrachialIndex),
+    __param(0, (0, type_graphql_1.Arg)("AbiInput")),
+    __param(1, (0, type_graphql_1.Ctx)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [resolverInputs_1.TaskInput]),
+    __metadata("design:paramtypes", [resolverInputs_1.AnkleBrachialIndexInput, Object]),
     __metadata("design:returntype", Promise)
-], TaskResolver.prototype, "addTask", null);
-__decorate([
-    (0, type_graphql_1.Mutation)(() => TaskOutput),
-    __param(0, (0, type_graphql_1.Arg)("taskId")),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", Promise)
-], TaskResolver.prototype, "deleteTask", null);
-TaskResolver = __decorate([
-    (0, type_graphql_1.Resolver)(Task_1.Task)
-], TaskResolver);
-exports.TaskResolver = TaskResolver;
-//# sourceMappingURL=task.js.map
+], AnkleBrachialIndexResolver.prototype, "createAbi", null);
+AnkleBrachialIndexResolver = __decorate([
+    (0, type_graphql_1.Resolver)(AnkleBrachialIndex_1.AnkleBrachialIndex)
+], AnkleBrachialIndexResolver);
+exports.AnkleBrachialIndexResolver = AnkleBrachialIndexResolver;
+//# sourceMappingURL=anklebrachialindex.js.map
