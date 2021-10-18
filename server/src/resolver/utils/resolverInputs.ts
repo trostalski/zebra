@@ -1,6 +1,6 @@
 import { User } from "../../entities/User";
 import { Field, InputType, Int } from "type-graphql";
-import { Task } from "src/entities/Task";
+import { PatientTask } from "src/entities/PatientTask";
 import { Patient } from "src/entities/Patient";
 import { AnkleBrachialIndex } from "src/entities/AnkleBrachialIndex";
 
@@ -65,7 +65,7 @@ export class PatientInput implements Partial<Patient> {
 }
 
 @InputType()
-export class TaskInput implements Partial<Task> {
+export class TaskInput implements Partial<PatientTask> {
   @Field(() => String)
   name: string;
 

@@ -8,7 +8,7 @@ import {
   BaseEntity,
   OneToMany,
 } from "typeorm";
-import { Task } from "./Task";
+import { PatientTask } from "./PatientTask";
 
 @ObjectType()
 @Entity()
@@ -44,8 +44,8 @@ export class User extends BaseEntity {
   @Column()
   position!: string;
 
-  @OneToMany(() => Task, (task) => task.creator)
-  tasks: Task[];
+  @OneToMany(() => PatientTask, (task) => task.creator)
+  tasks: PatientTask[];
 
   @Field()
   @CreateDateColumn()

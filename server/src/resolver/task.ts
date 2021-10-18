@@ -29,7 +29,7 @@ export class TaskResolver {
   }
 
   @Mutation(() => TaskOutput)
-  async addTask(@Arg("taskData") input: TaskInput): Promise<TaskOutput> {
+  async createTask(@Arg("taskData") input: TaskInput): Promise<TaskOutput> {
     const task = await Task.create(input).save();
     return { task };
   }

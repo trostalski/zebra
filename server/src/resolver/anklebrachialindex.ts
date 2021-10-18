@@ -1,5 +1,5 @@
 import { AnkleBrachialIndex } from "../entities/AnkleBrachialIndex";
-import { Task } from "../entities/Task";
+import { PatientTask } from "../entities/PatientTask";
 import { User } from "../entities/User";
 import { MyContext } from "src/types";
 import {
@@ -7,16 +7,45 @@ import {
   Ctx,
   FieldResolver,
   Mutation,
+  Query,
   Resolver,
   Root,
 } from "type-graphql";
 import { AnkleBrachialIndexInput } from "./utils/resolverInputs";
+import { Patient } from "../entities/Patient";
+import { Task } from "../entities/Task";
 
 @Resolver(AnkleBrachialIndex)
 export class AnkleBrachialIndexResolver {
   @FieldResolver(() => User)
-  creator(@Root() task: Task) {
+  creator(@Root() task: PatientTask) {
     return User.findOne(task.creatorId);
+  }
+
+  @FieldResolver(() => Patient)
+  forPatient(@Root() task: PatientTask) {
+    return Patient.findOne(task.patientId);
+  }
+
+  @Query(() => [AnkleBrachialIndex])
+  async listAnkleBrachialIndex(): Promise<AnkleBrachialIndex[]> {
+    return await AnkleBrachialIndex.find({});
+  }
+
+  @Query(() => Task)
+  async ankleBrachialIndexParentTask() {
+    return Task.findOne({ where: { name: "Ankle Brachial Index" } });
+  }
+
+  @Mutation(() => Boolean)
+  async deleteAnkleBrachialIndex(@Arg("input") inputId: number) {
+    try {
+      await AnkleBrachialIndex.delete(inputId);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
   }
 
   @Mutation(() => AnkleBrachialIndex)

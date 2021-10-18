@@ -1,31 +1,31 @@
 import { Field, ObjectType } from "type-graphql";
 import { Entity, Column } from "typeorm";
-import { Task } from "./Task";
+import { PatientTask } from "./PatientTask";
 
 @ObjectType()
 @Entity()
-export class AnkleBrachialIndex extends Task {
+export class AnkleBrachialIndex extends PatientTask {
   @Field()
   @Column()
-  rightArm: number;
-
-  @Field()
-  @Column()
-  leftArm: number;
+  rightArm?: number;
 
   @Field()
   @Column()
-  rightLeg: number;
+  leftArm?: number;
 
   @Field()
   @Column()
-  leftLeg: number;
+  rightLeg?: number;
 
   @Field()
-  @Column({type: "real", nullable: true})
-  leftResult: number;
+  @Column()
+  leftLeg?: number;
 
   @Field()
-  @Column({type: "real", nullable: true})
-  rightResult: number;
+  @Column({ type: "real", nullable: true })
+  leftResult?: number;
+
+  @Field()
+  @Column({ type: "real", nullable: true })
+  rightResult?: number;
 }

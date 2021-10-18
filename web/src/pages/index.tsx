@@ -1,7 +1,7 @@
 import { Box, Button, Flex, useDisclosure } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { NavBar } from "../components/NavBar";
-import { PatientButton } from "../components/PatientButton";
+import { PatientButton } from "../components/PatientsOrderedByRoom";
 import {
   useListPatientsQuery,
   usePatientRoomsQuery,

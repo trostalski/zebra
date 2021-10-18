@@ -5,23 +5,33 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  BaseEntity,
+  ManyToOne,
 } from "typeorm";
+import { Task } from "./Task";
+import { Patient } from "./Patient";
+import { User } from "./User";
 
 @ObjectType()
 @Entity()
-export class Task extends BaseEntity {
+export class PatientTask extends Task {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Field()
   @Column()
-  name!: string;
+  creatorId?: number;
+
+  @Field()
+  @ManyToOne(() => User, (user) => user.tasks)
+  creator: User;
 
   @Field()
   @Column()
-  explanation?: string;
+  patientId: number;
+
+  @ManyToOne(() => Patient, (patient) => patient.tasks, { onDelete: "CASCADE" })
+  forPatient: Patient;
 
   @Field()
   @CreateDateColumn()

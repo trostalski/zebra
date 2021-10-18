@@ -44,7 +44,7 @@ let TaskResolver = class TaskResolver {
             return yield Task_1.Task.find({});
         });
     }
-    addTask(input) {
+    createTask(input) {
         return __awaiter(this, void 0, void 0, function* () {
             const task = yield Task_1.Task.create(input).save();
             return { task };
@@ -69,7 +69,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [resolverInputs_1.TaskInput]),
     __metadata("design:returntype", Promise)
-], TaskResolver.prototype, "addTask", null);
+], TaskResolver.prototype, "createTask", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => TaskOutput),
     __param(0, (0, type_graphql_1.Arg)("taskId")),

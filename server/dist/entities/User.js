@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
-const Task_1 = require("./Task");
+const PatientTask_1 = require("./PatientTask");
 let User = class User extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -55,7 +55,7 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "position", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => Task_1.Task, (task) => task.creator),
+    (0, typeorm_1.OneToMany)(() => PatientTask_1.PatientTask, (task) => task.creator),
     __metadata("design:type", Array)
 ], User.prototype, "tasks", void 0);
 __decorate([

@@ -12,6 +12,7 @@ import { createConnection } from "typeorm";
 import { __prod__ } from "./constants";
 import { AnkleBrachialIndex } from "./entities/AnkleBrachialIndex";
 import { Patient } from "./entities/Patient";
+import { PatientTask } from "./entities/PatientTask";
 import { Task } from "./entities/Task";
 import { User } from "./entities/User";
 import { AnkleBrachialIndexResolver } from "./resolver/anklebrachialindex";
@@ -29,7 +30,7 @@ const main = async () => {
     database: "zebra",
     synchronize: true,
     logging: true,
-    entities: [User, Task, AnkleBrachialIndex, Patient],
+    entities: [User, PatientTask, AnkleBrachialIndex, Patient, Task],
     migrations: [path.join(__dirname, "./migrations/*")],
   });
   // User.delete({});

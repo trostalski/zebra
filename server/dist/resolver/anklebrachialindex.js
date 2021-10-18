@@ -23,13 +23,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnkleBrachialIndexResolver = void 0;
 const AnkleBrachialIndex_1 = require("../entities/AnkleBrachialIndex");
-const Task_1 = require("../entities/Task");
+const PatientTask_1 = require("../entities/PatientTask");
 const User_1 = require("../entities/User");
 const type_graphql_1 = require("type-graphql");
 const resolverInputs_1 = require("./utils/resolverInputs");
+const Patient_1 = require("../entities/Patient");
+const Task_1 = require("../entities/Task");
 let AnkleBrachialIndexResolver = class AnkleBrachialIndexResolver {
     creator(task) {
         return User_1.User.findOne(task.creatorId);
+    }
+    forPatient(task) {
+        return Patient_1.Patient.findOne(task.patientId);
+    }
+    listAnkleBrachialIndex() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield AnkleBrachialIndex_1.AnkleBrachialIndex.find({});
+        });
+    }
+    ankleBrachialIndexParentTask() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return Task_1.Task.findOne({ where: { name: "Ankle Brachial Index" } });
+        });
+    }
+    deleteAnkleBrachialIndex(inputId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield AnkleBrachialIndex_1.AnkleBrachialIndex.delete(inputId);
+                return true;
+            }
+            catch (error) {
+                console.log(error);
+                return null;
+            }
+        });
     }
     createAbi(abiInput, { req }) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -43,9 +70,35 @@ __decorate([
     (0, type_graphql_1.FieldResolver)(() => User_1.User),
     __param(0, (0, type_graphql_1.Root)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Task_1.Task]),
+    __metadata("design:paramtypes", [PatientTask_1.PatientTask]),
     __metadata("design:returntype", void 0)
 ], AnkleBrachialIndexResolver.prototype, "creator", null);
+__decorate([
+    (0, type_graphql_1.FieldResolver)(() => Patient_1.Patient),
+    __param(0, (0, type_graphql_1.Root)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [PatientTask_1.PatientTask]),
+    __metadata("design:returntype", void 0)
+], AnkleBrachialIndexResolver.prototype, "forPatient", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => [AnkleBrachialIndex_1.AnkleBrachialIndex]),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AnkleBrachialIndexResolver.prototype, "listAnkleBrachialIndex", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => Task_1.Task),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AnkleBrachialIndexResolver.prototype, "ankleBrachialIndexParentTask", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => Boolean),
+    __param(0, (0, type_graphql_1.Arg)("input")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], AnkleBrachialIndexResolver.prototype, "deleteAnkleBrachialIndex", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => AnkleBrachialIndex_1.AnkleBrachialIndex),
     __param(0, (0, type_graphql_1.Arg)("AbiInput")),

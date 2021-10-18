@@ -9,45 +9,39 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AnkleBrachialIndex = void 0;
+exports.AllTasks = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
-const PatientTask_1 = require("./PatientTask");
-let AnkleBrachialIndex = class AnkleBrachialIndex extends PatientTask_1.PatientTask {
+let AllTasks = class AllTasks extends typeorm_1.BaseEntity {
 };
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], AnkleBrachialIndex.prototype, "rightArm", void 0);
+], AllTasks.prototype, "id", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], AnkleBrachialIndex.prototype, "leftArm", void 0);
+    __metadata("design:type", String)
+], AllTasks.prototype, "name", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], AnkleBrachialIndex.prototype, "rightLeg", void 0);
+    __metadata("design:type", String)
+], AllTasks.prototype, "explanation", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], AnkleBrachialIndex.prototype, "leftLeg", void 0);
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], AllTasks.prototype, "createdAt", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.Column)({ type: "real", nullable: true }),
-    __metadata("design:type", Number)
-], AnkleBrachialIndex.prototype, "leftResult", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(),
-    (0, typeorm_1.Column)({ type: "real", nullable: true }),
-    __metadata("design:type", Number)
-], AnkleBrachialIndex.prototype, "rightResult", void 0);
-AnkleBrachialIndex = __decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], AllTasks.prototype, "updatedAt", void 0);
+AllTasks = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()
-], AnkleBrachialIndex);
-exports.AnkleBrachialIndex = AnkleBrachialIndex;
-//# sourceMappingURL=AnkleBrachialIndex.js.map
+], AllTasks);
+exports.AllTasks = AllTasks;
+//# sourceMappingURL=AllTasks.js.map

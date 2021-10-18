@@ -26,6 +26,7 @@ const typeorm_1 = require("typeorm");
 const constants_1 = require("./constants");
 const AnkleBrachialIndex_1 = require("./entities/AnkleBrachialIndex");
 const Patient_1 = require("./entities/Patient");
+const PatientTask_1 = require("./entities/PatientTask");
 const Task_1 = require("./entities/Task");
 const User_1 = require("./entities/User");
 const anklebrachialindex_1 = require("./resolver/anklebrachialindex");
@@ -42,7 +43,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         database: "zebra",
         synchronize: true,
         logging: true,
-        entities: [User_1.User, Task_1.Task, AnkleBrachialIndex_1.AnkleBrachialIndex, Patient_1.Patient],
+        entities: [User_1.User, PatientTask_1.PatientTask, AnkleBrachialIndex_1.AnkleBrachialIndex, Patient_1.Patient, Task_1.Task],
         migrations: [path_1.default.join(__dirname, "./migrations/*")],
     });
     const app = (0, express_1.default)();
