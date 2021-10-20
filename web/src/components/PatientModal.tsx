@@ -27,6 +27,7 @@ type PatientModalProps = {
 };
 
 export const PatientModal: React.FC<PatientModalProps> = (props) => {
+  console.log("Error detection:   ")
   const { isOpen, onClose } = useDisclosure(props);
 
   return (
