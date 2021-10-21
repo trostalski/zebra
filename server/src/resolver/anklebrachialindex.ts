@@ -14,6 +14,7 @@ import {
 import { AnkleBrachialIndexInput } from "./utils/resolverInputs";
 import { Patient } from "../entities/Patient";
 import { Task } from "../entities/Task";
+import createTask from "./utils/createTask";
 
 @Resolver(AnkleBrachialIndex)
 export class AnkleBrachialIndexResolver {
@@ -49,11 +50,14 @@ export class AnkleBrachialIndexResolver {
   }
 
   @Mutation(() => AnkleBrachialIndex)
-  async createAbi(
+  async createAnkleBrachialIndex(
     @Arg("AbiInput") abiInput: AnkleBrachialIndexInput,
     @Ctx() { req }: MyContext
   ): Promise<AnkleBrachialIndex> {
-    console.log("current ID", req.session.userId);
+    createTask(
+      "Ankle Brachial Index (ABI)",
+      "Quotient aus Blutdruck am Unterschenkel und Blutdruck am Oberarm"
+    );
     const result = await AnkleBrachialIndex.create({
       name: "Ankle Brachial Index (ABI)",
       explanation:

@@ -27,7 +27,7 @@ const main = async () => {
     port: 5432,
     username: "postgres",
     password: "postgres",
-    database: "zebra",
+    database: "postgres",
     synchronize: true,
     logging: true,
     entities: [User, PatientTask, AnkleBrachialIndex, Patient, Task],

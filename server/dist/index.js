@@ -40,7 +40,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         port: 5432,
         username: "postgres",
         password: "postgres",
-        database: "zebra",
+        database: "postgres",
         synchronize: true,
         logging: true,
         entities: [User_1.User, PatientTask_1.PatientTask, AnkleBrachialIndex_1.AnkleBrachialIndex, Patient_1.Patient, Task_1.Task],

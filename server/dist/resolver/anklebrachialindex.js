@@ -20,6 +20,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnkleBrachialIndexResolver = void 0;
 const AnkleBrachialIndex_1 = require("../entities/AnkleBrachialIndex");
@@ -29,6 +32,7 @@ const type_graphql_1 = require("type-graphql");
 const resolverInputs_1 = require("./utils/resolverInputs");
 const Patient_1 = require("../entities/Patient");
 const Task_1 = require("../entities/Task");
+const createTask_1 = __importDefault(require("./utils/createTask"));
 let AnkleBrachialIndexResolver = class AnkleBrachialIndexResolver {
     creator(task) {
         return User_1.User.findOne(task.creatorId);
@@ -58,9 +62,9 @@ let AnkleBrachialIndexResolver = class AnkleBrachialIndexResolver {
             }
         });
     }
-    createAbi(abiInput, { req }) {
+    createAnkleBrachialIndex(abiInput, { req }) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("current ID", req.session.userId);
+            (0, createTask_1.default)("Ankle Brachial Index (ABI)", "Quotient aus Blutdruck am Unterschenkel und Blutdruck am Oberarm");
             const result = yield AnkleBrachialIndex_1.AnkleBrachialIndex.create(Object.assign({ name: "Ankle Brachial Index (ABI)", explanation: "Quotient aus Blutdruck am Unterschenkel und Blutdruck am Oberarm", creatorId: req.session.userId, leftResult: Math.round(((abiInput.leftLeg / abiInput.leftArm) * 10) / 10), rightResult: Math.round((abiInput.rightLeg / abiInput.rightArm) * 10) / 10 }, abiInput)).save();
             return result;
         });
@@ -106,7 +110,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [resolverInputs_1.AnkleBrachialIndexInput, Object]),
     __metadata("design:returntype", Promise)
-], AnkleBrachialIndexResolver.prototype, "createAbi", null);
+], AnkleBrachialIndexResolver.prototype, "createAnkleBrachialIndex", null);
 AnkleBrachialIndexResolver = __decorate([
     (0, type_graphql_1.Resolver)(AnkleBrachialIndex_1.AnkleBrachialIndex)
 ], AnkleBrachialIndexResolver);
