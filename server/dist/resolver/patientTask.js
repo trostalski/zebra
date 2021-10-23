@@ -21,64 +21,53 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TaskResolver = void 0;
+exports.PatientTaskResolver = void 0;
 const type_graphql_1 = require("type-graphql");
-const Task_1 = require("../entities/Task");
-const resolverInputs_1 = require("./utils/resolverInputs");
-let TaskOutput = class TaskOutput {
+const PatientTask_1 = require("../entities/PatientTask");
+let PatientTaskOutput = class PatientTaskOutput {
 };
 __decorate([
     (0, type_graphql_1.Field)(() => String, { nullable: true }),
     __metadata("design:type", String)
-], TaskOutput.prototype, "message", void 0);
+], PatientTaskOutput.prototype, "message", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => Task_1.Task, { nullable: true }),
-    __metadata("design:type", Task_1.Task)
-], TaskOutput.prototype, "task", void 0);
-TaskOutput = __decorate([
+    (0, type_graphql_1.Field)(() => PatientTask_1.PatientTask, { nullable: true }),
+    __metadata("design:type", PatientTask_1.PatientTask)
+], PatientTaskOutput.prototype, "task", void 0);
+PatientTaskOutput = __decorate([
     (0, type_graphql_1.ObjectType)()
-], TaskOutput);
-let TaskResolver = class TaskResolver {
-    listTasks() {
+], PatientTaskOutput);
+let PatientTaskResolver = class PatientTaskResolver {
+    listPatientTasks() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield Task_1.Task.find({});
+            const result = yield PatientTask_1.PatientTask.find({
+                relations: ["creatorUser", "forPatient", "parentTask"],
+            });
+            return result;
         });
     }
-    createTask(input) {
+    deletePatientTask(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const task = yield Task_1.Task.create(input).save();
-            return { task };
-        });
-    }
-    deleteTask(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            Task_1.Task.delete(id);
+            PatientTask_1.PatientTask.delete(id);
             return { message: "Task deleted" };
         });
     }
 };
 __decorate([
-    (0, type_graphql_1.Query)(() => [Task_1.Task], { nullable: true }),
+    (0, type_graphql_1.Query)(() => [PatientTask_1.PatientTask], { nullable: true }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
-], TaskResolver.prototype, "listTasks", null);
+], PatientTaskResolver.prototype, "listPatientTasks", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => TaskOutput),
-    __param(0, (0, type_graphql_1.Arg)("taskData")),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [resolverInputs_1.TaskInput]),
-    __metadata("design:returntype", Promise)
-], TaskResolver.prototype, "createTask", null);
-__decorate([
-    (0, type_graphql_1.Mutation)(() => TaskOutput),
-    __param(0, (0, type_graphql_1.Arg)("taskId")),
+    (0, type_graphql_1.Mutation)(() => PatientTaskOutput),
+    __param(0, (0, type_graphql_1.Arg)("PatientTaskId")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
-], TaskResolver.prototype, "deleteTask", null);
-TaskResolver = __decorate([
-    (0, type_graphql_1.Resolver)(Task_1.Task)
-], TaskResolver);
-exports.TaskResolver = TaskResolver;
-//# sourceMappingURL=task.js.map
+], PatientTaskResolver.prototype, "deletePatientTask", null);
+PatientTaskResolver = __decorate([
+    (0, type_graphql_1.Resolver)(PatientTask_1.PatientTask)
+], PatientTaskResolver);
+exports.PatientTaskResolver = PatientTaskResolver;
+//# sourceMappingURL=patientTask.js.map

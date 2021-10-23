@@ -31,6 +31,7 @@ const Task_1 = require("./entities/Task");
 const User_1 = require("./entities/User");
 const anklebrachialindex_1 = require("./resolver/anklebrachialindex");
 const patient_1 = require("./resolver/patient");
+const patientTask_1 = require("./resolver/patientTask");
 const task_1 = require("./resolver/task");
 const user_1 = require("./resolver/user");
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -77,6 +78,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         ],
         schema: yield (0, type_graphql_1.buildSchema)({
             resolvers: [
+                patientTask_1.PatientTaskResolver,
                 user_1.UserResolver,
                 task_1.TaskResolver,
                 patient_1.PatientResolver,

@@ -8,19 +8,25 @@ import {
   Button,
   useDisclosure,
 } from "@chakra-ui/react";
-import React from "react";
-import {
-  useAnkleBrachialIndexParentTaskQuery,
-  useListAnkleBrachialIndexQuery,
-} from "../generated/graphql";
+import React, { useState } from "react";
+import { useListPatientTasksQuery } from "../generated/graphql";
+import { PatientModal } from "./PatientModal";
 import { TaskModal } from "./TaskModal";
 
 interface TaskTableProps {}
 
 export const TaskTable: React.FC<TaskTableProps> = ({}) => {
-  const [{ data, fetching }] = useListAnkleBrachialIndexQuery();
-  const [{data: dataAnkleBrachialIndexParent, fetching: fetchingAnkleBrachialIndexParent}] = useAnkleBrachialIndexParentTaskQuery();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [{ data, fetching }] = useListPatientTasksQuery();
+  const {
+    isOpen: taskIsOpen,
+    onOpen: taskOnOpen,
+    onClose: taskOnClose,
+  } = useDisclosure();
+  const {
+    isOpen: patientIsOpen,
+    onOpen: patientOnOpen,
+    onClose: patientOnClose,
+  } = useDisclosure();
   return (
     <Table variant="simple" size="lg" w="80vw">
       {/* <TableCaption>What is up my Bitch ass goats???</TableCaption> */}
@@ -32,34 +38,38 @@ export const TaskTable: React.FC<TaskTableProps> = ({}) => {
         </Tr>
       </Thead>
       <Tbody>
-        {data?.listAnkleBrachialIndex.map((d) =>
+        {data?.listPatientTasks?.map((d) =>
           !d ? null : (
             <Tr key={d.id}>
               <Td>
                 <Button
                   onClick={() => {
-                    onOpen();
+                    patientOnOpen();
                   }}
                 >
                   {d.forPatient.firstname + " " + d.forPatient.lastname}
                 </Button>
-                <TaskModal task={d} isOpen={isOpen} onClose={onClose} />{" "}
+                <PatientModal
+                  patient={d.forPatient}
+                  isOpen={patientIsOpen}
+                  onClose={patientOnClose}
+                />
               </Td>
               <Td>
                 <Button
                   onClick={() => {
-                    onOpen();
+                    taskOnOpen();
                   }}
                 >
-                  {d.forPatient.firstname + " " + d.forPatient.lastname}
+                  {d.parentTask.name}
                 </Button>
-                <AnkleBrachialIndexModal
-                  patient={d.forPatient}
-                  isOpen={isOpen}
-                  onClose={onClose}
+                <TaskModal
+                  task={d.parentTask}
+                  isOpen={taskIsOpen}
+                  onClose={taskOnClose}
                 />{" "}
               </Td>
-              <Td> {d.creator.username}</Td>
+              <Td> {d.creatorUser.firstname + " " + d.creatorUser.lastname}</Td>
             </Tr>
           )
         )}

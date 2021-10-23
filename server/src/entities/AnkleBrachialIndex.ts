@@ -1,10 +1,28 @@
 import { Field, ObjectType } from "type-graphql";
-import { Entity, Column } from "typeorm";
+import {
+  Entity,
+  Column,
+  BaseEntity,
+  OneToOne,
+  JoinColumn,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { PatientTask } from "./PatientTask";
 
 @ObjectType()
 @Entity()
-export class AnkleBrachialIndex extends PatientTask {
+export class AnkleBrachialIndex extends BaseEntity {
+  @Field()
+  @PrimaryGeneratedColumn()
+  id!: number;
+
+  @Field()
+  @OneToOne(() => PatientTask, {onDelete: "CASCADE"})
+  @JoinColumn()
+  patientTask!: PatientTask;
+
   @Field()
   @Column()
   rightArm?: number;
@@ -28,4 +46,12 @@ export class AnkleBrachialIndex extends PatientTask {
   @Field()
   @Column({ type: "real", nullable: true })
   rightResult?: number;
+
+  @Field()
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @Field()
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

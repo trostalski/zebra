@@ -38,7 +38,7 @@ export class Patient extends BaseEntity {
   diagnosis!: string;
 
   @OneToMany(() => PatientTask, (task) => task.forPatient)
-  tasks: PatientTask[];
+  patientTasks: PatientTask[];
 
   @Field()
   @CreateDateColumn()

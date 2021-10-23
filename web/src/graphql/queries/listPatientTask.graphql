@@ -1,0 +1,29 @@
+query listPatientTasks {
+  listPatientTasks {
+    id
+    parentTask {
+      id
+      name
+      explanation
+      createdAt
+      updatedAt
+    }
+    creatorId
+    creatorUser {
+      username
+      firstname
+      lastname
+    }
+    patientId
+    forPatient {
+      firstname
+      lastname
+      room
+      age
+      diagnosis
+      id
+      updatedAt
+      createdAt
+    }
+  }
+}

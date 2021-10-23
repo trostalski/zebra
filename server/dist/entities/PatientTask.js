@@ -12,10 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PatientTask = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
-const Task_1 = require("./Task");
 const Patient_1 = require("./Patient");
+const Task_1 = require("./Task");
 const User_1 = require("./User");
-let PatientTask = class PatientTask extends Task_1.Task {
+let PatientTask = class PatientTask extends typeorm_1.BaseEntity {
 };
 __decorate([
     (0, type_graphql_1.Field)(),
@@ -24,21 +24,27 @@ __decorate([
 ], PatientTask.prototype, "id", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
+    (0, typeorm_1.ManyToOne)(() => Task_1.Task, (task) => task.patientTasks, { onDelete: "CASCADE" }),
+    __metadata("design:type", Task_1.Task)
+], PatientTask.prototype, "parentTask", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], PatientTask.prototype, "creatorId", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.tasks),
+    (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.patientTasks, { onDelete: "CASCADE" }),
     __metadata("design:type", User_1.User)
-], PatientTask.prototype, "creator", void 0);
+], PatientTask.prototype, "creatorUser", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], PatientTask.prototype, "patientId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => Patient_1.Patient, (patient) => patient.tasks, { onDelete: "CASCADE" }),
+    (0, type_graphql_1.Field)(),
+    (0, typeorm_1.ManyToOne)(() => Patient_1.Patient, (patient) => patient.patientTasks, { onDelete: "CASCADE" }),
     __metadata("design:type", Patient_1.Patient)
 ], PatientTask.prototype, "forPatient", void 0);
 __decorate([

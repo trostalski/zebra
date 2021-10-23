@@ -6,7 +6,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
+  OneToMany,
 } from "typeorm";
+import { PatientTask } from "./PatientTask";
 
 @ObjectType()
 @Entity()
@@ -22,6 +24,9 @@ export class Task extends BaseEntity {
   @Field()
   @Column()
   explanation?: string;
+
+  @OneToMany(() => PatientTask, (patientTask) => patientTask.parentTask)
+  patientTasks: PatientTask[];
 
   @Field()
   @CreateDateColumn()

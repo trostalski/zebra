@@ -1,36 +1,42 @@
 import { Field, ObjectType } from "type-graphql";
 import {
-  Entity,
-  PrimaryGeneratedColumn,
+  BaseEntity,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
   ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
-import { Task } from "./Task";
 import { Patient } from "./Patient";
+import { Task } from "./Task";
 import { User } from "./User";
 
 @ObjectType()
 @Entity()
-export class PatientTask extends Task {
+export class PatientTask extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Field()
-  @Column()
-  creatorId?: number;
-
-  @Field()
-  @ManyToOne(() => User, (user) => user.tasks)
-  creator: User;
+  @ManyToOne(() => Task, (task) => task.patientTasks, { onDelete: "CASCADE" })
+  parentTask: Task;
 
   @Field()
   @Column()
-  patientId: number;
+  creatorId!: number;
 
-  @ManyToOne(() => Patient, (patient) => patient.tasks, { onDelete: "CASCADE" })
+  @Field()
+  @ManyToOne(() => User, (user) => user.patientTasks, { onDelete: "CASCADE" })
+  creatorUser: User;
+
+  @Field()
+  @Column()
+  patientId!: number;
+
+  @Field()
+  @ManyToOne(() => Patient, (patient) => patient.patientTasks, { onDelete: "CASCADE" })
   forPatient: Patient;
 
   @Field()

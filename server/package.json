@@ -22,6 +22,7 @@
     "pg": "^8.7.1",
     "redis": "^3.1.2",
     "reflect-metadata": "^0.1.13",
+    "type-graphql-dataloader": "^0.4.0",
     "typeorm": "^0.2.38",
     "typescript": "^4.4.3"
   },

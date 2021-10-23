@@ -13,8 +13,19 @@ exports.AnkleBrachialIndex = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const PatientTask_1 = require("./PatientTask");
-let AnkleBrachialIndex = class AnkleBrachialIndex extends PatientTask_1.PatientTask {
+let AnkleBrachialIndex = class AnkleBrachialIndex extends typeorm_1.BaseEntity {
 };
+__decorate([
+    (0, type_graphql_1.Field)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
+], AnkleBrachialIndex.prototype, "id", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
+    (0, typeorm_1.OneToOne)(() => PatientTask_1.PatientTask, { onDelete: "CASCADE" }),
+    (0, typeorm_1.JoinColumn)(),
+    __metadata("design:type", PatientTask_1.PatientTask)
+], AnkleBrachialIndex.prototype, "patientTask", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
@@ -45,6 +56,16 @@ __decorate([
     (0, typeorm_1.Column)({ type: "real", nullable: true }),
     __metadata("design:type", Number)
 ], AnkleBrachialIndex.prototype, "rightResult", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], AnkleBrachialIndex.prototype, "createdAt", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], AnkleBrachialIndex.prototype, "updatedAt", void 0);
 AnkleBrachialIndex = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()

@@ -1,9 +1,0 @@
-query ankleBrachialIndexParentTask {
-  ankleBrachialIndexParentTask {
-    id
-    name
-    explanation
-    createdAt
-    updatedAt
-  }
-}

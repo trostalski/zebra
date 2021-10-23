@@ -63,10 +63,6 @@ __decorate([
     (0, type_graphql_1.Field)(() => type_graphql_1.Int),
     __metadata("design:type", Number)
 ], AnkleBrachialIndexInput.prototype, "leftLeg", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
-    __metadata("design:type", Number)
-], AnkleBrachialIndexInput.prototype, "patientId", void 0);
 AnkleBrachialIndexInput = __decorate([
     (0, type_graphql_1.InputType)()
 ], AnkleBrachialIndexInput);

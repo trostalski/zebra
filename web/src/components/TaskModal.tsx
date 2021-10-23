@@ -25,9 +25,7 @@ type TaskModalProps = {
   task: Task;
 };
 
-export const TaskModal: React.FC<TaskModalProps> = (
-  props
-) => {
+export const TaskModal: React.FC<TaskModalProps> = (props) => {
   const { isOpen, onClose } = useDisclosure(props);
 
   return (

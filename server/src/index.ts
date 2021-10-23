@@ -1,4 +1,7 @@
-import { ApolloServerPluginLandingPageDisabled, ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
+import {
+  ApolloServerPluginLandingPageDisabled,
+  ApolloServerPluginLandingPageGraphQLPlayground
+} from "apollo-server-core";
 import { ApolloServer } from "apollo-server-express";
 import connectRedis from "connect-redis";
 import cors from "cors";
@@ -17,8 +20,11 @@ import { Task } from "./entities/Task";
 import { User } from "./entities/User";
 import { AnkleBrachialIndexResolver } from "./resolver/anklebrachialindex";
 import { PatientResolver } from "./resolver/patient";
+import { PatientTaskResolver } from "./resolver/patientTask";
 import { TaskResolver } from "./resolver/task";
 import { UserResolver } from "./resolver/user";
+// import { ApolloServerLoaderPlugin } from "type-graphql-dataloader";
+// import { getConnection } from "typeorm";
 
 const main = async () => {
   const connection = await createConnection({
@@ -36,6 +42,8 @@ const main = async () => {
   // User.delete({});
   // Patient.delete({});
   // Task.delete({});
+  // AnkleBrachialIndex.delete({});
+  // PatientTask.delete({});
   // await connection.runMigrations();
 
   const app = express();
@@ -71,12 +79,16 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     plugins: [
+      // ApolloServerLoaderPlugin({
+      //   typeormGetConnection: getConnection,  // for use with TypeORM
+      // }),
       process.env.NODE_ENV === "production"
         ? ApolloServerPluginLandingPageDisabled()
         : ApolloServerPluginLandingPageGraphQLPlayground(),
     ],
     schema: await buildSchema({
       resolvers: [
+        PatientTaskResolver,
         UserResolver,
         TaskResolver,
         PatientResolver,

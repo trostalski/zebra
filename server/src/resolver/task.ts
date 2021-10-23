@@ -1,15 +1,13 @@
-import { Task } from "../entities/Task";
 import {
   Arg,
   Field,
   Mutation,
   ObjectType,
   Query,
-  Resolver,
+  Resolver
 } from "type-graphql";
+import { Task } from "../entities/Task";
 import { TaskInput } from "./utils/resolverInputs";
-
-
 
 @ObjectType()
 class TaskOutput {
@@ -29,14 +27,16 @@ export class TaskResolver {
   }
 
   @Mutation(() => TaskOutput)
-  async createTask(@Arg("taskData") input: TaskInput): Promise<TaskOutput> {
+  async createTask(
+    @Arg("taskData") input: TaskInput
+  ): Promise<TaskOutput> {
     const task = await Task.create(input).save();
     return { task };
   }
 
   @Mutation(() => TaskOutput)
-  async deleteTask(@Arg("taskId") id: number): Promise<TaskOutput>{
-    Task.delete(id)
-    return {message: "Task deleted"}
+  async deleteTask(@Arg("taskId") id: number): Promise<TaskOutput> {
+    Task.delete(id);
+    return { message: "Task deleted" };
   }
 }

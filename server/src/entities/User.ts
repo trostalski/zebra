@@ -1,4 +1,5 @@
 import { Field, ObjectType } from "type-graphql";
+import { TypeormLoader } from "type-graphql-dataloader";
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -44,8 +45,8 @@ export class User extends BaseEntity {
   @Column()
   position!: string;
 
-  @OneToMany(() => PatientTask, (task) => task.creator)
-  tasks: PatientTask[];
+  @OneToMany(() => PatientTask, (task) => task.creatorUser)
+  patientTasks: PatientTask[];
 
   @Field()
   @CreateDateColumn()

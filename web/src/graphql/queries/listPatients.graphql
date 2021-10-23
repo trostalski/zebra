@@ -1,4 +1,4 @@
-query listPatients {
+query listPatients{
   listPatients {
     id
     firstname

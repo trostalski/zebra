@@ -1,6 +1,4 @@
-import { AnkleBrachialIndex } from "../entities/AnkleBrachialIndex";
-import { PatientTask } from "../entities/PatientTask";
-import { User } from "../entities/User";
+import { ANKLEBRACHIALINDEX } from "../constants";
 import { MyContext } from "src/types";
 import {
   Arg,
@@ -11,15 +9,17 @@ import {
   Resolver,
   Root,
 } from "type-graphql";
-import { AnkleBrachialIndexInput } from "./utils/resolverInputs";
+import { AnkleBrachialIndex } from "../entities/AnkleBrachialIndex";
 import { Patient } from "../entities/Patient";
+import { PatientTask } from "../entities/PatientTask";
 import { Task } from "../entities/Task";
-import createTask from "./utils/createTask";
+import { User } from "../entities/User";
+import { AnkleBrachialIndexInput } from "./utils/resolverInputs";
 
 @Resolver(AnkleBrachialIndex)
 export class AnkleBrachialIndexResolver {
   @FieldResolver(() => User)
-  creator(@Root() task: PatientTask) {
+  creatorUser(@Root() task: PatientTask) {
     return User.findOne(task.creatorId);
   }
 
@@ -51,22 +51,28 @@ export class AnkleBrachialIndexResolver {
 
   @Mutation(() => AnkleBrachialIndex)
   async createAnkleBrachialIndex(
+    @Arg("patientId") patientId: number,
     @Arg("AbiInput") abiInput: AnkleBrachialIndexInput,
     @Ctx() { req }: MyContext
   ): Promise<AnkleBrachialIndex> {
-    createTask(
-      "Ankle Brachial Index (ABI)",
-      "Quotient aus Blutdruck am Unterschenkel und Blutdruck am Oberarm"
-    );
-    const result = await AnkleBrachialIndex.create({
-      name: "Ankle Brachial Index (ABI)",
-      explanation:
-        "Quotient aus Blutdruck am Unterschenkel und Blutdruck am Oberarm",
+    // createTask(
+    //   "Ankle Brachial Index (ABI)",
+    //   "Quotient aus Blutdruck am Unterschenkel und Blutdruck am Oberarm"
+    // );
+    const patientTask = await PatientTask.create({
+      parentTask: await Task.findOne(ANKLEBRACHIALINDEX),
       creatorId: req.session.userId,
+      patientId: patientId,
+      forPatient: await Patient.findOne(patientId),
+      creatorUser: await User.findOne(req.session.userId),
+    }).save();
+
+    const result = await AnkleBrachialIndex.create({
       leftResult: Math.round(((abiInput.leftLeg / abiInput.leftArm) * 10) / 10),
       rightResult:
         Math.round((abiInput.rightLeg / abiInput.rightArm) * 10) / 10,
       ...abiInput,
+      patientTask: patientTask,
     }).save();
     return result;
   }

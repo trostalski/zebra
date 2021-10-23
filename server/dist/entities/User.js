@@ -55,9 +55,9 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "position", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => PatientTask_1.PatientTask, (task) => task.creator),
+    (0, typeorm_1.OneToMany)(() => PatientTask_1.PatientTask, (task) => task.creatorUser),
     __metadata("design:type", Array)
-], User.prototype, "tasks", void 0);
+], User.prototype, "patientTasks", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.CreateDateColumn)(),
