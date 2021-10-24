@@ -63,6 +63,18 @@ __decorate([
     (0, type_graphql_1.Field)(() => type_graphql_1.Int),
     __metadata("design:type", Number)
 ], AnkleBrachialIndexInput.prototype, "leftLeg", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => type_graphql_1.Float),
+    __metadata("design:type", Number)
+], AnkleBrachialIndexInput.prototype, "leftAbi", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => type_graphql_1.Float),
+    __metadata("design:type", Number)
+], AnkleBrachialIndexInput.prototype, "rightAbi", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
+    __metadata("design:type", Number)
+], AnkleBrachialIndexInput.prototype, "patientTaskId", void 0);
 AnkleBrachialIndexInput = __decorate([
     (0, type_graphql_1.InputType)()
 ], AnkleBrachialIndexInput);

@@ -1,12 +1,16 @@
+import { Patient } from "../entities/Patient";
+import { Task } from "../entities/Task";
+import { User } from "../entities/User";
+import { MyContext } from "src/types";
 import {
   Arg,
+  Ctx,
   Field,
   Mutation,
   ObjectType,
   Query,
   Resolver,
 } from "type-graphql";
-import { getConnection } from "typeorm";
 import { PatientTask } from "../entities/PatientTask";
 
 @ObjectType()
@@ -27,6 +31,33 @@ export class PatientTaskResolver {
       relations: ["creatorUser", "forPatient", "parentTask"],
     });
     return result;
+  }
+
+  @Query(() => [PatientTask], { nullable: true })
+  async specificPatientTasks(
+    @Arg("input") input: number
+  ): Promise<PatientTask[]> {
+    const result = await PatientTask.find({
+      where: { patientId: input },
+      relations: ["creatorUser", "forPatient", "parentTask"],
+    });
+    return result;
+  }
+
+  @Mutation(() => PatientTask)
+  async createPatientTask(
+    @Arg("patientId") patientId: number,
+    @Arg("taskId") taskId: number,
+    @Ctx() { req }: MyContext
+  ): Promise<PatientTask> {
+    const patientTask = await PatientTask.create({
+      parentTask: await Task.findOne(taskId),
+      creatorId: req.session.userId,
+      patientId: patientId,
+      forPatient: await Patient.findOne(patientId),
+      creatorUser: await User.findOne(req.session.userId),
+    }).save();
+    return patientTask;
   }
 
   @Mutation(() => PatientTaskOutput)

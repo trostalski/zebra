@@ -14,9 +14,9 @@ import {
 } from "../generated/graphql";
 import { PatientModal } from "./PatientModal";
 
-interface PatientButtonProps {}
+interface PatientsOrderedByRoom {}
 
-export const PatientButton: React.FC<PatientButtonProps> = ({}) => {
+export const PatientsOrderedByRoom: React.FC<PatientsOrderedByRoom> = ({}) => {
   const [{ data: roomsData, fetching: roomFetching }] = usePatientRoomsQuery();
   const [{ data: patientsData, fetching: patientFetching }] =
     useListPatientsQuery();
@@ -40,7 +40,12 @@ export const PatientButton: React.FC<PatientButtonProps> = ({}) => {
             </Heading>
             {patientsData!.listPatients.map((p, i) =>
               !p ? null : p.room == r ? (
-                <Flex alignContent="center" flexDirection="column" p={2}>
+                <Flex
+                  key={p.id}
+                  alignContent="center"
+                  flexDirection="column"
+                  p={2}
+                >
                   <Button
                     onClick={() => {
                       onOpen();

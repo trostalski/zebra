@@ -1,6 +1,8 @@
 query listPatientTasks {
   listPatientTasks {
     id
+    createdAt
+    updatedAt
     parentTask {
       id
       name
@@ -13,6 +15,12 @@ query listPatientTasks {
       username
       firstname
       lastname
+      id
+      email
+      department
+      position
+      createdAt
+      updatedAt
     }
     patientId
     forPatient {

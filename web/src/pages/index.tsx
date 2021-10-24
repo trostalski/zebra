@@ -1,7 +1,7 @@
 import { Box, Button, Flex, useDisclosure } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { NavBar } from "../components/NavBar";
-import { PatientButton } from "../components/PatientsOrderedByRoom";
+import { PatientsOrderedByRoom } from "../components/PatientsOrderedByRoom";
 import {
   useListPatientsQuery,
   usePatientRoomsQuery,
@@ -37,7 +37,7 @@ const Index = () => {
             alignContent="center"
           >
             {/* sort patients by their room and display*/}
-            <PatientButton />
+            <PatientsOrderedByRoom />
           </Flex>
         )}
       </Flex> 

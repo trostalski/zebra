@@ -18,7 +18,7 @@ const User_1 = require("./User");
 let PatientTask = class PatientTask extends typeorm_1.BaseEntity {
 };
 __decorate([
-    (0, type_graphql_1.Field)(),
+    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
 ], PatientTask.prototype, "id", void 0);
@@ -38,13 +38,15 @@ __decorate([
     __metadata("design:type", User_1.User)
 ], PatientTask.prototype, "creatorUser", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(),
-    (0, typeorm_1.Column)(),
+    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
+    (0, typeorm_1.Column)({ type: "int" }),
     __metadata("design:type", Number)
 ], PatientTask.prototype, "patientId", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.ManyToOne)(() => Patient_1.Patient, (patient) => patient.patientTasks, { onDelete: "CASCADE" }),
+    (0, typeorm_1.ManyToOne)(() => Patient_1.Patient, (patient) => patient.patientTasks, {
+        onDelete: "CASCADE",
+    }),
     __metadata("design:type", Patient_1.Patient)
 ], PatientTask.prototype, "forPatient", void 0);
 __decorate([

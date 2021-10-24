@@ -47,15 +47,15 @@ __decorate([
     __metadata("design:type", Number)
 ], AnkleBrachialIndex.prototype, "leftLeg", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(),
+    (0, type_graphql_1.Field)(() => type_graphql_1.Float),
     (0, typeorm_1.Column)({ type: "real", nullable: true }),
     __metadata("design:type", Number)
-], AnkleBrachialIndex.prototype, "leftResult", void 0);
+], AnkleBrachialIndex.prototype, "leftAbi", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(),
+    (0, type_graphql_1.Field)(() => type_graphql_1.Float),
     (0, typeorm_1.Column)({ type: "real", nullable: true }),
     __metadata("design:type", Number)
-], AnkleBrachialIndex.prototype, "rightResult", void 0);
+], AnkleBrachialIndex.prototype, "rightAbi", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.CreateDateColumn)(),

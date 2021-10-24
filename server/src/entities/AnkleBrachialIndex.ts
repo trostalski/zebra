@@ -1,4 +1,4 @@
-import { Field, ObjectType } from "type-graphql";
+import { Field, Float, ObjectType } from "type-graphql";
 import {
   Entity,
   Column,
@@ -19,7 +19,7 @@ export class AnkleBrachialIndex extends BaseEntity {
   id!: number;
 
   @Field()
-  @OneToOne(() => PatientTask, {onDelete: "CASCADE"})
+  @OneToOne(() => PatientTask, { onDelete: "CASCADE" })
   @JoinColumn()
   patientTask!: PatientTask;
 
@@ -39,13 +39,13 @@ export class AnkleBrachialIndex extends BaseEntity {
   @Column()
   leftLeg?: number;
 
-  @Field()
+  @Field(() => Float)
   @Column({ type: "real", nullable: true })
-  leftResult?: number;
+  leftAbi?: number;
 
-  @Field()
+  @Field(() => Float)
   @Column({ type: "real", nullable: true })
-  rightResult?: number;
+  rightAbi?: number;
 
   @Field()
   @CreateDateColumn()

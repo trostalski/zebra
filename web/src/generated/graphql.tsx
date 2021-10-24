@@ -22,19 +22,22 @@ export type AnkleBrachialIndex = {
   creatorUser: User;
   forPatient: Patient;
   id: Scalars['Float'];
+  leftAbi: Scalars['Float'];
   leftArm: Scalars['Float'];
   leftLeg: Scalars['Float'];
-  leftResult: Scalars['Float'];
   patientTask: PatientTask;
+  rightAbi: Scalars['Float'];
   rightArm: Scalars['Float'];
   rightLeg: Scalars['Float'];
-  rightResult: Scalars['Float'];
   updatedAt: Scalars['DateTime'];
 };
 
 export type AnkleBrachialIndexInput = {
+  leftAbi: Scalars['Float'];
   leftArm: Scalars['Int'];
   leftLeg: Scalars['Int'];
+  patientTaskId: Scalars['Int'];
+  rightAbi: Scalars['Float'];
   rightArm: Scalars['Int'];
   rightLeg: Scalars['Int'];
 };
@@ -43,6 +46,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createAnkleBrachialIndex: AnkleBrachialIndex;
   createPatient: PatientOutput;
+  createPatientTask: PatientTask;
   createTask: TaskOutput;
   deleteAnkleBrachialIndex: Scalars['Boolean'];
   deletePatient: PatientOutput;
@@ -56,12 +60,17 @@ export type Mutation = {
 
 export type MutationCreateAnkleBrachialIndexArgs = {
   AbiInput: AnkleBrachialIndexInput;
-  patientId: Scalars['Float'];
 };
 
 
 export type MutationCreatePatientArgs = {
   Patientdata: PatientInput;
+};
+
+
+export type MutationCreatePatientTaskArgs = {
+  patientId: Scalars['Float'];
+  taskId: Scalars['Float'];
 };
 
 
@@ -132,9 +141,9 @@ export type PatientTask = {
   creatorId: Scalars['Float'];
   creatorUser: User;
   forPatient: Patient;
-  id: Scalars['Float'];
+  id: Scalars['Int'];
   parentTask: Task;
-  patientId: Scalars['Float'];
+  patientId: Scalars['Int'];
   updatedAt: Scalars['DateTime'];
 };
 
@@ -154,6 +163,12 @@ export type Query = {
   listUsers?: Maybe<Array<User>>;
   me?: Maybe<User>;
   patientRooms: Array<Scalars['Int']>;
+  specificPatientTasks?: Maybe<Array<PatientTask>>;
+};
+
+
+export type QuerySpecificPatientTasksArgs = {
+  input: Scalars['Float'];
 };
 
 export type RegisterInput = {
@@ -205,6 +220,28 @@ export type UserOutput = {
   user?: Maybe<User>;
 };
 
+export type CreateAnkleBrachialIndexMutationVariables = Exact<{
+  abiInput: AnkleBrachialIndexInput;
+}>;
+
+
+export type CreateAnkleBrachialIndexMutation = { __typename?: 'Mutation', createAnkleBrachialIndex: { __typename?: 'AnkleBrachialIndex', id: number } };
+
+export type CreatePatientTaskMutationVariables = Exact<{
+  taskId: Scalars['Float'];
+  patientId: Scalars['Float'];
+}>;
+
+
+export type CreatePatientTaskMutation = { __typename?: 'Mutation', createPatientTask: { __typename?: 'PatientTask', id: number } };
+
+export type DeletePatientTaskMutationVariables = Exact<{
+  patientTaskId: Scalars['Float'];
+}>;
+
+
+export type DeletePatientTaskMutation = { __typename?: 'Mutation', deletePatientTask: { __typename?: 'PatientTaskOutput', message?: string | null | undefined } };
+
 export type LoginMutationVariables = Exact<{
   loginPassword: Scalars['String'];
   loginUsernameOrEmail: Scalars['String'];
@@ -228,7 +265,7 @@ export type RegisterMutation = { __typename?: 'Mutation', register: { __typename
 export type ListPatientTasksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ListPatientTasksQuery = { __typename?: 'Query', listPatientTasks?: Array<{ __typename?: 'PatientTask', id: number, creatorId: number, patientId: number, parentTask: { __typename?: 'Task', id: number, name: string, explanation: string, createdAt: any, updatedAt: any }, creatorUser: { __typename?: 'User', username: string, firstname: string, lastname: string }, forPatient: { __typename?: 'Patient', firstname: string, lastname: string, room: number, age: number, diagnosis: string, id: number, updatedAt: any, createdAt: any } }> | null | undefined };
+export type ListPatientTasksQuery = { __typename?: 'Query', listPatientTasks?: Array<{ __typename?: 'PatientTask', id: number, createdAt: any, updatedAt: any, creatorId: number, patientId: number, parentTask: { __typename?: 'Task', id: number, name: string, explanation: string, createdAt: any, updatedAt: any }, creatorUser: { __typename?: 'User', username: string, firstname: string, lastname: string, id: number, email: string, department: string, position: string, createdAt: any, updatedAt: any }, forPatient: { __typename?: 'Patient', firstname: string, lastname: string, room: number, age: number, diagnosis: string, id: number, updatedAt: any, createdAt: any } }> | null | undefined };
 
 export type ListPatientsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -245,7 +282,47 @@ export type PatientRoomsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type PatientRoomsQuery = { __typename?: 'Query', patientRooms: Array<number> };
 
+export type SpecificPatientTasksQueryVariables = Exact<{
+  input: Scalars['Float'];
+}>;
 
+
+export type SpecificPatientTasksQuery = { __typename?: 'Query', specificPatientTasks?: Array<{ __typename?: 'PatientTask', id: number, createdAt: any, parentTask: { __typename?: 'Task', name: string } }> | null | undefined };
+
+
+export const CreateAnkleBrachialIndexDocument = gql`
+    mutation CreateAnkleBrachialIndex($abiInput: AnkleBrachialIndexInput!) {
+  createAnkleBrachialIndex(AbiInput: $abiInput) {
+    id
+  }
+}
+    `;
+
+export function useCreateAnkleBrachialIndexMutation() {
+  return Urql.useMutation<CreateAnkleBrachialIndexMutation, CreateAnkleBrachialIndexMutationVariables>(CreateAnkleBrachialIndexDocument);
+};
+export const CreatePatientTaskDocument = gql`
+    mutation CreatePatientTask($taskId: Float!, $patientId: Float!) {
+  createPatientTask(taskId: $taskId, patientId: $patientId) {
+    id
+  }
+}
+    `;
+
+export function useCreatePatientTaskMutation() {
+  return Urql.useMutation<CreatePatientTaskMutation, CreatePatientTaskMutationVariables>(CreatePatientTaskDocument);
+};
+export const DeletePatientTaskDocument = gql`
+    mutation DeletePatientTask($patientTaskId: Float!) {
+  deletePatientTask(PatientTaskId: $patientTaskId) {
+    message
+  }
+}
+    `;
+
+export function useDeletePatientTaskMutation() {
+  return Urql.useMutation<DeletePatientTaskMutation, DeletePatientTaskMutationVariables>(DeletePatientTaskDocument);
+};
 export const LoginDocument = gql`
     mutation login($loginPassword: String!, $loginUsernameOrEmail: String!) {
   login(password: $loginPassword, usernameOrEmail: $loginUsernameOrEmail) {
@@ -289,6 +366,8 @@ export const ListPatientTasksDocument = gql`
     query listPatientTasks {
   listPatientTasks {
     id
+    createdAt
+    updatedAt
     parentTask {
       id
       name
@@ -301,6 +380,12 @@ export const ListPatientTasksDocument = gql`
       username
       firstname
       lastname
+      id
+      email
+      department
+      position
+      createdAt
+      updatedAt
     }
     patientId
     forPatient {
@@ -358,4 +443,19 @@ export const PatientRoomsDocument = gql`
 
 export function usePatientRoomsQuery(options: Omit<Urql.UseQueryArgs<PatientRoomsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<PatientRoomsQuery>({ query: PatientRoomsDocument, ...options });
+};
+export const SpecificPatientTasksDocument = gql`
+    query specificPatientTasks($input: Float!) {
+  specificPatientTasks(input: $input) {
+    id
+    createdAt
+    parentTask {
+      name
+    }
+  }
+}
+    `;
+
+export function useSpecificPatientTasksQuery(options: Omit<Urql.UseQueryArgs<SpecificPatientTasksQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<SpecificPatientTasksQuery>({ query: SpecificPatientTasksDocument, ...options });
 };

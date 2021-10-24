@@ -1,4 +1,3 @@
-import { ANKLEBRACHIALINDEX } from "../constants";
 import { MyContext } from "src/types";
 import {
   Arg,
@@ -7,7 +6,7 @@ import {
   Mutation,
   Query,
   Resolver,
-  Root,
+  Root
 } from "type-graphql";
 import { AnkleBrachialIndex } from "../entities/AnkleBrachialIndex";
 import { Patient } from "../entities/Patient";
@@ -51,22 +50,10 @@ export class AnkleBrachialIndexResolver {
 
   @Mutation(() => AnkleBrachialIndex)
   async createAnkleBrachialIndex(
-    @Arg("patientId") patientId: number,
     @Arg("AbiInput") abiInput: AnkleBrachialIndexInput,
-    @Ctx() { req }: MyContext
+    @Ctx() {}: MyContext
   ): Promise<AnkleBrachialIndex> {
-    // createTask(
-    //   "Ankle Brachial Index (ABI)",
-    //   "Quotient aus Blutdruck am Unterschenkel und Blutdruck am Oberarm"
-    // );
-    const patientTask = await PatientTask.create({
-      parentTask: await Task.findOne(ANKLEBRACHIALINDEX),
-      creatorId: req.session.userId,
-      patientId: patientId,
-      forPatient: await Patient.findOne(patientId),
-      creatorUser: await User.findOne(req.session.userId),
-    }).save();
-
+    const patientTask = await PatientTask.findOne(abiInput.patientTaskId);
     const result = await AnkleBrachialIndex.create({
       leftResult: Math.round(((abiInput.leftLeg / abiInput.leftArm) * 10) / 10),
       rightResult:

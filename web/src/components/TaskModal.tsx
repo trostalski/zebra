@@ -34,13 +34,11 @@ export const TaskModal: React.FC<TaskModalProps> = (props) => {
       <ModalContent>
         <ModalHeader>{props.task.name}</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>Erklärung: {props.task.explanation}</ModalBody>
+        <ModalBody>
+          <b> Erklärung:</b>
+          {props.task.explanation}
+        </ModalBody>
         <ModalFooter>
-          <Select placeholder="Untersuchung anfordern" mr={4}>
-            <option value="ABI">ABI</option>
-            <option value="Blutdruck">Blutdruck messen</option>
-            <option value="Blut abnehmen">Blut abnehmen</option>
-          </Select>
           <Button colorScheme="green" onClick={onClose}>
             Bestätigen
           </Button>
