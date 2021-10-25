@@ -41,6 +41,14 @@ export class PatientTask extends BaseEntity {
   })
   forPatient?: Patient;
 
+  @Field(() => Boolean)
+  @Column({ default: false })
+  completed!: boolean;
+
+  @Field(() => String)
+  @Column({ nullable: true })
+  result?: string;
+
   @Field()
   @CreateDateColumn()
   createdAt: Date;

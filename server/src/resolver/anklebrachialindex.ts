@@ -6,7 +6,7 @@ import {
   Mutation,
   Query,
   Resolver,
-  Root
+  Root,
 } from "type-graphql";
 import { AnkleBrachialIndex } from "../entities/AnkleBrachialIndex";
 import { Patient } from "../entities/Patient";
@@ -55,9 +55,6 @@ export class AnkleBrachialIndexResolver {
   ): Promise<AnkleBrachialIndex> {
     const patientTask = await PatientTask.findOne(abiInput.patientTaskId);
     const result = await AnkleBrachialIndex.create({
-      leftResult: Math.round(((abiInput.leftLeg / abiInput.leftArm) * 10) / 10),
-      rightResult:
-        Math.round((abiInput.rightLeg / abiInput.rightArm) * 10) / 10,
       ...abiInput,
       patientTask: patientTask,
     }).save();

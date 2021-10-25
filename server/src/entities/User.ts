@@ -1,13 +1,7 @@
 import { Field, ObjectType } from "type-graphql";
-import { TypeormLoader } from "type-graphql-dataloader";
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  BaseEntity,
-  OneToMany,
+  BaseEntity, Column,
+  CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn
 } from "typeorm";
 import { PatientTask } from "./PatientTask";
 

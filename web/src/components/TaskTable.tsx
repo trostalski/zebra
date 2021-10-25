@@ -1,13 +1,18 @@
 import {
-  Button, Table, Tbody,
-  Td, Th, Thead,
-  Tr, useDisclosure
+  Button,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { ANKLEBRACHIALINDEX } from "../constants";
 import {
   useDeletePatientTaskMutation,
-  useListPatientTasksQuery
+  useListPatientTasksQuery,
 } from "../generated/graphql";
 import { AnkleBrachialIndexModal } from "./AnkleBrachialIndexModal";
 import { PatientModal } from "./PatientModal";
@@ -37,6 +42,7 @@ export const TaskTable: React.FC<TaskTableProps> = ({}) => {
   } = useDisclosure();
 
   const [, deletePatient] = useDeletePatientTaskMutation();
+  const [currentTask, setCurrentTask] = useState(0);
 
   return (
     <Table variant="simple" size="lg" w="80vw">
@@ -51,36 +57,28 @@ export const TaskTable: React.FC<TaskTableProps> = ({}) => {
         </Tr>
       </Thead>
       <Tbody>
-        {data?.listPatientTasks?.map((d) =>
+        {data?.listPatientTasks?.map((d, i) =>
           !d ? null : (
             <Tr key={d.id}>
               <Td>
                 <Button
                   onClick={() => {
                     patientOnOpen();
+                    setCurrentTask(i);
                   }}
                 >
                   {d.forPatient.firstname + " " + d.forPatient.lastname}
                 </Button>
-                <PatientModal
-                  patient={d.forPatient}
-                  isOpen={patientIsOpen}
-                  onClose={patientOnClose}
-                />
               </Td>
               <Td>
                 <Button
                   onClick={() => {
                     taskOnOpen();
+                    setCurrentTask(i);
                   }}
                 >
                   {d.parentTask.name}
                 </Button>
-                <TaskModal
-                  task={d.parentTask}
-                  isOpen={taskIsOpen}
-                  onClose={taskOnClose}
-                />{" "}
               </Td>
               <Td> {d.creatorUser.firstname + " " + d.creatorUser.lastname}</Td>
               <Td></Td>
@@ -119,6 +117,16 @@ export const TaskTable: React.FC<TaskTableProps> = ({}) => {
             </Tr>
           )
         )}
+        <PatientModal
+          patient={data?.listPatientTasks![currentTask].forPatient}
+          isOpen={patientIsOpen}
+          onClose={patientOnClose}
+        />
+        <TaskModal
+          task={data?.listPatientTasks![currentTask].parentTask!}
+          isOpen={taskIsOpen}
+          onClose={taskOnClose}
+        />{" "}
       </Tbody>
     </Table>
   );

@@ -61,7 +61,7 @@ let AnkleBrachialIndexResolver = class AnkleBrachialIndexResolver {
     createAnkleBrachialIndex(abiInput, {}) {
         return __awaiter(this, void 0, void 0, function* () {
             const patientTask = yield PatientTask_1.PatientTask.findOne(abiInput.patientTaskId);
-            const result = yield AnkleBrachialIndex_1.AnkleBrachialIndex.create(Object.assign(Object.assign({ leftResult: Math.round(((abiInput.leftLeg / abiInput.leftArm) * 10) / 10), rightResult: Math.round((abiInput.rightLeg / abiInput.rightArm) * 10) / 10 }, abiInput), { patientTask: patientTask })).save();
+            const result = yield AnkleBrachialIndex_1.AnkleBrachialIndex.create(Object.assign(Object.assign({}, abiInput), { patientTask: patientTask })).save();
             return result;
         });
     }

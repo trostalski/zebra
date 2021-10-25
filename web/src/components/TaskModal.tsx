@@ -32,11 +32,11 @@ export const TaskModal: React.FC<TaskModalProps> = (props) => {
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay bg="" backdropFilter="auto" />
       <ModalContent>
-        <ModalHeader>{props.task.name}</ModalHeader>
+        <ModalHeader>{props.task?.name}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <b> Erklärung:</b>
-          {props.task.explanation}
+          {props.task?.explanation}
         </ModalBody>
         <ModalFooter>
           <Button colorScheme="green" onClick={onClose}>

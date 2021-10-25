@@ -1,23 +1,21 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Button,
-  useDisclosure,
-  Text,
-  Select,
   Divider,
-  PortalManager,
   Flex,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Select,
+  Text,
+  useDisclosure,
 } from "@chakra-ui/react";
-import React, { FormEventHandler, useState } from "react";
-import { UseQueryArgs } from "urql";
+import dateFormat, { DateFormatMasks } from "dateformat";
+import React, { useState } from "react";
 import {
-  Exact,
   Patient,
   useCreatePatientTaskMutation,
   useSpecificPatientTasksQuery,
@@ -50,28 +48,31 @@ export const PatientModal: React.FC<PatientModalProps> = (props) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      {console.log("specific Tasks Object: ", specificTasksData)}
       <ModalOverlay bg="" backdropFilter="auto" />
       <ModalContent>
         <ModalHeader>
-          {props.patient!.firstname} {props.patient!.lastname}
+          {props.patient?.firstname} {props.patient?.lastname}
         </ModalHeader>
         <ModalCloseButton />
-        <ModalBody>Alter: {props.patient!.age}</ModalBody>
-        <ModalBody>Diagnose: {props.patient!.diagnosis}</ModalBody>
-        <ModalBody>
+        <ModalBody>Alter: {props.patient?.age}</ModalBody>
+        <ModalBody>Diagnose: {props.patient?.diagnosis}</ModalBody>
+        <ModalBody overflow="scroll">
           Ausstehende Untersuchungen:
           {specificTasksData?.specificPatientTasks?.map((d) =>
             !d ? null : (
-              <Flex flexDir="row">
-                <Divider />
-                <Flex flexDir="column" alignItems="flex-start">
-                  <Text key={d.id}>{d.createdAt}</Text>
+              <>
+                <Divider orientation="horizontal" />
+                <Flex flexDir="row" mt={4}>
+                  <Flex flexDir="column" mr="auto">
+                    <Text key={d.id}>
+                      <Text>{d.parentTask.name}</Text>
+                    </Text>
+                  </Flex>
+                  <Flex flexDir="column" ml="auto">
+                    {dateFormat(d.createdAt, "dd.mm h:MM")}
+                  </Flex>
                 </Flex>
-                <Flex>
-                  <Text>{d.parentTask.name}</Text>
-                </Flex>
-              </Flex>
+              </>
             )
           )}
         </ModalBody>
