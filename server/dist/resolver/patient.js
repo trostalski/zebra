@@ -20,12 +20,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PatientResolver = exports.PatientOutput = void 0;
+exports.PatientResolver = exports.PatientRoomOutput = exports.PatientOutput = void 0;
 const Patient_1 = require("../entities/Patient");
 const type_graphql_1 = require("type-graphql");
 const resolverInputs_1 = require("./utils/resolverInputs");
 const typeorm_1 = require("typeorm");
+const groupBy_1 = __importDefault(require("./utils/groupBy"));
 let PatientOutput = class PatientOutput {
 };
 __decorate([
@@ -40,6 +44,16 @@ PatientOutput = __decorate([
     (0, type_graphql_1.ObjectType)()
 ], PatientOutput);
 exports.PatientOutput = PatientOutput;
+let PatientRoomOutput = class PatientRoomOutput {
+};
+__decorate([
+    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
+    __metadata("design:type", Number)
+], PatientRoomOutput.prototype, "room", void 0);
+PatientRoomOutput = __decorate([
+    (0, type_graphql_1.ObjectType)()
+], PatientRoomOutput);
+exports.PatientRoomOutput = PatientRoomOutput;
 let PatientResolver = class PatientResolver {
     listPatients() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -57,6 +71,16 @@ let PatientResolver = class PatientResolver {
                 result.push(room["room"]);
             });
             return result;
+        });
+    }
+    patientsByRoom() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const temp = yield (0, typeorm_1.getConnection)().query(`
+       select * from patient order by room
+      `);
+            const res = (0, groupBy_1.default)(temp, "room");
+            console.log(typeof res);
+            return true;
         });
     }
     createPatient(input) {
@@ -84,6 +108,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], PatientResolver.prototype, "patientRooms", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => Boolean),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], PatientResolver.prototype, "patientsByRoom", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => PatientOutput),
     __param(0, (0, type_graphql_1.Arg)("Patientdata")),

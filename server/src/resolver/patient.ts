@@ -2,14 +2,17 @@ import { Patient } from "../entities/Patient";
 import {
   Arg,
   Field,
+  FieldResolver,
   Int,
   Mutation,
   ObjectType,
   Query,
   Resolver,
+  Root,
 } from "type-graphql";
 import { PatientInput } from "./utils/resolverInputs";
-import {  getConnection } from "typeorm";
+import { getConnection } from "typeorm";
+import groupBy from "./utils/groupBy";
 
 @ObjectType()
 export class PatientOutput {
@@ -18,6 +21,12 @@ export class PatientOutput {
 
   @Field(() => Patient, { nullable: true })
   patient?: Patient;
+}
+
+@ObjectType()
+export class PatientRoomOutput {
+  @Field(() => Int)
+  room: number;
 }
 
 // list all users in DB
@@ -41,6 +50,20 @@ export class PatientResolver {
       result.push(room["room"]);
     });
     return result;
+  }
+
+  @Query(() => Boolean)
+  async patientsByRoom(): Promise<boolean> {
+    const temp: Patient[] = await getConnection().query(
+      `
+       select * from patient order by room
+      `
+    );
+
+    const res: any = groupBy(temp, "room");
+    console.log(typeof res);
+
+    return true;
   }
 
   //Registration

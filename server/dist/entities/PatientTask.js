@@ -55,7 +55,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], PatientTask.prototype, "completed", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => String),
+    (0, type_graphql_1.Field)(() => String, { nullable: true }),
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], PatientTask.prototype, "result", void 0);

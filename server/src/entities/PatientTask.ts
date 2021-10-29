@@ -45,7 +45,7 @@ export class PatientTask extends BaseEntity {
   @Column({ default: false })
   completed!: boolean;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Column({ nullable: true })
   result?: string;
 
