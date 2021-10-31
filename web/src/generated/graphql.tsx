@@ -137,6 +137,7 @@ export type PatientOutput = {
 
 export type PatientTask = {
   __typename?: 'PatientTask';
+  completed: Scalars['Boolean'];
   createdAt: Scalars['DateTime'];
   creatorId: Scalars['Float'];
   creatorUser: User;
@@ -144,6 +145,7 @@ export type PatientTask = {
   id: Scalars['Int'];
   parentTask: Task;
   patientId: Scalars['Int'];
+  result?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
 };
 

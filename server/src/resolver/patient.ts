@@ -1,18 +1,15 @@
-import { Patient } from "../entities/Patient";
 import {
   Arg,
   Field,
-  FieldResolver,
   Int,
   Mutation,
   ObjectType,
   Query,
   Resolver,
-  Root,
 } from "type-graphql";
-import { PatientInput } from "./utils/resolverInputs";
 import { getConnection } from "typeorm";
-import groupBy from "./utils/groupBy";
+import { Patient } from "../entities/Patient";
+import { PatientInput } from "./utils/resolverInputs";
 
 @ObjectType()
 export class PatientOutput {
@@ -34,7 +31,11 @@ export class PatientRoomOutput {
 export class PatientResolver {
   @Query(() => [Patient])
   async listPatients(): Promise<Patient[]> {
-    return await Patient.find({});
+    const res: Patient[] = await getConnection().query(
+      `SELECT * FROM "patient"`
+    );
+    console.log(res);
+    return res;
   }
 
   @Query(() => [Int])
@@ -52,19 +53,19 @@ export class PatientResolver {
     return result;
   }
 
-  @Query(() => Boolean)
-  async patientsByRoom(): Promise<boolean> {
-    const temp: Patient[] = await getConnection().query(
-      `
-       select * from patient order by room
-      `
-    );
+  // @Query(() => Boolean)
+  // async patientsByRoom(): Promise<boolean> {
+  //   const temp: Patient[] = await getConnection().query(
+  //     `
+  //      select * from patient order by room
+  //     `
+  //   );
 
-    const res: any = groupBy(temp, "room");
-    console.log(typeof res);
+  //   const res: any  = groupBy(temp, "room");
+  //   console.log(typeof res);
 
-    return true;
-  }
+  //   return true;
+  // }
 
   //Registration
   @Mutation(() => PatientOutput)
