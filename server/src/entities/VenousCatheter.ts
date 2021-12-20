@@ -1,36 +1,35 @@
-import { Field, ObjectType } from "type-graphql";
+import { Field, Float, ObjectType } from "type-graphql";
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
+  BaseEntity,
+  OneToOne,
+  JoinColumn,
+  PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  BaseEntity,
-  OneToMany,
 } from "typeorm";
 import { PatientTask } from "./PatientTask";
 
-/*
-  Used to display basic characteristics of Tasks.
-*/
-
 @ObjectType()
 @Entity()
-export class Task extends BaseEntity {
+export class VenousCatheter extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Field()
-  @Column()
-  name!: string;
+  @OneToOne(() => PatientTask, { onDelete: "CASCADE" })
+  @JoinColumn()
+  patientTask!: PatientTask;
 
   @Field()
   @Column()
-  explanation?: string;
+  location: string;
 
-  @OneToMany(() => PatientTask, (patientTask) => patientTask.parentTask)
-  patientTasks: PatientTask[];
+  @Field()
+  @Column()
+  catheterType: string;
 
   @Field()
   @CreateDateColumn()
@@ -40,3 +39,5 @@ export class Task extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 }
+
+

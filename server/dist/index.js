@@ -47,6 +47,11 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         entities: [User_1.User, PatientTask_1.PatientTask, AnkleBrachialIndex_1.AnkleBrachialIndex, Patient_1.Patient, Task_1.Task],
         migrations: [path_1.default.join(__dirname, "./migrations/*")],
     });
+    User_1.User.delete({});
+    Patient_1.Patient.delete({});
+    Task_1.Task.delete({});
+    AnkleBrachialIndex_1.AnkleBrachialIndex.delete({});
+    PatientTask_1.PatientTask.delete({});
     const app = (0, express_1.default)();
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
     const redis = new ioredis_1.default(process.env.REDIS_URL);

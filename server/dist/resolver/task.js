@@ -25,19 +25,6 @@ exports.TaskResolver = void 0;
 const type_graphql_1 = require("type-graphql");
 const Task_1 = require("../entities/Task");
 const resolverInputs_1 = require("./utils/resolverInputs");
-let TaskOutput = class TaskOutput {
-};
-__decorate([
-    (0, type_graphql_1.Field)(() => String, { nullable: true }),
-    __metadata("design:type", String)
-], TaskOutput.prototype, "message", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => Task_1.Task, { nullable: true }),
-    __metadata("design:type", Task_1.Task)
-], TaskOutput.prototype, "task", void 0);
-TaskOutput = __decorate([
-    (0, type_graphql_1.ObjectType)()
-], TaskOutput);
 let TaskResolver = class TaskResolver {
     listTasks() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -47,13 +34,13 @@ let TaskResolver = class TaskResolver {
     createTask(input) {
         return __awaiter(this, void 0, void 0, function* () {
             const task = yield Task_1.Task.create(input).save();
-            return { task };
+            return task;
         });
     }
     deleteTask(id) {
         return __awaiter(this, void 0, void 0, function* () {
             Task_1.Task.delete(id);
-            return { message: "Task deleted" };
+            return "Task deleted";
         });
     }
 };
@@ -64,14 +51,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], TaskResolver.prototype, "listTasks", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => TaskOutput),
+    (0, type_graphql_1.Mutation)(() => Task_1.Task),
     __param(0, (0, type_graphql_1.Arg)("taskData")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [resolverInputs_1.TaskInput]),
     __metadata("design:returntype", Promise)
 ], TaskResolver.prototype, "createTask", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => TaskOutput),
+    (0, type_graphql_1.Mutation)(() => String),
     __param(0, (0, type_graphql_1.Arg)("taskId")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),

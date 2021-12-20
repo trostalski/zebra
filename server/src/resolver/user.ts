@@ -12,6 +12,7 @@ import { RegisterInput } from "./utils/resolverInputs";
 import argon2 from "argon2";
 import { MyContext } from "src/types";
 
+
 @ObjectType()
 export class UserOutput {
   @Field(() => String, { nullable: true })
@@ -21,10 +22,10 @@ export class UserOutput {
   user?: User;
 }
 
-// list all users in DB
 @Resolver(User)
 export class UserResolver {
   @Query(() => [User], { nullable: true })
+  // list all users in DB
   async listUsers() {
     return await User.find({});
   }

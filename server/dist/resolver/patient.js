@@ -21,25 +21,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PatientResolver = exports.PatientRoomOutput = exports.PatientOutput = void 0;
+exports.PatientResolver = exports.PatientRoomOutput = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const Patient_1 = require("../entities/Patient");
 const resolverInputs_1 = require("./utils/resolverInputs");
-let PatientOutput = class PatientOutput {
-};
-__decorate([
-    (0, type_graphql_1.Field)(() => String, { nullable: true }),
-    __metadata("design:type", String)
-], PatientOutput.prototype, "message", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => Patient_1.Patient, { nullable: true }),
-    __metadata("design:type", Patient_1.Patient)
-], PatientOutput.prototype, "patient", void 0);
-PatientOutput = __decorate([
-    (0, type_graphql_1.ObjectType)()
-], PatientOutput);
-exports.PatientOutput = PatientOutput;
 let PatientRoomOutput = class PatientRoomOutput {
 };
 __decorate([
@@ -74,13 +60,13 @@ let PatientResolver = class PatientResolver {
     createPatient(input) {
         return __awaiter(this, void 0, void 0, function* () {
             const patient = yield Patient_1.Patient.create(input).save();
-            return { patient };
+            return patient;
         });
     }
     deletePatient(id) {
         return __awaiter(this, void 0, void 0, function* () {
             Patient_1.Patient.delete(id);
-            return { message: "Patient deleted" };
+            return "Patient deleted";
         });
     }
 };
@@ -97,14 +83,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PatientResolver.prototype, "patientRooms", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => PatientOutput),
+    (0, type_graphql_1.Mutation)(() => Patient_1.Patient),
     __param(0, (0, type_graphql_1.Arg)("Patientdata")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [resolverInputs_1.PatientInput]),
     __metadata("design:returntype", Promise)
 ], PatientResolver.prototype, "createPatient", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => PatientOutput),
+    (0, type_graphql_1.Mutation)(() => String),
     __param(0, (0, type_graphql_1.Arg)("taskId")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),

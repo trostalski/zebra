@@ -27,19 +27,7 @@ const Task_1 = require("../entities/Task");
 const User_1 = require("../entities/User");
 const type_graphql_1 = require("type-graphql");
 const PatientTask_1 = require("../entities/PatientTask");
-let PatientTaskOutput = class PatientTaskOutput {
-};
-__decorate([
-    (0, type_graphql_1.Field)(() => String, { nullable: true }),
-    __metadata("design:type", String)
-], PatientTaskOutput.prototype, "message", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => PatientTask_1.PatientTask, { nullable: true }),
-    __metadata("design:type", PatientTask_1.PatientTask)
-], PatientTaskOutput.prototype, "task", void 0);
-PatientTaskOutput = __decorate([
-    (0, type_graphql_1.ObjectType)()
-], PatientTaskOutput);
+const resolverInputs_1 = require("./utils/resolverInputs");
 let PatientTaskResolver = class PatientTaskResolver {
     listPatientTasks() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -58,22 +46,22 @@ let PatientTaskResolver = class PatientTaskResolver {
             return result;
         });
     }
-    createPatientTask(patientId, taskId, { req }) {
+    createPatientTask(input, patientId, taskId, { req }) {
         return __awaiter(this, void 0, void 0, function* () {
-            const patientTask = yield PatientTask_1.PatientTask.create({
-                parentTask: yield Task_1.Task.findOne(taskId),
-                creatorId: req.session.userId,
-                patientId: patientId,
-                forPatient: yield Patient_1.Patient.findOne(patientId),
-                creatorUser: yield User_1.User.findOne(req.session.userId),
-            }).save();
+            const patientTask = yield PatientTask_1.PatientTask.create(input);
+            const forPatient = yield Patient_1.Patient.findOne(patientId);
+            const parentTask = yield Task_1.Task.findOne(taskId);
+            patientTask.creatorUser = yield User_1.User.findOne(req.session.userId);
+            patientTask.forPatient = forPatient;
+            patientTask.parentTask = parentTask;
+            patientTask.save();
             return patientTask;
         });
     }
     deletePatientTask(id) {
         return __awaiter(this, void 0, void 0, function* () {
             PatientTask_1.PatientTask.delete(id);
-            return { message: "Task deleted" };
+            return "Untersuchung gelöscht.";
         });
     }
 };
@@ -92,15 +80,16 @@ __decorate([
 ], PatientTaskResolver.prototype, "specificPatientTasks", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => PatientTask_1.PatientTask),
-    __param(0, (0, type_graphql_1.Arg)("patientId")),
-    __param(1, (0, type_graphql_1.Arg)("taskId")),
-    __param(2, (0, type_graphql_1.Ctx)()),
+    __param(0, (0, type_graphql_1.Arg)("input")),
+    __param(1, (0, type_graphql_1.Arg)("patientId")),
+    __param(2, (0, type_graphql_1.Arg)("taskId")),
+    __param(3, (0, type_graphql_1.Ctx)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Number, Object]),
+    __metadata("design:paramtypes", [resolverInputs_1.PatientTaskInput, Number, Number, Object]),
     __metadata("design:returntype", Promise)
 ], PatientTaskResolver.prototype, "createPatientTask", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => PatientTaskOutput),
+    (0, type_graphql_1.Mutation)(() => String),
     __param(0, (0, type_graphql_1.Arg)("PatientTaskId")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),

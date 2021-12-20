@@ -5,16 +5,16 @@ import {
 } from "typeorm";
 import { PatientTask } from "./PatientTask";
 
+/*
+  User Entity descirbing the person using the app.
+*/
+
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
-
-  @Field()
-  @Column({ unique: true })
-  username!: string;
 
   @Field()
   @Column({ unique: true })
@@ -44,9 +44,9 @@ export class User extends BaseEntity {
 
   @Field()
   @CreateDateColumn()
-  createdAt!: Date;
+  createdAt: Date;
 
   @Field()
   @UpdateDateColumn()
-  updatedAt!: Date;
+  updatedAt: Date;
 }

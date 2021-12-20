@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TaskInput = exports.PatientInput = exports.AnkleBrachialIndexInput = exports.RegisterInput = void 0;
+exports.DrawBloodInput = exports.TaskInput = exports.PatientInput = exports.PatientTaskInput = exports.AnkleBrachialIndexInput = exports.RegisterInput = void 0;
 const type_graphql_1 = require("type-graphql");
 let RegisterInput = class RegisterInput {
 };
@@ -79,6 +79,20 @@ AnkleBrachialIndexInput = __decorate([
     (0, type_graphql_1.InputType)()
 ], AnkleBrachialIndexInput);
 exports.AnkleBrachialIndexInput = AnkleBrachialIndexInput;
+let PatientTaskInput = class PatientTaskInput {
+};
+__decorate([
+    (0, type_graphql_1.Field)(() => Boolean),
+    __metadata("design:type", Boolean)
+], PatientTaskInput.prototype, "completed", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => String),
+    __metadata("design:type", String)
+], PatientTaskInput.prototype, "result", void 0);
+PatientTaskInput = __decorate([
+    (0, type_graphql_1.InputType)()
+], PatientTaskInput);
+exports.PatientTaskInput = PatientTaskInput;
 let PatientInput = class PatientInput {
 };
 __decorate([
@@ -119,4 +133,18 @@ TaskInput = __decorate([
     (0, type_graphql_1.InputType)()
 ], TaskInput);
 exports.TaskInput = TaskInput;
+let DrawBloodInput = class DrawBloodInput {
+};
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", Number)
+], DrawBloodInput.prototype, "patientTaskId", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", String)
+], DrawBloodInput.prototype, "FlaskType", void 0);
+DrawBloodInput = __decorate([
+    (0, type_graphql_1.InputType)()
+], DrawBloodInput);
+exports.DrawBloodInput = DrawBloodInput;
 //# sourceMappingURL=resolverInputs.js.map

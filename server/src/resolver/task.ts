@@ -9,34 +9,27 @@ import {
 import { Task } from "../entities/Task";
 import { TaskInput } from "./utils/resolverInputs";
 
-@ObjectType()
-class TaskOutput {
-  @Field(() => String, { nullable: true })
-  message?: string;
-
-  @Field(() => Task, { nullable: true })
-  task?: Task;
-}
-
 @Resolver(Task)
 export class TaskResolver {
-  //list all tasks
   @Query(() => [Task], { nullable: true })
+  // list all Tasks
   async listTasks() {
     return await Task.find({});
   }
 
-  @Mutation(() => TaskOutput)
+  @Mutation(() => Task)
+  // create a new Tak
   async createTask(
     @Arg("taskData") input: TaskInput
-  ): Promise<TaskOutput> {
+  ): Promise<Task> {
     const task = await Task.create(input).save();
-    return { task };
+    return task;
   }
 
-  @Mutation(() => TaskOutput)
-  async deleteTask(@Arg("taskId") id: number): Promise<TaskOutput> {
+  @Mutation(() => String)
+  // delete Task
+  async deleteTask(@Arg("taskId") id: number): Promise<String> {
     Task.delete(id);
-    return { message: "Task deleted" };
+    return "Task deleted";
   }
 }

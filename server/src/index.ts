@@ -39,11 +39,11 @@ const main = async () => {
     entities: [User, PatientTask, AnkleBrachialIndex, Patient, Task],
     migrations: [path.join(__dirname, "./migrations/*")],
   });
-  // User.delete({});
-  // Patient.delete({});
-  // Task.delete({});
-  // AnkleBrachialIndex.delete({});
-  // PatientTask.delete({});
+  User.delete({});
+  Patient.delete({});
+  Task.delete({});
+  AnkleBrachialIndex.delete({});
+  PatientTask.delete({});
   // await connection.runMigrations();
 
   const app = express();

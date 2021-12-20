@@ -1,22 +1,19 @@
 import { MyContext } from "src/types";
 import {
   Arg,
-  Ctx,
-  FieldResolver,
-  Mutation,
+  Ctx, Mutation,
   Query,
-  Resolver,
-  Root,
+  Resolver
 } from "type-graphql";
 import { AnkleBrachialIndex } from "../entities/AnkleBrachialIndex";
-import { Patient } from "../entities/Patient";
 import { PatientTask } from "../entities/PatientTask";
 import { Task } from "../entities/Task";
-import { User } from "../entities/User";
 import { AnkleBrachialIndexInput } from "./utils/resolverInputs";
 
 @Resolver(AnkleBrachialIndex)
 export class AnkleBrachialIndexResolver {
+
+  /*
   @FieldResolver(() => User)
   creatorUser(@Root() task: PatientTask) {
     return User.findOne(task.creatorId);
@@ -26,6 +23,7 @@ export class AnkleBrachialIndexResolver {
   forPatient(@Root() task: PatientTask) {
     return Patient.findOne(task.patientId);
   }
+  */
 
   @Query(() => [AnkleBrachialIndex])
   async listAnkleBrachialIndex(): Promise<AnkleBrachialIndex[]> {
@@ -34,7 +32,7 @@ export class AnkleBrachialIndexResolver {
 
   @Query(() => Task)
   async ankleBrachialIndexParentTask() {
-    return Task.findOne({ where: { name: "Ankle Brachial Index" } });
+    return await Task.findOne({ where: { name: "Ankle Brachial Index" } });
   }
 
   @Mutation(() => Boolean)

@@ -2,25 +2,9 @@ import { Patient } from "../entities/Patient";
 import { Task } from "../entities/Task";
 import { User } from "../entities/User";
 import { MyContext } from "src/types";
-import {
-  Arg,
-  Ctx,
-  Field,
-  Mutation,
-  ObjectType,
-  Query,
-  Resolver,
-} from "type-graphql";
+import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { PatientTask } from "../entities/PatientTask";
-
-@ObjectType()
-class PatientTaskOutput {
-  @Field(() => String, { nullable: true })
-  message?: string;
-
-  @Field(() => PatientTask, { nullable: true })
-  task?: PatientTask;
-}
+import { PatientTaskInput } from "./utils/resolverInputs";
 
 @Resolver(PatientTask)
 export class PatientTaskResolver {
@@ -33,6 +17,7 @@ export class PatientTaskResolver {
     return result;
   }
 
+  // get Tasks for specific patient
   @Query(() => [PatientTask], { nullable: true })
   async specificPatientTasks(
     @Arg("input") input: number
@@ -46,25 +31,26 @@ export class PatientTaskResolver {
 
   @Mutation(() => PatientTask)
   async createPatientTask(
+    @Arg("input") input: PatientTaskInput,
     @Arg("patientId") patientId: number,
     @Arg("taskId") taskId: number,
     @Ctx() { req }: MyContext
   ): Promise<PatientTask> {
-    const patientTask = await PatientTask.create({
-      parentTask: await Task.findOne(taskId),
-      creatorId: req.session.userId,
-      patientId: patientId,
-      forPatient: await Patient.findOne(patientId),
-      creatorUser: await User.findOne(req.session.userId),
-    }).save();
+    const patientTask = await PatientTask.create(input);
+    const forPatient = await Patient.findOne(patientId);
+    const parentTask = await Task.findOne(taskId);
+
+    patientTask.creatorUser = await User.findOne(req.session.userId);
+    patientTask.forPatient = forPatient;
+    patientTask.parentTask = parentTask;
+
+    patientTask.save();
     return patientTask;
   }
 
-  @Mutation(() => PatientTaskOutput)
-  async deletePatientTask(
-    @Arg("PatientTaskId") id: number
-  ): Promise<PatientTaskOutput> {
+  @Mutation(() => String)
+  async deletePatientTask(@Arg("PatientTaskId") id: number): Promise<String> {
     PatientTask.delete(id);
-    return { message: "Task deleted" };
+    return "Untersuchung gelöscht.";
   }
 }

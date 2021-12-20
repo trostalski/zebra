@@ -12,21 +12,12 @@ import { Patient } from "../entities/Patient";
 import { PatientInput } from "./utils/resolverInputs";
 
 @ObjectType()
-export class PatientOutput {
-  @Field(() => String, { nullable: true })
-  message?: string;
-
-  @Field(() => Patient, { nullable: true })
-  patient?: Patient;
-}
-
-@ObjectType()
 export class PatientRoomOutput {
   @Field(() => Int)
   room: number;
 }
 
-// list all users in DB
+// list all patients in DB
 @Resolver(Patient)
 export class PatientResolver {
   @Query(() => [Patient])
@@ -53,32 +44,19 @@ export class PatientResolver {
     return result;
   }
 
-  // @Query(() => Boolean)
-  // async patientsByRoom(): Promise<boolean> {
-  //   const temp: Patient[] = await getConnection().query(
-  //     `
-  //      select * from patient order by room
-  //     `
-  //   );
-
-  //   const res: any  = groupBy(temp, "room");
-  //   console.log(typeof res);
-
-  //   return true;
-  // }
-
-  //Registration
-  @Mutation(() => PatientOutput)
+  // create Patient
+  @Mutation(() => Patient)
   async createPatient(
     @Arg("Patientdata") input: PatientInput
-  ): Promise<PatientOutput> {
+  ): Promise<Patient> {
     const patient = await Patient.create(input).save();
-    return { patient };
+    return patient;
   }
 
-  @Mutation(() => PatientOutput)
-  async deletePatient(@Arg("taskId") id: number): Promise<PatientOutput> {
+  // delete Patient
+  @Mutation(() => String)
+  async deletePatient(@Arg("taskId") id: number): Promise<String> {
     Patient.delete(id);
-    return { message: "Patient deleted" };
+    return "Patient deleted";
   }
 }

@@ -24,18 +24,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnkleBrachialIndexResolver = void 0;
 const type_graphql_1 = require("type-graphql");
 const AnkleBrachialIndex_1 = require("../entities/AnkleBrachialIndex");
-const Patient_1 = require("../entities/Patient");
 const PatientTask_1 = require("../entities/PatientTask");
 const Task_1 = require("../entities/Task");
-const User_1 = require("../entities/User");
 const resolverInputs_1 = require("./utils/resolverInputs");
 let AnkleBrachialIndexResolver = class AnkleBrachialIndexResolver {
-    creatorUser(task) {
-        return User_1.User.findOne(task.creatorId);
-    }
-    forPatient(task) {
-        return Patient_1.Patient.findOne(task.patientId);
-    }
     listAnkleBrachialIndex() {
         return __awaiter(this, void 0, void 0, function* () {
             return yield AnkleBrachialIndex_1.AnkleBrachialIndex.find({});
@@ -43,7 +35,7 @@ let AnkleBrachialIndexResolver = class AnkleBrachialIndexResolver {
     }
     ankleBrachialIndexParentTask() {
         return __awaiter(this, void 0, void 0, function* () {
-            return Task_1.Task.findOne({ where: { name: "Ankle Brachial Index" } });
+            return yield Task_1.Task.findOne({ where: { name: "Ankle Brachial Index" } });
         });
     }
     deleteAnkleBrachialIndex(inputId) {
@@ -66,20 +58,6 @@ let AnkleBrachialIndexResolver = class AnkleBrachialIndexResolver {
         });
     }
 };
-__decorate([
-    (0, type_graphql_1.FieldResolver)(() => User_1.User),
-    __param(0, (0, type_graphql_1.Root)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [PatientTask_1.PatientTask]),
-    __metadata("design:returntype", void 0)
-], AnkleBrachialIndexResolver.prototype, "creatorUser", null);
-__decorate([
-    (0, type_graphql_1.FieldResolver)(() => Patient_1.Patient),
-    __param(0, (0, type_graphql_1.Root)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [PatientTask_1.PatientTask]),
-    __metadata("design:returntype", void 0)
-], AnkleBrachialIndexResolver.prototype, "forPatient", null);
 __decorate([
     (0, type_graphql_1.Query)(() => [AnkleBrachialIndex_1.AnkleBrachialIndex]),
     __metadata("design:type", Function),

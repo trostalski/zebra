@@ -12,6 +12,10 @@ import { Patient } from "./Patient";
 import { Task } from "./Task";
 import { User } from "./User";
 
+/*
+  Parent class for all Patient related Tasks.
+*/
+
 @ObjectType()
 @Entity()
 export class PatientTask extends BaseEntity {
@@ -21,19 +25,11 @@ export class PatientTask extends BaseEntity {
 
   @Field()
   @ManyToOne(() => Task, (task) => task.patientTasks, { onDelete: "CASCADE" })
-  parentTask: Task;
-
-  @Field()
-  @Column()
-  creatorId!: number;
+  parentTask?: Task;
 
   @Field()
   @ManyToOne(() => User, (user) => user.patientTasks, { onDelete: "CASCADE" })
   creatorUser?: User;
-
-  @Field(() => Int)
-  @Column({ type: "int" })
-  patientId!: number;
 
   @Field()
   @ManyToOne(() => Patient, (patient) => patient.patientTasks, {

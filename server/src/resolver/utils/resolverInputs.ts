@@ -3,6 +3,8 @@ import { AnkleBrachialIndex } from "../../entities/AnkleBrachialIndex";
 import { Patient } from "../../entities/Patient";
 import { Task } from "../../entities/Task";
 import { User } from "../../entities/User";
+import { DrawBlood } from "../../entities/DrawBlood";
+import { PatientTask } from "../../entities/PatientTask";
 
 @InputType()
 export class RegisterInput implements Partial<User> {
@@ -53,6 +55,16 @@ export class AnkleBrachialIndexInput implements Partial<AnkleBrachialIndex> {
 }
 
 @InputType()
+export class PatientTaskInput implements Partial<PatientTask> {
+
+  @Field(() => Boolean)
+  completed: boolean;
+
+  @Field(() => String)
+  result?: string;
+}
+
+@InputType()
 export class PatientInput implements Partial<Patient> {
   @Field(() => String)
   firstname: string;
@@ -77,4 +89,13 @@ export class TaskInput implements Partial<Task> {
 
   @Field(() => String)
   explanation: string;
+}
+
+@InputType()
+export class DrawBloodInput implements Partial<DrawBlood> {
+  @Field()
+  patientTaskId: number;
+
+  @Field()
+  FlaskType: string;
 }
