@@ -1,9 +1,0 @@
-query specificPatientTasks($input: Float!) {
-  specificPatientTasks(input: $input) {
-    id
-    createdAt
-    parentTask {
-      name
-    }
-  }
-}

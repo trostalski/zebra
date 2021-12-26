@@ -19,8 +19,6 @@ export type Scalars = {
 export type AnkleBrachialIndex = {
   __typename?: 'AnkleBrachialIndex';
   createdAt: Scalars['DateTime'];
-  creatorUser: User;
-  forPatient: Patient;
   id: Scalars['Float'];
   leftAbi: Scalars['Float'];
   leftArm: Scalars['Float'];
@@ -34,24 +32,44 @@ export type AnkleBrachialIndex = {
 
 export type AnkleBrachialIndexInput = {
   leftAbi: Scalars['Float'];
-  leftArm: Scalars['Int'];
-  leftLeg: Scalars['Int'];
+  leftArm: Scalars['Float'];
+  leftLeg: Scalars['Float'];
   patientTaskId: Scalars['Int'];
   rightAbi: Scalars['Float'];
-  rightArm: Scalars['Int'];
-  rightLeg: Scalars['Int'];
+  rightArm: Scalars['Float'];
+  rightLeg: Scalars['Float'];
+};
+
+export type DrawBlood = {
+  __typename?: 'DrawBlood';
+  FlaskType: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['Float'];
+  patientTask: PatientTask;
+  updatedAt: Scalars['DateTime'];
+};
+
+export type DrawBloodInput = {
+  FlaskType: Scalars['String'];
+  patientTaskId: Scalars['Float'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
   createAnkleBrachialIndex: AnkleBrachialIndex;
-  createPatient: PatientOutput;
+  createDrawBlood: DrawBlood;
+  createPatient: Patient;
   createPatientTask: PatientTask;
-  createTask: TaskOutput;
+  createTask: Task;
+  createVenousCatheter: VenousCatheter;
+  createVitalSigns: VitalSigns;
   deleteAnkleBrachialIndex: Scalars['Boolean'];
-  deletePatient: PatientOutput;
-  deletePatientTask: PatientTaskOutput;
-  deleteTask: TaskOutput;
+  deleteDrawBlood: Scalars['Boolean'];
+  deletePatient: Scalars['String'];
+  deletePatientTask: Scalars['String'];
+  deleteTask: Scalars['String'];
+  deleteVenousCatheter: Scalars['Boolean'];
+  deleteVitalSigns: Scalars['Boolean'];
   login: UserOutput;
   logout: Scalars['Boolean'];
   register: UserOutput;
@@ -63,12 +81,18 @@ export type MutationCreateAnkleBrachialIndexArgs = {
 };
 
 
+export type MutationCreateDrawBloodArgs = {
+  input: DrawBloodInput;
+};
+
+
 export type MutationCreatePatientArgs = {
   Patientdata: PatientInput;
 };
 
 
 export type MutationCreatePatientTaskArgs = {
+  input: PatientTaskInput;
   patientId: Scalars['Float'];
   taskId: Scalars['Float'];
 };
@@ -79,7 +103,22 @@ export type MutationCreateTaskArgs = {
 };
 
 
+export type MutationCreateVenousCatheterArgs = {
+  input: VenousCatheterInput;
+};
+
+
+export type MutationCreateVitalSignsArgs = {
+  input: VitalSignsInput;
+};
+
+
 export type MutationDeleteAnkleBrachialIndexArgs = {
+  input: Scalars['Float'];
+};
+
+
+export type MutationDeleteDrawBloodArgs = {
   input: Scalars['Float'];
 };
 
@@ -99,9 +138,19 @@ export type MutationDeleteTaskArgs = {
 };
 
 
+export type MutationDeleteVenousCatheterArgs = {
+  input: Scalars['Float'];
+};
+
+
+export type MutationDeleteVitalSignsArgs = {
+  input: Scalars['Float'];
+};
+
+
 export type MutationLoginArgs = {
+  email: Scalars['String'];
   password: Scalars['String'];
-  usernameOrEmail: Scalars['String'];
 };
 
 
@@ -117,6 +166,7 @@ export type Patient = {
   firstname: Scalars['String'];
   id: Scalars['Float'];
   lastname: Scalars['String'];
+  patientTasks: Array<PatientTask>;
   room: Scalars['Float'];
   updatedAt: Scalars['DateTime'];
 };
@@ -129,47 +179,50 @@ export type PatientInput = {
   room: Scalars['Int'];
 };
 
-export type PatientOutput = {
-  __typename?: 'PatientOutput';
-  message?: Maybe<Scalars['String']>;
-  patient?: Maybe<Patient>;
-};
-
 export type PatientTask = {
   __typename?: 'PatientTask';
   completed: Scalars['Boolean'];
   createdAt: Scalars['DateTime'];
-  creatorId: Scalars['Float'];
   creatorUser: User;
   forPatient: Patient;
-  id: Scalars['Int'];
+  id: Scalars['Float'];
   parentTask: Task;
-  patientId: Scalars['Int'];
   result?: Maybe<Scalars['String']>;
+  timepoint: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };
 
-export type PatientTaskOutput = {
-  __typename?: 'PatientTaskOutput';
-  message?: Maybe<Scalars['String']>;
-  task?: Maybe<PatientTask>;
+export type PatientTaskInput = {
+  result?: Maybe<Scalars['String']>;
+  timepoint: Scalars['String'];
 };
 
 export type Query = {
   __typename?: 'Query';
+  DrawBloodParentTask: Task;
+  VenousCatheterParentTask: Task;
+  VitalSignsParentTask: Task;
   ankleBrachialIndexParentTask: Task;
-  listAnkleBrachialIndex: Array<AnkleBrachialIndex>;
+  getPatientById: Patient;
+  listAnkleBrachialIndex: Array<VenousCatheter>;
+  listDrawBlood: Array<DrawBlood>;
   listPatientTasks?: Maybe<Array<PatientTask>>;
   listPatients: Array<Patient>;
   listTasks?: Maybe<Array<Task>>;
   listUsers?: Maybe<Array<User>>;
+  listVitalSigns: Array<VitalSigns>;
   me?: Maybe<User>;
+  patientAnforderungen?: Maybe<Array<PatientTask>>;
   patientRooms: Array<Scalars['Int']>;
-  specificPatientTasks?: Maybe<Array<PatientTask>>;
 };
 
 
-export type QuerySpecificPatientTasksArgs = {
+export type QueryGetPatientByIdArgs = {
+  input: Scalars['Float'];
+};
+
+
+export type QueryPatientAnforderungenArgs = {
   input: Scalars['Float'];
 };
 
@@ -180,7 +233,6 @@ export type RegisterInput = {
   lastname: Scalars['String'];
   password: Scalars['String'];
   position: Scalars['String'];
-  username: Scalars['String'];
 };
 
 export type Task = {
@@ -197,12 +249,6 @@ export type TaskInput = {
   name: Scalars['String'];
 };
 
-export type TaskOutput = {
-  __typename?: 'TaskOutput';
-  message?: Maybe<Scalars['String']>;
-  task?: Maybe<Task>;
-};
-
 export type User = {
   __typename?: 'User';
   createdAt: Scalars['DateTime'];
@@ -213,7 +259,6 @@ export type User = {
   lastname: Scalars['String'];
   position: Scalars['String'];
   updatedAt: Scalars['DateTime'];
-  username: Scalars['String'];
 };
 
 export type UserOutput = {
@@ -222,220 +267,168 @@ export type UserOutput = {
   user?: Maybe<User>;
 };
 
-export type CreateAnkleBrachialIndexMutationVariables = Exact<{
-  abiInput: AnkleBrachialIndexInput;
-}>;
+export type VenousCatheter = {
+  __typename?: 'VenousCatheter';
+  catheterType: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['Float'];
+  location: Scalars['String'];
+  patientTask: PatientTask;
+  updatedAt: Scalars['DateTime'];
+};
 
+export type VenousCatheterInput = {
+  catheterType: Scalars['String'];
+  location: Scalars['String'];
+  patientTaskId: Scalars['Float'];
+};
 
-export type CreateAnkleBrachialIndexMutation = { __typename?: 'Mutation', createAnkleBrachialIndex: { __typename?: 'AnkleBrachialIndex', id: number } };
+export type VitalSigns = {
+  __typename?: 'VitalSigns';
+  bloodPressureRequired: Scalars['Boolean'];
+  bloodPressureResult: Scalars['Float'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['Float'];
+  patientTask: PatientTask;
+  pulseRequired: Scalars['Boolean'];
+  pulseResult: Scalars['Float'];
+  temperatureRequired: Scalars['Boolean'];
+  temperatureResult: Scalars['Float'];
+  updatedAt: Scalars['DateTime'];
+};
 
-export type CreatePatientTaskMutationVariables = Exact<{
+export type VitalSignsInput = {
+  bloodPressureRequired?: Maybe<Scalars['Boolean']>;
+  bloodPressureResult: Scalars['Float'];
+  patientTaskId: Scalars['Float'];
+  pulseRequired?: Maybe<Scalars['Boolean']>;
+  pulseResult: Scalars['Float'];
+  temperatureRequired?: Maybe<Scalars['Boolean']>;
+  temperatureResult: Scalars['Float'];
+};
+
+export type CreateAnforderungMutationVariables = Exact<{
   taskId: Scalars['Float'];
   patientId: Scalars['Float'];
+  input: PatientTaskInput;
 }>;
 
 
-export type CreatePatientTaskMutation = { __typename?: 'Mutation', createPatientTask: { __typename?: 'PatientTask', id: number } };
+export type CreateAnforderungMutation = { __typename?: 'Mutation', createPatientTask: { __typename?: 'PatientTask', id: number, timepoint: string, completed: boolean, parentTask: { __typename?: 'Task', id: number, name: string }, creatorUser: { __typename?: 'User', id: number, lastname: string } } };
 
-export type DeletePatientTaskMutationVariables = Exact<{
-  patientTaskId: Scalars['Float'];
+export type GetPatientByIdQueryVariables = Exact<{
+  input: Scalars['Float'];
 }>;
 
 
-export type DeletePatientTaskMutation = { __typename?: 'Mutation', deletePatientTask: { __typename?: 'PatientTaskOutput', message?: string | null | undefined } };
+export type GetPatientByIdQuery = { __typename?: 'Query', getPatientById: { __typename?: 'Patient', id: number, room: number, firstname: string, lastname: string, age: number, diagnosis: string } };
 
-export type LoginMutationVariables = Exact<{
-  loginPassword: Scalars['String'];
-  loginUsernameOrEmail: Scalars['String'];
+export type ListPatientsStationQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListPatientsStationQuery = { __typename?: 'Query', listPatients: Array<{ __typename?: 'Patient', id: number, firstname: string, lastname: string, room: number, age: number }> };
+
+export type ListTaskNamesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListTaskNamesQuery = { __typename?: 'Query', listTasks?: Array<{ __typename?: 'Task', id: number, name: string, createdAt: any, updatedAt: any }> | null | undefined };
+
+export type PatientAnforderungenQueryVariables = Exact<{
+  input: Scalars['Float'];
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserOutput', message?: string | null | undefined, user?: { __typename?: 'User', id: number, username: string } | null | undefined } };
-
-export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
-
-export type RegisterMutationVariables = Exact<{
-  registerUserdata: RegisterInput;
-}>;
-
-
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserOutput', message?: string | null | undefined, user?: { __typename?: 'User', id: number, username: string } | null | undefined } };
-
-export type ListPatientTasksQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type ListPatientTasksQuery = { __typename?: 'Query', listPatientTasks?: Array<{ __typename?: 'PatientTask', id: number, createdAt: any, updatedAt: any, creatorId: number, patientId: number, parentTask: { __typename?: 'Task', id: number, name: string, explanation: string, createdAt: any, updatedAt: any }, creatorUser: { __typename?: 'User', username: string, firstname: string, lastname: string, id: number, email: string, department: string, position: string, createdAt: any, updatedAt: any }, forPatient: { __typename?: 'Patient', firstname: string, lastname: string, room: number, age: number, diagnosis: string, id: number, updatedAt: any, createdAt: any } }> | null | undefined };
-
-export type ListPatientsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type ListPatientsQuery = { __typename?: 'Query', listPatients: Array<{ __typename?: 'Patient', id: number, firstname: string, lastname: string, room: number, age: number, diagnosis: string, createdAt: any, updatedAt: any }> };
-
-export type MeQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, username: string } | null | undefined };
+export type PatientAnforderungenQuery = { __typename?: 'Query', patientAnforderungen?: Array<{ __typename?: 'PatientTask', id: number, timepoint: string, parentTask: { __typename?: 'Task', name: string }, creatorUser: { __typename?: 'User', lastname: string } }> | null | undefined };
 
 export type PatientRoomsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type PatientRoomsQuery = { __typename?: 'Query', patientRooms: Array<number> };
 
-export type SpecificPatientTasksQueryVariables = Exact<{
-  input: Scalars['Float'];
-}>;
 
-
-export type SpecificPatientTasksQuery = { __typename?: 'Query', specificPatientTasks?: Array<{ __typename?: 'PatientTask', id: number, createdAt: any, parentTask: { __typename?: 'Task', name: string } }> | null | undefined };
-
-
-export const CreateAnkleBrachialIndexDocument = gql`
-    mutation CreateAnkleBrachialIndex($abiInput: AnkleBrachialIndexInput!) {
-  createAnkleBrachialIndex(AbiInput: $abiInput) {
+export const CreateAnforderungDocument = gql`
+    mutation createAnforderung($taskId: Float!, $patientId: Float!, $input: PatientTaskInput!) {
+  createPatientTask(taskId: $taskId, patientId: $patientId, input: $input) {
     id
-  }
-}
-    `;
-
-export function useCreateAnkleBrachialIndexMutation() {
-  return Urql.useMutation<CreateAnkleBrachialIndexMutation, CreateAnkleBrachialIndexMutationVariables>(CreateAnkleBrachialIndexDocument);
-};
-export const CreatePatientTaskDocument = gql`
-    mutation CreatePatientTask($taskId: Float!, $patientId: Float!) {
-  createPatientTask(taskId: $taskId, patientId: $patientId) {
-    id
-  }
-}
-    `;
-
-export function useCreatePatientTaskMutation() {
-  return Urql.useMutation<CreatePatientTaskMutation, CreatePatientTaskMutationVariables>(CreatePatientTaskDocument);
-};
-export const DeletePatientTaskDocument = gql`
-    mutation DeletePatientTask($patientTaskId: Float!) {
-  deletePatientTask(PatientTaskId: $patientTaskId) {
-    message
-  }
-}
-    `;
-
-export function useDeletePatientTaskMutation() {
-  return Urql.useMutation<DeletePatientTaskMutation, DeletePatientTaskMutationVariables>(DeletePatientTaskDocument);
-};
-export const LoginDocument = gql`
-    mutation login($loginPassword: String!, $loginUsernameOrEmail: String!) {
-  login(password: $loginPassword, usernameOrEmail: $loginUsernameOrEmail) {
-    user {
-      id
-      username
-    }
-    message
-  }
-}
-    `;
-
-export function useLoginMutation() {
-  return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
-};
-export const LogoutDocument = gql`
-    mutation Logout {
-  logout
-}
-    `;
-
-export function useLogoutMutation() {
-  return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
-};
-export const RegisterDocument = gql`
-    mutation register($registerUserdata: RegisterInput!) {
-  register(Userdata: $registerUserdata) {
-    user {
-      id
-      username
-    }
-    message
-  }
-}
-    `;
-
-export function useRegisterMutation() {
-  return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
-};
-export const ListPatientTasksDocument = gql`
-    query listPatientTasks {
-  listPatientTasks {
-    id
-    createdAt
-    updatedAt
     parentTask {
       id
       name
-      explanation
-      createdAt
-      updatedAt
     }
-    creatorId
     creatorUser {
-      username
-      firstname
-      lastname
       id
-      email
-      department
-      position
-      createdAt
-      updatedAt
-    }
-    patientId
-    forPatient {
-      firstname
       lastname
-      room
-      age
-      diagnosis
-      id
-      updatedAt
-      createdAt
     }
+    timepoint
+    completed
   }
 }
     `;
 
-export function useListPatientTasksQuery(options: Omit<Urql.UseQueryArgs<ListPatientTasksQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<ListPatientTasksQuery>({ query: ListPatientTasksDocument, ...options });
+export function useCreateAnforderungMutation() {
+  return Urql.useMutation<CreateAnforderungMutation, CreateAnforderungMutationVariables>(CreateAnforderungDocument);
 };
-export const ListPatientsDocument = gql`
-    query listPatients {
+export const GetPatientByIdDocument = gql`
+    query getPatientById($input: Float!) {
+  getPatientById(input: $input) {
+    id
+    room
+    firstname
+    lastname
+    age
+    diagnosis
+  }
+}
+    `;
+
+export function useGetPatientByIdQuery(options: Omit<Urql.UseQueryArgs<GetPatientByIdQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetPatientByIdQuery>({ query: GetPatientByIdDocument, ...options });
+};
+export const ListPatientsStationDocument = gql`
+    query listPatientsStation {
   listPatients {
     id
     firstname
     lastname
     room
     age
-    diagnosis
+  }
+}
+    `;
+
+export function useListPatientsStationQuery(options: Omit<Urql.UseQueryArgs<ListPatientsStationQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ListPatientsStationQuery>({ query: ListPatientsStationDocument, ...options });
+};
+export const ListTaskNamesDocument = gql`
+    query listTaskNames {
+  listTasks {
+    id
+    name
     createdAt
     updatedAt
   }
 }
     `;
 
-export function useListPatientsQuery(options: Omit<Urql.UseQueryArgs<ListPatientsQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<ListPatientsQuery>({ query: ListPatientsDocument, ...options });
+export function useListTaskNamesQuery(options: Omit<Urql.UseQueryArgs<ListTaskNamesQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ListTaskNamesQuery>({ query: ListTaskNamesDocument, ...options });
 };
-export const MeDocument = gql`
-    query me {
-  me {
+export const PatientAnforderungenDocument = gql`
+    query patientAnforderungen($input: Float!) {
+  patientAnforderungen(input: $input) {
     id
-    username
+    timepoint
+    parentTask {
+      name
+    }
+    creatorUser {
+      lastname
+    }
   }
 }
     `;
 
-export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+export function usePatientAnforderungenQuery(options: Omit<Urql.UseQueryArgs<PatientAnforderungenQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<PatientAnforderungenQuery>({ query: PatientAnforderungenDocument, ...options });
 };
 export const PatientRoomsDocument = gql`
     query patientRooms {
@@ -445,19 +438,4 @@ export const PatientRoomsDocument = gql`
 
 export function usePatientRoomsQuery(options: Omit<Urql.UseQueryArgs<PatientRoomsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<PatientRoomsQuery>({ query: PatientRoomsDocument, ...options });
-};
-export const SpecificPatientTasksDocument = gql`
-    query specificPatientTasks($input: Float!) {
-  specificPatientTasks(input: $input) {
-    id
-    createdAt
-    parentTask {
-      name
-    }
-  }
-}
-    `;
-
-export function useSpecificPatientTasksQuery(options: Omit<Urql.UseQueryArgs<SpecificPatientTasksQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<SpecificPatientTasksQuery>({ query: SpecificPatientTasksDocument, ...options });
 };

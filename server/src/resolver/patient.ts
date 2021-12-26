@@ -22,11 +22,18 @@ export class PatientRoomOutput {
 export class PatientResolver {
   @Query(() => [Patient])
   async listPatients(): Promise<Patient[]> {
-    const res: Patient[] = await getConnection().query(
-      `SELECT * FROM "patient"`
+    const result = await getConnection().query(
+      `SELECT *
+      FROM "patient"`
     );
-    console.log(res);
-    return res;
+    return result;
+  }
+
+  @Query(() => Patient)
+  async getPatientById(@Arg("input") input: number): Promise<Patient> {
+    const result = await Patient.findOne(input);
+    // need to handle error when id does not exist
+    return result!;
   }
 
   @Query(() => [Int])

@@ -1,5 +1,6 @@
-const formatDate = (date: Date) => {
-  
-}
+const updateRender = () => {
+  console.log("update!");
+  return;
+};
 
-export default formatDate
+export default updateRender;

@@ -5,12 +5,11 @@ import { Task } from "../../entities/Task";
 import { User } from "../../entities/User";
 import { DrawBlood } from "../../entities/DrawBlood";
 import { PatientTask } from "../../entities/PatientTask";
+import { VenousCatheter } from "src/entities/VenousCatheter";
+import { VitalSigns } from "src/entities/VitalSigns";
 
 @InputType()
 export class RegisterInput implements Partial<User> {
-  @Field(() => String)
-  username: string;
-
   @Field(() => String)
   firstname: string;
 
@@ -32,22 +31,22 @@ export class RegisterInput implements Partial<User> {
 
 @InputType()
 export class AnkleBrachialIndexInput implements Partial<AnkleBrachialIndex> {
-  @Field(() => Int)
+  @Field(() => Float)
   rightArm: number;
 
-  @Field(() => Int)
+  @Field(() => Float)
   leftArm: number;
 
-  @Field(() => Int)
+  @Field(() => Float)
   rightLeg: number;
 
-  @Field(() => Int)
+  @Field(() => Float)
   leftLeg: number;
 
-  @Field(() => Float!)
+  @Field(() => Float)
   leftAbi?: number;
 
-  @Field(() => Float!)
+  @Field(() => Float)
   rightAbi?: number;
 
   @Field(() => Int)
@@ -56,11 +55,15 @@ export class AnkleBrachialIndexInput implements Partial<AnkleBrachialIndex> {
 
 @InputType()
 export class PatientTaskInput implements Partial<PatientTask> {
-
-  @Field(() => Boolean)
-  completed: boolean;
-
   @Field(() => String)
+  timepoint: string;
+
+  /*
+  @Field(() => Boolean)
+  completed?: boolean;
+  */
+
+  @Field(() => String, { nullable: true })
   result?: string;
 }
 
@@ -98,4 +101,40 @@ export class DrawBloodInput implements Partial<DrawBlood> {
 
   @Field()
   FlaskType: string;
+}
+
+@InputType()
+export class VenousCatheterInput implements Partial<VenousCatheter> {
+  @Field()
+  patientTaskId: number;
+
+  @Field()
+  location: string;
+
+  @Field()
+  catheterType: string;
+}
+
+@InputType()
+export class VitalSignsInput implements Partial<VitalSigns> {
+  @Field()
+  patientTaskId: number;
+
+  @Field({ defaultValue: false })
+  bloodPressureRequired: boolean;
+
+  @Field()
+  bloodPressureResult: number;
+
+  @Field({ defaultValue: false })
+  pulseRequired: boolean;
+
+  @Field()
+  pulseResult: number;
+
+  @Field({ defaultValue: false })
+  temperatureRequired: boolean;
+
+  @Field()
+  temperatureResult: number;
 }

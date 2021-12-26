@@ -28,32 +28,32 @@ __decorate([
 ], VitalSigns.prototype, "patientTask", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.CreateDateColumn)({ default: true }),
+    (0, typeorm_1.Column)({ default: true }),
     __metadata("design:type", Boolean)
 ], VitalSigns.prototype, "bloodPressureRequired", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.CreateDateColumn)({ default: true }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], VitalSigns.prototype, "bloodPressureResult", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.CreateDateColumn)({ default: true }),
+    (0, typeorm_1.Column)({ default: true }),
     __metadata("design:type", Boolean)
 ], VitalSigns.prototype, "pulseRequired", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.CreateDateColumn)({ default: true }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], VitalSigns.prototype, "pulseResult", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.CreateDateColumn)({ default: true }),
+    (0, typeorm_1.Column)({ default: true }),
     __metadata("design:type", Boolean)
 ], VitalSigns.prototype, "temperatureRequired", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.CreateDateColumn)({ default: true }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], VitalSigns.prototype, "temperatureResult", void 0);
 __decorate([

@@ -39,9 +39,15 @@ exports.PatientRoomOutput = PatientRoomOutput;
 let PatientResolver = class PatientResolver {
     listPatients() {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield (0, typeorm_1.getConnection)().query(`SELECT * FROM "patient"`);
-            console.log(res);
-            return res;
+            const result = yield (0, typeorm_1.getConnection)().query(`SELECT *
+      FROM "patient"`);
+            return result;
+        });
+    }
+    getPatientById(input) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = yield Patient_1.Patient.findOne(input);
+            return result;
         });
     }
     patientRooms() {
@@ -76,6 +82,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], PatientResolver.prototype, "listPatients", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => Patient_1.Patient),
+    __param(0, (0, type_graphql_1.Arg)("input")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], PatientResolver.prototype, "getPatientById", null);
 __decorate([
     (0, type_graphql_1.Query)(() => [type_graphql_1.Int]),
     __metadata("design:type", Function),

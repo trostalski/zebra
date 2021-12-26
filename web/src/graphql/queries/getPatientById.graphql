@@ -1,0 +1,10 @@
+query getPatientById($input: Float!) {
+  getPatientById(input: $input) {
+    id
+    room
+    firstname
+    lastname
+    age
+    diagnosis
+  }
+}

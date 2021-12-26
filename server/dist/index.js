@@ -25,15 +25,21 @@ const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const constants_1 = require("./constants");
 const AnkleBrachialIndex_1 = require("./entities/AnkleBrachialIndex");
+const DrawBlood_1 = require("./entities/DrawBlood");
 const Patient_1 = require("./entities/Patient");
 const PatientTask_1 = require("./entities/PatientTask");
 const Task_1 = require("./entities/Task");
 const User_1 = require("./entities/User");
+const VenousCatheter_1 = require("./entities/VenousCatheter");
+const VitalSigns_1 = require("./entities/VitalSigns");
 const anklebrachialindex_1 = require("./resolver/anklebrachialindex");
+const drawBloodResolver_1 = require("./resolver/drawBloodResolver");
 const patient_1 = require("./resolver/patient");
 const patientTask_1 = require("./resolver/patientTask");
 const task_1 = require("./resolver/task");
 const user_1 = require("./resolver/user");
+const venousCatheterResolver_1 = require("./resolver/venousCatheterResolver");
+const vitalSignsResolver_1 = require("./resolver/vitalSignsResolver");
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const connection = yield (0, typeorm_1.createConnection)({
         type: "postgres",
@@ -44,14 +50,18 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         database: "postgres",
         synchronize: true,
         logging: true,
-        entities: [User_1.User, PatientTask_1.PatientTask, AnkleBrachialIndex_1.AnkleBrachialIndex, Patient_1.Patient, Task_1.Task],
+        entities: [
+            User_1.User,
+            PatientTask_1.PatientTask,
+            AnkleBrachialIndex_1.AnkleBrachialIndex,
+            Patient_1.Patient,
+            Task_1.Task,
+            DrawBlood_1.DrawBlood,
+            VenousCatheter_1.VenousCatheter,
+            VitalSigns_1.VitalSigns,
+        ],
         migrations: [path_1.default.join(__dirname, "./migrations/*")],
     });
-    User_1.User.delete({});
-    Patient_1.Patient.delete({});
-    Task_1.Task.delete({});
-    AnkleBrachialIndex_1.AnkleBrachialIndex.delete({});
-    PatientTask_1.PatientTask.delete({});
     const app = (0, express_1.default)();
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
     const redis = new ioredis_1.default(process.env.REDIS_URL);
@@ -88,6 +98,9 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
                 task_1.TaskResolver,
                 patient_1.PatientResolver,
                 anklebrachialindex_1.AnkleBrachialIndexResolver,
+                drawBloodResolver_1.DrawBloodResolver,
+                venousCatheterResolver_1.VenousCatheterResolver,
+                vitalSignsResolver_1.VitalSignsResolver,
             ],
         }),
         context: ({ req, res }) => ({ req, res, redis }),

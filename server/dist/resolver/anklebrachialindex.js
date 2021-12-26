@@ -50,10 +50,11 @@ let AnkleBrachialIndexResolver = class AnkleBrachialIndexResolver {
             }
         });
     }
-    createAnkleBrachialIndex(abiInput, {}) {
+    createAnkleBrachialIndex(abiInput) {
         return __awaiter(this, void 0, void 0, function* () {
             const patientTask = yield PatientTask_1.PatientTask.findOne(abiInput.patientTaskId);
-            const result = yield AnkleBrachialIndex_1.AnkleBrachialIndex.create(Object.assign(Object.assign({}, abiInput), { patientTask: patientTask })).save();
+            const result = yield AnkleBrachialIndex_1.AnkleBrachialIndex.create(abiInput);
+            result.patientTask = patientTask;
             return result;
         });
     }
@@ -80,9 +81,8 @@ __decorate([
 __decorate([
     (0, type_graphql_1.Mutation)(() => AnkleBrachialIndex_1.AnkleBrachialIndex),
     __param(0, (0, type_graphql_1.Arg)("AbiInput")),
-    __param(1, (0, type_graphql_1.Ctx)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [resolverInputs_1.AnkleBrachialIndexInput, Object]),
+    __metadata("design:paramtypes", [resolverInputs_1.AnkleBrachialIndexInput]),
     __metadata("design:returntype", Promise)
 ], AnkleBrachialIndexResolver.prototype, "createAnkleBrachialIndex", null);
 AnkleBrachialIndexResolver = __decorate([

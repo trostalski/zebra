@@ -1,12 +1,9 @@
-query listPatients{
+query listPatientsStation {
   listPatients {
     id
     firstname
     lastname
     room
     age
-    diagnosis
-    createdAt
-    updatedAt
   }
 }

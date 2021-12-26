@@ -37,10 +37,21 @@ let PatientTaskResolver = class PatientTaskResolver {
             return result;
         });
     }
-    specificPatientTasks(input) {
+    patientAnforderungen(input) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(input);
+            console.log("Hey gusys  ");
+            const result = yield PatientTask_1.PatientTask.find({
+                where: { forPatient: input, completed: false },
+                relations: ["creatorUser", "forPatient", "parentTask"],
+            });
+            return result;
+        });
+    }
+    patientErgebnisse(input) {
         return __awaiter(this, void 0, void 0, function* () {
             const result = yield PatientTask_1.PatientTask.find({
-                where: { patientId: input },
+                where: { forPatient: input, completed: true },
                 relations: ["creatorUser", "forPatient", "parentTask"],
             });
             return result;
@@ -48,7 +59,7 @@ let PatientTaskResolver = class PatientTaskResolver {
     }
     createPatientTask(input, patientId, taskId, { req }) {
         return __awaiter(this, void 0, void 0, function* () {
-            const patientTask = yield PatientTask_1.PatientTask.create(input);
+            const patientTask = yield PatientTask_1.PatientTask.create(input).save();
             const forPatient = yield Patient_1.Patient.findOne(patientId);
             const parentTask = yield Task_1.Task.findOne(taskId);
             patientTask.creatorUser = yield User_1.User.findOne(req.session.userId);
@@ -77,7 +88,13 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
-], PatientTaskResolver.prototype, "specificPatientTasks", null);
+], PatientTaskResolver.prototype, "patientAnforderungen", null);
+__decorate([
+    __param(0, (0, type_graphql_1.Arg)("input")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], PatientTaskResolver.prototype, "patientErgebnisse", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => PatientTask_1.PatientTask),
     __param(0, (0, type_graphql_1.Arg)("input")),

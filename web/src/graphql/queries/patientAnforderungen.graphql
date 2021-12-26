@@ -1,0 +1,12 @@
+query patientAnforderungen($input: Float!) {
+  patientAnforderungen(input: $input) {
+    id
+    timepoint
+    parentTask {
+      name
+    }
+    creatorUser {
+      lastname
+    }
+  }
+}

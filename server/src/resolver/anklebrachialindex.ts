@@ -1,10 +1,4 @@
-import { MyContext } from "src/types";
-import {
-  Arg,
-  Ctx, Mutation,
-  Query,
-  Resolver
-} from "type-graphql";
+import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { AnkleBrachialIndex } from "../entities/AnkleBrachialIndex";
 import { PatientTask } from "../entities/PatientTask";
 import { Task } from "../entities/Task";
@@ -12,7 +6,6 @@ import { AnkleBrachialIndexInput } from "./utils/resolverInputs";
 
 @Resolver(AnkleBrachialIndex)
 export class AnkleBrachialIndexResolver {
-
   /*
   @FieldResolver(() => User)
   creatorUser(@Root() task: PatientTask) {
@@ -48,14 +41,11 @@ export class AnkleBrachialIndexResolver {
 
   @Mutation(() => AnkleBrachialIndex)
   async createAnkleBrachialIndex(
-    @Arg("AbiInput") abiInput: AnkleBrachialIndexInput,
-    @Ctx() {}: MyContext
+    @Arg("AbiInput") abiInput: AnkleBrachialIndexInput
   ): Promise<AnkleBrachialIndex> {
     const patientTask = await PatientTask.findOne(abiInput.patientTaskId);
-    const result = await AnkleBrachialIndex.create({
-      ...abiInput,
-      patientTask: patientTask,
-    }).save();
+    const result = await AnkleBrachialIndex.create(abiInput);
+    result.patientTask = patientTask!
     return result;
   }
 }

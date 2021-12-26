@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from "type-graphql";
+import { Field, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
@@ -19,7 +19,7 @@ import { User } from "./User";
 @ObjectType()
 @Entity()
 export class PatientTask extends BaseEntity {
-  @Field(() => Int)
+  @Field()
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -34,8 +34,13 @@ export class PatientTask extends BaseEntity {
   @Field()
   @ManyToOne(() => Patient, (patient) => patient.patientTasks, {
     onDelete: "CASCADE",
+    nullable: true,
   })
   forPatient?: Patient;
+
+  @Field()
+  @Column()
+  timepoint: String;
 
   @Field(() => Boolean)
   @Column({ default: false })

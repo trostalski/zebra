@@ -1,13 +1,6 @@
-import { Field, Float, ObjectType } from "type-graphql";
+import { Field, ObjectType } from "type-graphql";
 import {
-  Entity,
-  Column,
-  BaseEntity,
-  OneToOne,
-  JoinColumn,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
+  BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn
 } from "typeorm";
 import { PatientTask } from "./PatientTask";
 

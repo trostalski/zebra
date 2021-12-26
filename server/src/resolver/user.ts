@@ -12,7 +12,6 @@ import { RegisterInput } from "./utils/resolverInputs";
 import argon2 from "argon2";
 import { MyContext } from "src/types";
 
-
 @ObjectType()
 export class UserOutput {
   @Field(() => String, { nullable: true })
@@ -60,16 +59,12 @@ export class UserResolver {
   @Mutation(() => UserOutput)
   async login(
     @Ctx() { req }: MyContext,
-    @Arg("usernameOrEmail") usernameOrEmail: string,
+    @Arg("email") email: string,
     @Arg("password") password: string
   ): Promise<UserOutput> {
     try {
-      const user = await User.findOne(
-        usernameOrEmail.includes("@")
-          ? { where: { email: usernameOrEmail } }
-          : { where: { username: usernameOrEmail } }
-      );
-      if (!user) return { message: "user does not exist" };
+      const user = await User.findOne({ where: { email: email } });
+      if (!user) return { message: "email does not exist" };
 
       const valid = await argon2.verify(user.password, password);
       console.log(user.id);

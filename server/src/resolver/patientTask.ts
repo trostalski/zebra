@@ -19,11 +19,21 @@ export class PatientTaskResolver {
 
   // get Tasks for specific patient
   @Query(() => [PatientTask], { nullable: true })
-  async specificPatientTasks(
+  async patientAnforderungen(
     @Arg("input") input: number
   ): Promise<PatientTask[]> {
+    console.log(input);
+    console.log("Hey gusys  ")
     const result = await PatientTask.find({
-      where: { patientId: input },
+      where: { forPatient: input, completed: false },
+      relations: ["creatorUser", "forPatient", "parentTask"],
+    });
+    return result;
+  }
+
+  async patientErgebnisse(@Arg("input") input: number): Promise<PatientTask[]> {
+    const result = await PatientTask.find({
+      where: { forPatient: input, completed: true },
       relations: ["creatorUser", "forPatient", "parentTask"],
     });
     return result;
@@ -36,7 +46,7 @@ export class PatientTaskResolver {
     @Arg("taskId") taskId: number,
     @Ctx() { req }: MyContext
   ): Promise<PatientTask> {
-    const patientTask = await PatientTask.create(input);
+    const patientTask = await PatientTask.create(input).save();
     const forPatient = await Patient.findOne(patientId);
     const parentTask = await Task.findOne(taskId);
 

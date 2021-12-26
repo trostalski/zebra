@@ -1,5 +1,0 @@
-mutation CreateAnkleBrachialIndex($abiInput: AnkleBrachialIndexInput!) {
-  createAnkleBrachialIndex(AbiInput: $abiInput) {
-    id
-  }
-}

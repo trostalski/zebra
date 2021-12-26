@@ -1,0 +1,8 @@
+query listTaskNames {
+  listTasks {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}

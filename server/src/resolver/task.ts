@@ -1,9 +1,5 @@
 import {
-  Arg,
-  Field,
-  Mutation,
-  ObjectType,
-  Query,
+  Arg, Mutation, Query,
   Resolver
 } from "type-graphql";
 import { Task } from "../entities/Task";

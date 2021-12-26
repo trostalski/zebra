@@ -9,14 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DrawBloodInput = exports.TaskInput = exports.PatientInput = exports.PatientTaskInput = exports.AnkleBrachialIndexInput = exports.RegisterInput = void 0;
+exports.VitalSignsInput = exports.VenousCatheterInput = exports.DrawBloodInput = exports.TaskInput = exports.PatientInput = exports.PatientTaskInput = exports.AnkleBrachialIndexInput = exports.RegisterInput = void 0;
 const type_graphql_1 = require("type-graphql");
 let RegisterInput = class RegisterInput {
 };
-__decorate([
-    (0, type_graphql_1.Field)(() => String),
-    __metadata("design:type", String)
-], RegisterInput.prototype, "username", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => String),
     __metadata("design:type", String)
@@ -48,19 +44,19 @@ exports.RegisterInput = RegisterInput;
 let AnkleBrachialIndexInput = class AnkleBrachialIndexInput {
 };
 __decorate([
-    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
+    (0, type_graphql_1.Field)(() => type_graphql_1.Float),
     __metadata("design:type", Number)
 ], AnkleBrachialIndexInput.prototype, "rightArm", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
+    (0, type_graphql_1.Field)(() => type_graphql_1.Float),
     __metadata("design:type", Number)
 ], AnkleBrachialIndexInput.prototype, "leftArm", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
+    (0, type_graphql_1.Field)(() => type_graphql_1.Float),
     __metadata("design:type", Number)
 ], AnkleBrachialIndexInput.prototype, "rightLeg", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
+    (0, type_graphql_1.Field)(() => type_graphql_1.Float),
     __metadata("design:type", Number)
 ], AnkleBrachialIndexInput.prototype, "leftLeg", void 0);
 __decorate([
@@ -82,11 +78,11 @@ exports.AnkleBrachialIndexInput = AnkleBrachialIndexInput;
 let PatientTaskInput = class PatientTaskInput {
 };
 __decorate([
-    (0, type_graphql_1.Field)(() => Boolean),
-    __metadata("design:type", Boolean)
-], PatientTaskInput.prototype, "completed", void 0);
-__decorate([
     (0, type_graphql_1.Field)(() => String),
+    __metadata("design:type", String)
+], PatientTaskInput.prototype, "timepoint", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => String, { nullable: true }),
     __metadata("design:type", String)
 ], PatientTaskInput.prototype, "result", void 0);
 PatientTaskInput = __decorate([
@@ -147,4 +143,56 @@ DrawBloodInput = __decorate([
     (0, type_graphql_1.InputType)()
 ], DrawBloodInput);
 exports.DrawBloodInput = DrawBloodInput;
+let VenousCatheterInput = class VenousCatheterInput {
+};
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", Number)
+], VenousCatheterInput.prototype, "patientTaskId", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", String)
+], VenousCatheterInput.prototype, "location", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", String)
+], VenousCatheterInput.prototype, "catheterType", void 0);
+VenousCatheterInput = __decorate([
+    (0, type_graphql_1.InputType)()
+], VenousCatheterInput);
+exports.VenousCatheterInput = VenousCatheterInput;
+let VitalSignsInput = class VitalSignsInput {
+};
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", Number)
+], VitalSignsInput.prototype, "patientTaskId", void 0);
+__decorate([
+    (0, type_graphql_1.Field)({ defaultValue: false }),
+    __metadata("design:type", Boolean)
+], VitalSignsInput.prototype, "bloodPressureRequired", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", Number)
+], VitalSignsInput.prototype, "bloodPressureResult", void 0);
+__decorate([
+    (0, type_graphql_1.Field)({ defaultValue: false }),
+    __metadata("design:type", Boolean)
+], VitalSignsInput.prototype, "pulseRequired", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", Number)
+], VitalSignsInput.prototype, "pulseResult", void 0);
+__decorate([
+    (0, type_graphql_1.Field)({ defaultValue: false }),
+    __metadata("design:type", Boolean)
+], VitalSignsInput.prototype, "temperatureRequired", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", Number)
+], VitalSignsInput.prototype, "temperatureResult", void 0);
+VitalSignsInput = __decorate([
+    (0, type_graphql_1.InputType)()
+], VitalSignsInput);
+exports.VitalSignsInput = VitalSignsInput;
 //# sourceMappingURL=resolverInputs.js.map

@@ -14,15 +14,21 @@ import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import { __prod__ } from "./constants";
 import { AnkleBrachialIndex } from "./entities/AnkleBrachialIndex";
+import { DrawBlood } from "./entities/DrawBlood";
 import { Patient } from "./entities/Patient";
 import { PatientTask } from "./entities/PatientTask";
 import { Task } from "./entities/Task";
 import { User } from "./entities/User";
+import { VenousCatheter } from "./entities/VenousCatheter";
+import { VitalSigns } from "./entities/VitalSigns";
 import { AnkleBrachialIndexResolver } from "./resolver/anklebrachialindex";
+import { DrawBloodResolver } from "./resolver/drawBloodResolver";
 import { PatientResolver } from "./resolver/patient";
 import { PatientTaskResolver } from "./resolver/patientTask";
 import { TaskResolver } from "./resolver/task";
 import { UserResolver } from "./resolver/user";
+import { VenousCatheterResolver } from "./resolver/venousCatheterResolver";
+import { VitalSignsResolver } from "./resolver/vitalSignsResolver";
 // import { ApolloServerLoaderPlugin } from "type-graphql-dataloader";
 // import { getConnection } from "typeorm";
 
@@ -36,15 +42,26 @@ const main = async () => {
     database: "postgres",
     synchronize: true,
     logging: true,
-    entities: [User, PatientTask, AnkleBrachialIndex, Patient, Task],
+    entities: [
+      User,
+      PatientTask,
+      AnkleBrachialIndex,
+      Patient,
+      Task,
+      DrawBlood,
+      VenousCatheter,
+      VitalSigns,
+    ],
     migrations: [path.join(__dirname, "./migrations/*")],
   });
+  /*
   User.delete({});
   Patient.delete({});
   Task.delete({});
   AnkleBrachialIndex.delete({});
   PatientTask.delete({});
-  // await connection.runMigrations();
+  await connection.runMigrations();
+  */
 
   const app = express();
 
@@ -93,6 +110,9 @@ const main = async () => {
         TaskResolver,
         PatientResolver,
         AnkleBrachialIndexResolver,
+        DrawBloodResolver,
+        VenousCatheterResolver,
+        VitalSignsResolver,
       ],
     }),
     context: ({ req, res }) => ({ req, res, redis }),

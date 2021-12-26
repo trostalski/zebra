@@ -1,0 +1,15 @@
+mutation createAnforderung($taskId: Float!, $patientId: Float!, $input: PatientTaskInput!) {
+  createPatientTask(taskId: $taskId, patientId: $patientId, input: $input) {
+    id
+    parentTask {
+      id
+      name
+    }
+    creatorUser {
+      id
+      lastname
+    }
+    timepoint
+    completed
+  }
+}

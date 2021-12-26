@@ -1,5 +1,0 @@
-mutation CreatePatientTask($taskId: Float!, $patientId: Float!) {
-  createPatientTask(taskId: $taskId, patientId: $patientId) {
-    id
-  }
-}

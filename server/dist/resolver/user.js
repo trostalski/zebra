@@ -72,14 +72,12 @@ let UserResolver = class UserResolver {
             }
         });
     }
-    login({ req }, usernameOrEmail, password) {
+    login({ req }, email, password) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const user = yield User_1.User.findOne(usernameOrEmail.includes("@")
-                    ? { where: { email: usernameOrEmail } }
-                    : { where: { username: usernameOrEmail } });
+                const user = yield User_1.User.findOne({ where: { email: email } });
                 if (!user)
-                    return { message: "user does not exist" };
+                    return { message: "email does not exist" };
                 const valid = yield argon2_1.default.verify(user.password, password);
                 console.log(user.id);
                 req.session.userId = user.id;
@@ -136,7 +134,7 @@ __decorate([
 __decorate([
     (0, type_graphql_1.Mutation)(() => UserOutput),
     __param(0, (0, type_graphql_1.Ctx)()),
-    __param(1, (0, type_graphql_1.Arg)("usernameOrEmail")),
+    __param(1, (0, type_graphql_1.Arg)("email")),
     __param(2, (0, type_graphql_1.Arg)("password")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, String]),
