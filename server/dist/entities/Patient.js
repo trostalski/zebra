@@ -46,7 +46,7 @@ __decorate([
     __metadata("design:type", String)
 ], Patient.prototype, "diagnosis", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => [PatientTask_1.PatientTask]),
+    (0, type_graphql_1.Field)(() => [PatientTask_1.PatientTask], { nullable: true }),
     (0, typeorm_1.OneToMany)(() => PatientTask_1.PatientTask, (task) => task.forPatient, { nullable: true }),
     __metadata("design:type", Object)
 ], Patient.prototype, "patientTasks", void 0);

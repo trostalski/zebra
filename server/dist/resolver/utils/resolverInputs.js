@@ -82,6 +82,14 @@ __decorate([
     __metadata("design:type", String)
 ], PatientTaskInput.prototype, "timepoint", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(() => Boolean, { defaultValue: false }),
+    __metadata("design:type", Boolean)
+], PatientTaskInput.prototype, "urgent", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => String, { nullable: true }),
+    __metadata("design:type", String)
+], PatientTaskInput.prototype, "comment", void 0);
+__decorate([
     (0, type_graphql_1.Field)(() => String, { nullable: true }),
     __metadata("design:type", String)
 ], PatientTaskInput.prototype, "result", void 0);

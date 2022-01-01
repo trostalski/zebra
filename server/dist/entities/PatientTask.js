@@ -46,6 +46,16 @@ __decorate([
     __metadata("design:type", String)
 ], PatientTask.prototype, "timepoint", void 0);
 __decorate([
+    (0, type_graphql_1.Field)({ nullable: true }),
+    (0, typeorm_1.Column)({ nullable: true, type: "text" }),
+    __metadata("design:type", String)
+], PatientTask.prototype, "comment", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => Boolean),
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], PatientTask.prototype, "urgent", void 0);
+__decorate([
     (0, type_graphql_1.Field)(() => Boolean),
     (0, typeorm_1.Column)({ default: false }),
     __metadata("design:type", Boolean)

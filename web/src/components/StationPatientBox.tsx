@@ -33,7 +33,7 @@ export const StationPatientBox: React.FC<StationPatientBox> = ({}) => {
   return (
     <>
       <SimpleGrid columns={2} spacingX="20" spacingY="6">
-        {patientRooms?.patientRooms.map((r) =>
+        {patientRooms?.patientRooms?.map((r) =>
           !r ? null : (
             <Box
               key={r}
@@ -46,7 +46,7 @@ export const StationPatientBox: React.FC<StationPatientBox> = ({}) => {
               <Heading ml={4} fontSize="l" mb={4}>
                 Zimmer: {r}
               </Heading>
-              {listPatientsStation?.listPatients.map((p) =>
+              {listPatientsStation?.listPatients?.map((p) =>
                 !p ? null : p.room == r ? (
                   <Flex key={p.id} flexDirection="column" p={2}>
                     <Button
@@ -59,7 +59,7 @@ export const StationPatientBox: React.FC<StationPatientBox> = ({}) => {
                       }}
                       onClick={() => {
                         onOpen();
-                        setOpenPatient(p.id);
+                        setOpenPatient(p.id!);
                       }}
                     >
                       <Text mr="auto">{p.firstname + " " + p.lastname} </Text>

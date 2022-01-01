@@ -40,7 +40,6 @@ let PatientTaskResolver = class PatientTaskResolver {
     patientAnforderungen(input) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(input);
-            console.log("Hey gusys  ");
             const result = yield PatientTask_1.PatientTask.find({
                 where: { forPatient: input, completed: false },
                 relations: ["creatorUser", "forPatient", "parentTask"],
@@ -65,8 +64,7 @@ let PatientTaskResolver = class PatientTaskResolver {
             patientTask.creatorUser = yield User_1.User.findOne(req.session.userId);
             patientTask.forPatient = forPatient;
             patientTask.parentTask = parentTask;
-            patientTask.save();
-            return patientTask;
+            return yield patientTask.save();
         });
     }
     deletePatientTask(id) {

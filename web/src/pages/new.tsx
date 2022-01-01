@@ -34,9 +34,9 @@ const New: React.FC<NewProps> = ({}) => {
             link="/station"
           />
           <IndexButton1
-            description="Anfordern"
+            description="Anforderungen"
             icon={anfordernIcon}
-            link="/station"
+            link="/anforderungen"
           />
           <IndexButton1
             description="Ergebnisse"

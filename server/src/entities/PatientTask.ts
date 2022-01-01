@@ -42,6 +42,14 @@ export class PatientTask extends BaseEntity {
   @Column()
   timepoint: String;
 
+  @Field({ nullable: true })
+  @Column({ nullable: true, type: "text" })
+  comment?: string;
+
+  @Field(() => Boolean)
+  @Column({ default: false })
+  urgent: boolean;
+
   @Field(() => Boolean)
   @Column({ default: false })
   completed!: boolean;

@@ -8,12 +8,15 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Flex,
-  Text,
+  Text
 } from "@chakra-ui/react";
 import React from "react";
-import { useGetPatientByIdQuery } from "../generated/graphql";
-import { AnforderungenBox } from "./AnforderungenBox";
-import { ErgebnisseBox } from "./UntersuchungenBox";
+import {
+  useGetPatientByIdQuery
+} from "../generated/graphql";
+import { ErgebnisseBox } from "./ErgebnisseBox";
+import { PatientAnfordernBox } from "./PatientAnfordernBox";
+import { PatientAnforderungenBox } from "./PatientAnforderungenBox";
 
 interface PatienDrawerProps {
   patientId: number;
@@ -33,34 +36,41 @@ export const PatientDrawer: React.FC<PatienDrawerProps> = ({
       input: patientId,
     },
   });
+
   return (
     <Drawer isOpen={show} onClose={handleClose} size="xl" placement="right">
       <DrawerOverlay />
       <DrawerContent mt="20" rounded="xl" bgColor="mainGreen" color="white">
         {children}
         <DrawerCloseButton />
-        <DrawerHeader fontSize="38">
+        <DrawerHeader fontSize="28" flexDir="row">
           {patient?.getPatientById.firstname} {patient?.getPatientById.lastname}
         </DrawerHeader>
-
-        <DrawerBody fontSize="20">
-          <Text p={2}>
-            <b> Alter: </b> {patient?.getPatientById.age}
-          </Text>
-          <Text p={2}>
-            <b> Diagnose(n): </b> {patient?.getPatientById.diagnosis}
-          </Text>
-          <Text p={2}>
-            <b> Stationär seit: </b>{" "}
-          </Text>
-          <Text p={2}>
-            <b> Voraussichtliche Entlassung: </b>
-          </Text>
-          <Flex>
-            <AnforderungenBox patientId={patientId} />
-          </Flex>
-          <Flex mt={2}>
-            <ErgebnisseBox patientId={patientId} />
+        <DrawerBody fontSize="14">
+          <Flex flexDir="row">
+            <Flex flexDir="column">
+              <Text>
+                <b> Alter </b>
+                <br /> {patient?.getPatientById.age}
+              </Text>
+              <Text>
+                <b> Diagnose </b>
+                <br /> {patient?.getPatientById.diagnosis}
+              </Text>
+              <Text>
+                <b> Stationär seit </b>
+                <br /> {patient?.getPatientById.updatedAt}
+              </Text>
+              <Text>
+                <b> Voraussichtliche Entlassung </b>
+                <br /> {patient?.getPatientById.createdAt}
+              </Text>
+              <ErgebnisseBox></ErgebnisseBox>
+            </Flex>
+            <Flex flexDir="column" ml="auto">
+              <PatientAnfordernBox patientId={patientId} />
+              <PatientAnforderungenBox patientId={patientId} />
+            </Flex>
           </Flex>
         </DrawerBody>
 

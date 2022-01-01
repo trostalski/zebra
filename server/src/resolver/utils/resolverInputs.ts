@@ -58,6 +58,12 @@ export class PatientTaskInput implements Partial<PatientTask> {
   @Field(() => String)
   timepoint: string;
 
+  @Field(() => Boolean, { defaultValue: false })
+  urgent: boolean;
+
+  @Field(() => String, { nullable: true })
+  comment?: string;
+
   /*
   @Field(() => Boolean)
   completed?: boolean;

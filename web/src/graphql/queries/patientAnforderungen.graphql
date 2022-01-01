@@ -1,11 +1,17 @@
 query patientAnforderungen($input: Float!) {
+  __typename
   patientAnforderungen(input: $input) {
+    __typename
     id
     timepoint
+    urgent
+    comment
     parentTask {
+      id
       name
     }
     creatorUser {
+      id
       lastname
     }
   }

@@ -4,6 +4,7 @@ import {
   Center,
   Flex,
   Input,
+  Text,
   InputGroup,
   InputRightElement,
   SimpleGrid,
@@ -12,18 +13,18 @@ import React from "react";
 import { useListTaskNamesQuery } from "../generated/graphql";
 import { ClickableAnforderungsButton } from "./ClickableAnforderungsButton";
 
-type AnforderungenBoxProps = {
+type PatientAnfordernBoxProps = {
   patientId: number;
 };
 
-export const AnforderungenBox: React.FC<AnforderungenBoxProps> = ({
+export const PatientAnfordernBox: React.FC<PatientAnfordernBoxProps> = ({
   patientId,
   children,
 }) => {
   const [{ data, fetching }] = useListTaskNamesQuery();
   return (
     <Box
-      w="60vw"
+      w="30vw"
       h="25vh"
       bgColor="white"
       overflowY="auto" // enables scrolling for y-overflow
@@ -36,7 +37,7 @@ export const AnforderungenBox: React.FC<AnforderungenBoxProps> = ({
           w="10vw"
           rounded="3xl"
           ml={4}
-          size="md"
+          size="sm"
           shadow="md"
           bgColor="white"
         >
@@ -48,10 +49,10 @@ export const AnforderungenBox: React.FC<AnforderungenBoxProps> = ({
         </InputGroup>
       </Center>
       <Center>
-        <SimpleGrid columns={4} spacing={6} p={4}>
+        <SimpleGrid columns={4} spacing={2} p={2}>
           {data?.listTasks?.map((d) =>
             !d ? (
-              <Center>{console.log("no data!")}no data</Center>
+              <Text>Keine Daten</Text>
             ) : (
               <Flex key={d.id}>
                 <ClickableAnforderungsButton

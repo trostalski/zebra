@@ -1,0 +1,23 @@
+query ListPatientTasks {
+  listPatientTasks {
+    comment
+    createdAt
+    id
+    timepoint
+    updatedAt
+    urgent
+    creatorUser {
+      id
+      lastname
+    }
+    forPatient {
+      id
+      firstname
+      lastname
+    }
+    parentTask {
+      id
+      name
+    }
+  }
+}

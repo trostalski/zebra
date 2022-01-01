@@ -23,7 +23,6 @@ export class PatientTaskResolver {
     @Arg("input") input: number
   ): Promise<PatientTask[]> {
     console.log(input);
-    console.log("Hey gusys  ")
     const result = await PatientTask.find({
       where: { forPatient: input, completed: false },
       relations: ["creatorUser", "forPatient", "parentTask"],
@@ -54,8 +53,7 @@ export class PatientTaskResolver {
     patientTask.forPatient = forPatient;
     patientTask.parentTask = parentTask;
 
-    patientTask.save();
-    return patientTask;
+    return await patientTask.save();
   }
 
   @Mutation(() => String)

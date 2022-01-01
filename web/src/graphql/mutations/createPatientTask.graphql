@@ -1,0 +1,23 @@
+mutation createPatientTask(
+  $taskId: Float!
+  $patientId: Float!
+  $input: PatientTaskInput!
+) {
+  createPatientTask(taskId: $taskId, patientId: $patientId, input: $input) {
+    __typename
+    id
+    timepoint
+    urgent
+    comment
+    createdAt
+    updatedAt
+    parentTask {
+      id
+      name
+    }
+    creatorUser {
+      id
+      lastname
+    }
+  }
+}

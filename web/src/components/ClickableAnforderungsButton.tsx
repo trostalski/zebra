@@ -12,7 +12,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { useCreateAnforderungMutation } from "../generated/graphql";
+import { useCreatePatientTaskMutation } from "../generated/graphql";
 
 interface ClickableAnforderungsButtonProps {
   taskName: string;
@@ -33,10 +33,10 @@ export const ClickableAnforderungsButton: React.FC<ClickableAnforderungsButtonPr
     const [comment, setcomment] = useState(false);
 
     // Anforderung als dringlich markiert
-    const [warning, setwarning] = useState(false);
+    const [urgent, seturgent] = useState(false);
 
     // Anforderung erstellen
-    const [, createAnforderung] = useCreateAnforderungMutation();
+    const [, createAnforderung] = useCreatePatientTaskMutation();
 
     return (
       <>
@@ -53,8 +53,8 @@ export const ClickableAnforderungsButton: React.FC<ClickableAnforderungsButtonPr
               bgColor="mainWhite"
               borderWidth={1}
               borderColor="gray.300"
-              w={40}
-              h={16}
+              w={20}
+              h={10}
               rounded="lg"
               shadow="md"
               _hover={{
@@ -65,16 +65,16 @@ export const ClickableAnforderungsButton: React.FC<ClickableAnforderungsButtonPr
                 onOpen();
               }}
             >
-              <Text fontSize="32" fontWeight="hairline">
+              <Text fontSize="16" fontWeight="hairline">
                 {taskName}
               </Text>
             </Box>
           </PopoverTrigger>
-          <PopoverContent p={5} fontSize="14" w={80}>
+          <PopoverContent p={5} fontSize="12" w={60}>
             <PopoverArrow />
             <Flex
               as="button"
-              fontSize="16"
+              fontSize="12"
               align="center"
               _hover={{
                 fontWeight: "bold",
@@ -85,6 +85,7 @@ export const ClickableAnforderungsButton: React.FC<ClickableAnforderungsButtonPr
                   patientId: patientId,
                   input: {
                     timepoint: "heute",
+                    urgent: urgent,
                   },
                 });
                 onClose();
@@ -127,18 +128,22 @@ export const ClickableAnforderungsButton: React.FC<ClickableAnforderungsButtonPr
             <Flex
               as="button"
               align="center"
-              color={!warning ? "gray" : "red"}
-              fontWeight={!warning ? "normal" : "bold"}
+              color={!urgent ? "gray" : "red"}
+              fontWeight={!urgent ? "normal" : "bold"}
               _hover={{
                 fontWeight: "bold",
               }}
-              onClick={() => setwarning(!warning)}
+              onClick={() => seturgent(!urgent)}
             >
               <WarningIcon />
               <Text ml={2}>als dringlich markieren</Text>
             </Flex>
-            {!timepoint ? null : <Input mt={2} placeholder="Zeitpunkt"></Input>}
-            {!comment ? null : <Input mt={2} placeholder="Kommentar"></Input>}
+            {!timepoint ? null : (
+              <Input mt={2} fontSize="12" placeholder="Zeitpunkt"></Input>
+            )}
+            {!comment ? null : (
+              <Input mt={2} fontSize="12" placeholder="Kommentar"></Input>
+            )}
             <PopoverCloseButton />
           </PopoverContent>
         </Popover>

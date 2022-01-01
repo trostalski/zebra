@@ -1,0 +1,3 @@
+mutation DeletePatientTask($patientTaskId: Float!) {
+  deletePatientTask(PatientTaskId: $patientTaskId)
+}

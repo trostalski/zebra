@@ -35,7 +35,7 @@ const IndexBox1 = ({}) => {
       </Text>
       <Box alignSelf="center" size="sm" m={8}>
         <Img
-          boxSize="180px"
+          boxSize="140px"
           src={"/171029Logo_UKHD_dt_positiv_CMYK Kopie.png"}
         />
       </Box>

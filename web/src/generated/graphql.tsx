@@ -166,7 +166,7 @@ export type Patient = {
   firstname: Scalars['String'];
   id: Scalars['Float'];
   lastname: Scalars['String'];
-  patientTasks: Array<PatientTask>;
+  patientTasks?: Maybe<Array<PatientTask>>;
   room: Scalars['Float'];
   updatedAt: Scalars['DateTime'];
 };
@@ -181,6 +181,7 @@ export type PatientInput = {
 
 export type PatientTask = {
   __typename?: 'PatientTask';
+  comment?: Maybe<Scalars['String']>;
   completed: Scalars['Boolean'];
   createdAt: Scalars['DateTime'];
   creatorUser: User;
@@ -190,11 +191,14 @@ export type PatientTask = {
   result?: Maybe<Scalars['String']>;
   timepoint: Scalars['String'];
   updatedAt: Scalars['DateTime'];
+  urgent: Scalars['Boolean'];
 };
 
 export type PatientTaskInput = {
+  comment?: Maybe<Scalars['String']>;
   result?: Maybe<Scalars['String']>;
   timepoint: Scalars['String'];
+  urgent?: Maybe<Scalars['Boolean']>;
 };
 
 export type Query = {
@@ -307,21 +311,33 @@ export type VitalSignsInput = {
   temperatureResult: Scalars['Float'];
 };
 
-export type CreateAnforderungMutationVariables = Exact<{
+export type CreatePatientTaskMutationVariables = Exact<{
   taskId: Scalars['Float'];
   patientId: Scalars['Float'];
   input: PatientTaskInput;
 }>;
 
 
-export type CreateAnforderungMutation = { __typename?: 'Mutation', createPatientTask: { __typename?: 'PatientTask', id: number, timepoint: string, completed: boolean, parentTask: { __typename?: 'Task', id: number, name: string }, creatorUser: { __typename?: 'User', id: number, lastname: string } } };
+export type CreatePatientTaskMutation = { __typename?: 'Mutation', createPatientTask: { __typename: 'PatientTask', id: number, timepoint: string, urgent: boolean, comment?: string | null | undefined, createdAt: any, updatedAt: any, parentTask: { __typename?: 'Task', id: number, name: string }, creatorUser: { __typename?: 'User', id: number, lastname: string } } };
+
+export type DeletePatientTaskMutationVariables = Exact<{
+  patientTaskId: Scalars['Float'];
+}>;
+
+
+export type DeletePatientTaskMutation = { __typename?: 'Mutation', deletePatientTask: string };
 
 export type GetPatientByIdQueryVariables = Exact<{
   input: Scalars['Float'];
 }>;
 
 
-export type GetPatientByIdQuery = { __typename?: 'Query', getPatientById: { __typename?: 'Patient', id: number, room: number, firstname: string, lastname: string, age: number, diagnosis: string } };
+export type GetPatientByIdQuery = { __typename?: 'Query', getPatientById: { __typename?: 'Patient', id: number, room: number, firstname: string, lastname: string, age: number, diagnosis: string, createdAt: any, updatedAt: any } };
+
+export type ListPatientTasksQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListPatientTasksQuery = { __typename?: 'Query', listPatientTasks?: Array<{ __typename?: 'PatientTask', comment?: string | null | undefined, createdAt: any, id: number, timepoint: string, updatedAt: any, urgent: boolean, creatorUser: { __typename?: 'User', id: number, lastname: string }, forPatient: { __typename?: 'Patient', id: number, firstname: string, lastname: string }, parentTask: { __typename?: 'Task', id: number, name: string } }> | null | undefined };
 
 export type ListPatientsStationQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -338,7 +354,7 @@ export type PatientAnforderungenQueryVariables = Exact<{
 }>;
 
 
-export type PatientAnforderungenQuery = { __typename?: 'Query', patientAnforderungen?: Array<{ __typename?: 'PatientTask', id: number, timepoint: string, parentTask: { __typename?: 'Task', name: string }, creatorUser: { __typename?: 'User', lastname: string } }> | null | undefined };
+export type PatientAnforderungenQuery = { __typename: 'Query', patientAnforderungen?: Array<{ __typename: 'PatientTask', id: number, timepoint: string, urgent: boolean, comment?: string | null | undefined, parentTask: { __typename?: 'Task', id: number, name: string }, creatorUser: { __typename?: 'User', id: number, lastname: string } }> | null | undefined };
 
 export type PatientRoomsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -346,10 +362,16 @@ export type PatientRoomsQueryVariables = Exact<{ [key: string]: never; }>;
 export type PatientRoomsQuery = { __typename?: 'Query', patientRooms: Array<number> };
 
 
-export const CreateAnforderungDocument = gql`
-    mutation createAnforderung($taskId: Float!, $patientId: Float!, $input: PatientTaskInput!) {
+export const CreatePatientTaskDocument = gql`
+    mutation createPatientTask($taskId: Float!, $patientId: Float!, $input: PatientTaskInput!) {
   createPatientTask(taskId: $taskId, patientId: $patientId, input: $input) {
+    __typename
     id
+    timepoint
+    urgent
+    comment
+    createdAt
+    updatedAt
     parentTask {
       id
       name
@@ -358,14 +380,21 @@ export const CreateAnforderungDocument = gql`
       id
       lastname
     }
-    timepoint
-    completed
   }
 }
     `;
 
-export function useCreateAnforderungMutation() {
-  return Urql.useMutation<CreateAnforderungMutation, CreateAnforderungMutationVariables>(CreateAnforderungDocument);
+export function useCreatePatientTaskMutation() {
+  return Urql.useMutation<CreatePatientTaskMutation, CreatePatientTaskMutationVariables>(CreatePatientTaskDocument);
+};
+export const DeletePatientTaskDocument = gql`
+    mutation DeletePatientTask($patientTaskId: Float!) {
+  deletePatientTask(PatientTaskId: $patientTaskId)
+}
+    `;
+
+export function useDeletePatientTaskMutation() {
+  return Urql.useMutation<DeletePatientTaskMutation, DeletePatientTaskMutationVariables>(DeletePatientTaskDocument);
 };
 export const GetPatientByIdDocument = gql`
     query getPatientById($input: Float!) {
@@ -376,12 +405,43 @@ export const GetPatientByIdDocument = gql`
     lastname
     age
     diagnosis
+    createdAt
+    updatedAt
   }
 }
     `;
 
 export function useGetPatientByIdQuery(options: Omit<Urql.UseQueryArgs<GetPatientByIdQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<GetPatientByIdQuery>({ query: GetPatientByIdDocument, ...options });
+};
+export const ListPatientTasksDocument = gql`
+    query ListPatientTasks {
+  listPatientTasks {
+    comment
+    createdAt
+    id
+    timepoint
+    updatedAt
+    urgent
+    creatorUser {
+      id
+      lastname
+    }
+    forPatient {
+      id
+      firstname
+      lastname
+    }
+    parentTask {
+      id
+      name
+    }
+  }
+}
+    `;
+
+export function useListPatientTasksQuery(options: Omit<Urql.UseQueryArgs<ListPatientTasksQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ListPatientTasksQuery>({ query: ListPatientTasksDocument, ...options });
 };
 export const ListPatientsStationDocument = gql`
     query listPatientsStation {
@@ -414,13 +474,19 @@ export function useListTaskNamesQuery(options: Omit<Urql.UseQueryArgs<ListTaskNa
 };
 export const PatientAnforderungenDocument = gql`
     query patientAnforderungen($input: Float!) {
+  __typename
   patientAnforderungen(input: $input) {
+    __typename
     id
     timepoint
+    urgent
+    comment
     parentTask {
+      id
       name
     }
     creatorUser {
+      id
       lastname
     }
   }
