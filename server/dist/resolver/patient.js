@@ -21,21 +21,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PatientResolver = exports.PatientRoomOutput = void 0;
+exports.PatientResolver = exports.NumPatientTasks = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const Patient_1 = require("../entities/Patient");
 const resolverInputs_1 = require("./utils/resolverInputs");
-let PatientRoomOutput = class PatientRoomOutput {
+let NumPatientTasks = class NumPatientTasks {
 };
 __decorate([
-    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
+    (0, type_graphql_1.Field)(() => type_graphql_1.Int, { nullable: true }),
     __metadata("design:type", Number)
-], PatientRoomOutput.prototype, "room", void 0);
-PatientRoomOutput = __decorate([
+], NumPatientTasks.prototype, "forPatientId", void 0);
+__decorate([
+    (0, type_graphql_1.Field)({ nullable: true }),
+    __metadata("design:type", Number)
+], NumPatientTasks.prototype, "count", void 0);
+NumPatientTasks = __decorate([
     (0, type_graphql_1.ObjectType)()
-], PatientRoomOutput);
-exports.PatientRoomOutput = PatientRoomOutput;
+], NumPatientTasks);
+exports.NumPatientTasks = NumPatientTasks;
 let PatientResolver = class PatientResolver {
     listPatients() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -60,6 +64,14 @@ let PatientResolver = class PatientResolver {
             rooms.forEach((room) => {
                 result.push(room["room"]);
             });
+            return result;
+        });
+    }
+    numPatientTasks() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = yield (0, typeorm_1.getConnection)().query(` SELECT patient_task."forPatientId", count(*)
+        FROM patient_task
+        GROUP BY patient_task."forPatientId"`);
             return result;
         });
     }
@@ -95,6 +107,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], PatientResolver.prototype, "patientRooms", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => [NumPatientTasks]),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], PatientResolver.prototype, "numPatientTasks", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => Patient_1.Patient),
     __param(0, (0, type_graphql_1.Arg)("Patientdata")),

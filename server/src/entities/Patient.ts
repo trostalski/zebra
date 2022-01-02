@@ -39,7 +39,7 @@ export class Patient extends BaseEntity {
 
   @Field(() => [PatientTask], { nullable: true })
   @OneToMany(() => PatientTask, (task) => task.forPatient, { nullable: true })
-  patientTasks!: PatientTask[] | null;
+  patientTasks!: PatientTask[];
 
   @Field()
   @CreateDateColumn()

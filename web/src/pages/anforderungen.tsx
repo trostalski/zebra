@@ -9,7 +9,7 @@ const Anforderungen: React.FC<AnforderungenProps> = ({}) => {
   return (
     <>
       <HeaderBar user="Meissenbacher" />
-      <Flex bg="mainWhite" h="100vh" justify="center">
+      <Flex bg="mainWhite" h="100%" justify="center">
         <Flex height="100%" bg="mainWhite">
           <Flex mt="24">
             <AnforderungenList></AnforderungenList>

@@ -2,9 +2,10 @@ import { Patient } from "../entities/Patient";
 import { Task } from "../entities/Task";
 import { User } from "../entities/User";
 import { MyContext } from "src/types";
-import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
 import { PatientTask } from "../entities/PatientTask";
 import { PatientTaskInput } from "./utils/resolverInputs";
+import { getConnection } from "typeorm";
 
 @Resolver(PatientTask)
 export class PatientTaskResolver {
@@ -22,7 +23,6 @@ export class PatientTaskResolver {
   async patientAnforderungen(
     @Arg("input") input: number
   ): Promise<PatientTask[]> {
-    console.log(input);
     const result = await PatientTask.find({
       where: { forPatient: input, completed: false },
       relations: ["creatorUser", "forPatient", "parentTask"],
@@ -37,6 +37,24 @@ export class PatientTaskResolver {
     });
     return result;
   }
+
+  // get all rooms where patients have task assigned
+  @Query(() => [Int])
+  async patientTaskRooms(): Promise<number[]> {
+    const result: number[] = [];
+    const rooms = await getConnection().query(
+      `
+      select distinct patient.room 
+      from patient_task 
+      join patient on patient_task."forPatientId" = patient.id 
+      order by patient.room
+      `
+    );
+    rooms.forEach((room: { [x: string]: number }) => {
+      result.push(room["room"]);
+    });
+    return result;
+  } 
 
   @Mutation(() => PatientTask)
   async createPatientTask(

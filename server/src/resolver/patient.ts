@@ -12,9 +12,12 @@ import { Patient } from "../entities/Patient";
 import { PatientInput } from "./utils/resolverInputs";
 
 @ObjectType()
-export class PatientRoomOutput {
-  @Field(() => Int)
-  room: number;
+export class NumPatientTasks {
+  @Field(() => Int, { nullable: true })
+  forPatientId?: number;
+
+  @Field({ nullable: true })
+  count?: number;
 }
 
 // list all patients in DB
@@ -48,6 +51,17 @@ export class PatientResolver {
     rooms.forEach((room: { [x: string]: number }) => {
       result.push(room["room"]);
     });
+    return result;
+  }
+
+  // Preview number and urgency of patientTasks in the station list
+  @Query(() => [NumPatientTasks])
+  async numPatientTasks(): Promise<NumPatientTasks[]> {
+    const result = await getConnection().query(
+      ` SELECT patient_task."forPatientId", count(*)
+        FROM patient_task
+        GROUP BY patient_task."forPatientId"`
+    );
     return result;
   }
 

@@ -1,19 +1,10 @@
 import { ChakraProvider, ColorModeProvider } from "@chakra-ui/react";
+import { devtoolsExchange } from "@urql/devtools";
+import { Cache, cacheExchange } from "@urql/exchange-graphcache";
 import React from "react";
-import {
-  Provider,
-  createClient,
-  dedupExchange,
-  fetchExchange,
-  gql,
-} from "urql";
+import { createClient, dedupExchange, fetchExchange, Provider } from "urql";
+import { NumPatientTasks, useNumPatientTasksQuery } from "../generated/graphql";
 import theme from "../theme";
-import {} from "@urql/exchange-graphcache";
-import { cacheExchange, Cache } from "@urql/exchange-graphcache";
-import {
-  CreatePatientTaskDocument,
-  DeletePatientTaskMutationVariables,
-} from "../generated/graphql";
 
 // invalidates Cache to update the patientAnforderungen displayed in UntersuchungenBox Component
 function invalidateAnforderungen(cache: Cache) {
@@ -33,12 +24,19 @@ const client = createClient({
   },
   maskTypename: true,
   exchanges: [
+    devtoolsExchange,
     dedupExchange,
     cacheExchange({
       updates: {
         Mutation: {
           createPatientTask: (_result, _args, cache, _info) => {
             invalidateAnforderungen(cache);
+            /*
+            cache.updateQuery({ query: "numPatientTasks" }, (data) => {
+              console.log("data: ", data);
+              return data
+            });
+            */
           },
           deletePatientTask: (_result, args, cache, _info) => {
             invalidateAnforderungen(cache);

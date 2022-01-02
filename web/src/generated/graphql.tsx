@@ -158,6 +158,12 @@ export type MutationRegisterArgs = {
   Userdata: RegisterInput;
 };
 
+export type NumPatientTasks = {
+  __typename?: 'NumPatientTasks';
+  count?: Maybe<Scalars['Float']>;
+  forPatientId?: Maybe<Scalars['Int']>;
+};
+
 export type Patient = {
   __typename?: 'Patient';
   age: Scalars['Int'];
@@ -216,8 +222,10 @@ export type Query = {
   listUsers?: Maybe<Array<User>>;
   listVitalSigns: Array<VitalSigns>;
   me?: Maybe<User>;
+  numPatientTasks: Array<NumPatientTasks>;
   patientAnforderungen?: Maybe<Array<PatientTask>>;
   patientRooms: Array<Scalars['Int']>;
+  patientTaskRooms: Array<Scalars['Int']>;
 };
 
 
@@ -337,7 +345,7 @@ export type GetPatientByIdQuery = { __typename?: 'Query', getPatientById: { __ty
 export type ListPatientTasksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ListPatientTasksQuery = { __typename?: 'Query', listPatientTasks?: Array<{ __typename?: 'PatientTask', comment?: string | null | undefined, createdAt: any, id: number, timepoint: string, updatedAt: any, urgent: boolean, creatorUser: { __typename?: 'User', id: number, lastname: string }, forPatient: { __typename?: 'Patient', id: number, firstname: string, lastname: string }, parentTask: { __typename?: 'Task', id: number, name: string } }> | null | undefined };
+export type ListPatientTasksQuery = { __typename?: 'Query', listPatientTasks?: Array<{ __typename?: 'PatientTask', comment?: string | null | undefined, createdAt: any, id: number, timepoint: string, updatedAt: any, urgent: boolean, creatorUser: { __typename?: 'User', id: number, lastname: string }, forPatient: { __typename?: 'Patient', id: number, room: number, firstname: string, lastname: string }, parentTask: { __typename?: 'Task', id: number, name: string } }> | null | undefined };
 
 export type ListPatientsStationQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -360,6 +368,16 @@ export type PatientRoomsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type PatientRoomsQuery = { __typename?: 'Query', patientRooms: Array<number> };
+
+export type NumPatientTasksQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type NumPatientTasksQuery = { __typename?: 'Query', numPatientTasks: Array<{ __typename?: 'NumPatientTasks', forPatientId?: number | null | undefined, count?: number | null | undefined }> };
+
+export type PatientTaskRoomsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PatientTaskRoomsQuery = { __typename?: 'Query', patientTaskRooms: Array<number> };
 
 
 export const CreatePatientTaskDocument = gql`
@@ -429,6 +447,7 @@ export const ListPatientTasksDocument = gql`
     }
     forPatient {
       id
+      room
       firstname
       lastname
     }
@@ -504,4 +523,25 @@ export const PatientRoomsDocument = gql`
 
 export function usePatientRoomsQuery(options: Omit<Urql.UseQueryArgs<PatientRoomsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<PatientRoomsQuery>({ query: PatientRoomsDocument, ...options });
+};
+export const NumPatientTasksDocument = gql`
+    query numPatientTasks {
+  numPatientTasks {
+    forPatientId
+    count
+  }
+}
+    `;
+
+export function useNumPatientTasksQuery(options: Omit<Urql.UseQueryArgs<NumPatientTasksQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<NumPatientTasksQuery>({ query: NumPatientTasksDocument, ...options });
+};
+export const PatientTaskRoomsDocument = gql`
+    query patientTaskRooms {
+  patientTaskRooms
+}
+    `;
+
+export function usePatientTaskRoomsQuery(options: Omit<Urql.UseQueryArgs<PatientTaskRoomsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<PatientTaskRoomsQuery>({ query: PatientTaskRoomsDocument, ...options });
 };

@@ -26,6 +26,7 @@ export const PatientAnforderungenBox: React.FC<PatientAnforderungenProps> = ({
   patientId,
   children,
 }) => {
+
   const [{ data: patientAnforderungen, fetching, error }] =
     usePatientAnforderungenQuery({
       variables: { input: patientId },

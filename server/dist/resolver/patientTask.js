@@ -28,6 +28,7 @@ const User_1 = require("../entities/User");
 const type_graphql_1 = require("type-graphql");
 const PatientTask_1 = require("../entities/PatientTask");
 const resolverInputs_1 = require("./utils/resolverInputs");
+const typeorm_1 = require("typeorm");
 let PatientTaskResolver = class PatientTaskResolver {
     listPatientTasks() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -39,7 +40,6 @@ let PatientTaskResolver = class PatientTaskResolver {
     }
     patientAnforderungen(input) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(input);
             const result = yield PatientTask_1.PatientTask.find({
                 where: { forPatient: input, completed: false },
                 relations: ["creatorUser", "forPatient", "parentTask"],
@@ -52,6 +52,21 @@ let PatientTaskResolver = class PatientTaskResolver {
             const result = yield PatientTask_1.PatientTask.find({
                 where: { forPatient: input, completed: true },
                 relations: ["creatorUser", "forPatient", "parentTask"],
+            });
+            return result;
+        });
+    }
+    patientTaskRooms() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = [];
+            const rooms = yield (0, typeorm_1.getConnection)().query(`
+      select distinct patient.room 
+      from patient_task 
+      join patient on patient_task."forPatientId" = patient.id 
+      order by patient.room
+      `);
+            rooms.forEach((room) => {
+                result.push(room["room"]);
             });
             return result;
         });
@@ -93,6 +108,12 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], PatientTaskResolver.prototype, "patientErgebnisse", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => [type_graphql_1.Int]),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], PatientTaskResolver.prototype, "patientTaskRooms", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => PatientTask_1.PatientTask),
     __param(0, (0, type_graphql_1.Arg)("input")),

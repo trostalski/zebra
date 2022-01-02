@@ -1,0 +1,6 @@
+query numPatientTasks {
+  numPatientTasks {
+    forPatientId
+    count
+  }
+}

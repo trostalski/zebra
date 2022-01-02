@@ -1,7 +1,7 @@
 import {
   Box,
   Button,
-  Drawer,
+  Circle,
   Flex,
   Heading,
   SimpleGrid,
@@ -11,6 +11,7 @@ import {
 import React, { useState } from "react";
 import {
   useListPatientsStationQuery,
+  useNumPatientTasksQuery,
   usePatientRoomsQuery,
 } from "../generated/graphql";
 import { PatientDrawer } from "./PatientDrawer";
@@ -29,6 +30,9 @@ export const StationPatientBox: React.FC<StationPatientBox> = ({}) => {
 
   // save Patient to show in drawer
   const [openPatient, setOpenPatient] = useState(0);
+
+  // get count and urgency of patientTasks
+  const [{ data: numPatientTasks }] = useNumPatientTasksQuery();
 
   return (
     <>
@@ -62,6 +66,25 @@ export const StationPatientBox: React.FC<StationPatientBox> = ({}) => {
                         setOpenPatient(p.id!);
                       }}
                     >
+                      {numPatientTasks?.numPatientTasks.some(
+                        (e) => e.forPatientId === p.id
+                      )
+                        ? numPatientTasks.numPatientTasks.map((val, idx) =>
+                            val.forPatientId === p.id ? (
+                              <Circle
+                                key={idx}
+                                bg="red.400"
+                                pos="absolute"
+                                color="white"
+                                left="95%"
+                                top="-2"
+                                size={6}
+                              >
+                                {val.count}
+                              </Circle>
+                            ) : null
+                          )
+                        : null}
                       <Text mr="auto">{p.firstname + " " + p.lastname} </Text>
                       <Text mr="left">Alter: {p.age} </Text>
                     </Button>
